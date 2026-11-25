@@ -9,12 +9,13 @@
     {
       "id": "housekeeper",
       "description": "an Ethiopian woman's hands and forearms, warm brown skin, wearing simple everyday clothes, sitting on a low wooden stool beside a small charcoal brazier with glowing charcoal, fresh green grass on the floor around her; face never shown",
-      "reference_image": null
+      "reference_image": "outputs/reference/housekeeper.jpg"
     },
     {
       "id": "family",
       "description": "an Ethiopian family of five (father, mother, son 21, daughter 19, son 15), teenagers and young adults, not small children, warm brown skin, seen only from behind or as dark silhouettes, no faces, sitting together on sofas",
-      "reference_image": null
+      "reference_image": null,
+      "reference": false
     }
   ],
   "narration": {
@@ -133,7 +134,8 @@
         {
           "speaker": "NARRATOR",
           "text": "Etan smoke curls through the room. Nobody is in a hurry.",
-          "tts_text": "ዕጣን smoke curls through the room. Nobody is in a hurry."
+          "tts_text": "ዕጣን smoke curls through the room. Nobody is in a hurry.",
+          "style_note": "keep the same voice and natural English accent throughout"
         }
       ],
       "music_cue": "ethiopian-acoustic",
@@ -146,13 +148,12 @@
       "duration_s": 5.0,
       "reason": "Highlights the homely snacks, popcorn and sometimes kolo, set out on the big living-room table.",
       "shot_size": "medium_close",
-      "image_prompt": "A bowl of popcorn and some roasted barley grains on the big table in the middle of the living room; wooden floor, four sofas arranged around the carpeted area.",
+      "image_prompt": "A bowl of popcorn and some roasted barley grains on the big table in the middle of the living room; wooden floor, sofas arranged in a U shape around a carpet and a big table in the middle: one sofa at the back, and two sofas on the left and right turned sideways to face each other, set slightly forward.",
       "motion_prompt": "Gentle pull back from the bowl of popcorn and roasted barley grains to reveal the big table and the sofas around it.",
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "There's popcorn, sometimes kolo, and a lot of noise.",
-          "tts_text": "There's popcorn, sometimes ቆሎ, and a lot of noise."
+          "text": "There's popcorn, sometimes kolo, and a lot of noise."
         }
       ],
       "music_cue": "ethiopian-acoustic",
@@ -165,7 +166,7 @@
       "duration_s": 6.0,
       "reason": "Shows the initial round of coffee, abol, as conversation about the week begins.",
       "shot_size": "medium_wide",
-      "image_prompt": "The family seen from behind, sitting on sofas around a carpet and a big table, small handleless white porcelain coffee cups in their hands, in a living room with a wooden floor and four sofas arranged around a carpeted area with a big table in the middle; in the foreground, the woman on a low wooden stool beside the charcoal brazier and the low wooden stand of cups, on fresh green grass.",
+      "image_prompt": "The family seen from behind, sitting on the sofas around the carpet and the big table, small handleless white porcelain coffee cups in their hands, in a living room with a wooden floor and sofas arranged in a U shape around a carpet and a big table in the middle: one sofa at the back, and two sofas on the left and right turned sideways to face each other, set slightly forward; in the foreground, the woman on a low wooden stool beside the charcoal brazier and the low wooden stand of cups, on fresh green grass.",
       "characters": [
         "family",
         "housekeeper"
@@ -174,8 +175,7 @@
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "With the first cup, abol, we catch up on the week: school, tests, work.",
-          "tts_text": "With the first cup, አቦል, we catch up on the week: school, tests, work."
+          "text": "With the first cup, abol, we catch up on the week: school, tests, work."
         }
       ],
       "music_cue": "ethiopian-acoustic",
@@ -188,7 +188,7 @@
       "duration_s": 6.0,
       "reason": "Illustrates lively family animated discussions during the second cup, tona.",
       "shot_size": "medium",
-      "image_prompt": "Silhouettes of two siblings sitting together on one of the living-room sofas, back to camera, gesturing lively in laughter against a warm backlit window, in a living room with a wooden floor and four sofas arranged around a carpeted area with a big table in the middle.",
+      "image_prompt": "Silhouettes of two siblings sitting together on one of the side sofas, back to camera, gesturing lively in laughter against a warm backlit window, in a living room with a wooden floor and sofas arranged in a U shape around a carpet and a big table in the middle: one sofa at the back, and two sofas on the left and right turned sideways to face each other, set slightly forward.",
       "characters": [
         "family"
       ],
@@ -196,8 +196,7 @@
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "With the second, tona, it's university applications, and everyone has an opinion.",
-          "tts_text": "With the second, ቶና, it's university applications, and everyone has an opinion."
+          "text": "With the second, tona, it's university applications, and everyone has an opinion."
         }
       ],
       "music_cue": "ethiopian-acoustic",
@@ -216,7 +215,7 @@
         {
           "speaker": "NARRATOR",
           "text": "The third cup is bereka, the blessing. The room gets quieter.",
-          "tts_text": "The third cup is በረካ, the blessing. The room gets quieter."
+          "tts_text": "The third cup is baraka, the blessing. The room gets quieter."
         }
       ],
       "music_cue": "ethiopian-acoustic",

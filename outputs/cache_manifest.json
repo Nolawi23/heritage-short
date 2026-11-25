@@ -62,6 +62,26 @@
   "stage": "music",
   "status": "ok"
  },
+ "1464ffd0c941e29a0e6434a2a217c483e11849e15b92d02547f40399fb0d814d": {
+  "bytes": 1065582,
+  "created": "2026-11-25T21:51:53.802+00:00",
+  "file": "1464ffd0c941e29a0e6434a2a217c483e11849e15b92d02547f40399fb0d814d.jpg",
+  "kept": true,
+  "run_id": "20261125T214952Z-keyframes",
+  "sha256": "6c1035f1b80cb4a128b3a249caad0ff8ce8c3c09335a377882a88cb49ad8dc11",
+  "stage": "keyframes",
+  "status": "ok"
+ },
+ "185856102b31b6e036cabdcb267d297bec42eef49e95784d978e9094bff35e62": {
+  "bytes": 1095060,
+  "created": "2026-11-25T21:52:07.706+00:00",
+  "file": "185856102b31b6e036cabdcb267d297bec42eef49e95784d978e9094bff35e62.jpg",
+  "kept": true,
+  "run_id": "20261125T214952Z-keyframes",
+  "sha256": "200b88c3e7031940ce515b62398954f37d0fbc665d2d4f978845e93555eed307",
+  "stage": "keyframes",
+  "status": "ok"
+ },
  "1c09fd9d137b6f83087b929491312594d7a6f2c968120d94e37adcf5b5c02297": {
   "bytes": 2024684,
   "created": "2026-11-25T21:14:13.603+00:00",
@@ -153,6 +173,16 @@
   "stage": "narration",
   "status": "ok"
  },
+ "2ab7cf0ef1df251a53c5e3c45e91798a366470e1ade4c420a292a0d41b871d6b": {
+  "bytes": 1055077,
+  "created": "2026-11-25T21:51:00.157+00:00",
+  "file": "2ab7cf0ef1df251a53c5e3c45e91798a366470e1ade4c420a292a0d41b871d6b.jpg",
+  "kept": true,
+  "run_id": "20261125T214952Z-keyframes",
+  "sha256": "d69bc677306168007c32861f10c96810e3ae2b2fabcb1c151a80cf2221b8c2a0",
+  "stage": "keyframes",
+  "status": "ok"
+ },
  "32f88c95a4e5f84bf47241d0e73669adc390232779fe5f2d4d4f54449b3719e5": {
   "bytes": 761672,
   "created": "2026-11-25T20:17:30.761+00:00",
@@ -225,6 +255,16 @@
   "run_id": "20261125T203110Z-narration",
   "sha256": "a452360d2eebc145016f2432fe5e77aba23592a4dd7658421a602d45e1a8db17",
   "stage": "narration_join",
+  "status": "ok"
+ },
+ "408bdbe36969f58634d9e593e85ff6bf74b88ed9f91855f0a921387043155931": {
+  "bytes": 1072797,
+  "created": "2026-11-25T21:51:35.419+00:00",
+  "file": "408bdbe36969f58634d9e593e85ff6bf74b88ed9f91855f0a921387043155931.jpg",
+  "kept": true,
+  "run_id": "20261125T214952Z-keyframes",
+  "sha256": "8d2407ae096258feae8b28a90ae18a31db5107f6332a71e89bf584519d46904c",
+  "stage": "keyframes",
   "status": "ok"
  },
  "41b2a28adf12860c1e44de0daf2a406254c217a1f7278aaa8c3114906c29ae87": {
@@ -363,7 +403,7 @@
   "bytes": 974155,
   "created": "2026-11-25T21:12:25.805+00:00",
   "file": "780c01ba748870ba988f0e7d908626cfad3b306cfd4eada68d7226b395b6931d.jpg",
-  "kept": false,
+  "kept": true,
   "run_id": "20261125T211143Z-reference",
   "sha256": "33080b89c203ab1654c806a67f92933bd19b6407b57ab42a517afcbe0bf4650d",
   "stage": "reference",
@@ -442,6 +482,18 @@
   "stage": "narration_join",
   "status": "ok"
  },
+ "89b6777e8efaa1d2f0dd45f08d498cdaf6a65de087662629c9863490c4c593f5": {
+  "bytes": 252044,
+  "created": "2026-11-25T21:49:17.620+00:00",
+  "duration_s": 5.25,
+  "file": "89b6777e8efaa1d2f0dd45f08d498cdaf6a65de087662629c9863490c4c593f5.wav",
+  "kept": true,
+  "mode": "single",
+  "run_id": "20261125T214913Z-etan-single",
+  "sha256": "7ad608e65e3945d2f88edb07ede0536dbf4ebfb19afd5e3011e92bdeea3d4cc9",
+  "stage": "narration",
+  "status": "ok"
+ },
  "8fd68e8dca7c80dbbecf3ab5d12130db76c320f1120682b46f067f392c2eec7e": {
   "bytes": 525308,
   "created": "2026-11-25T20:17:42.446+00:00",
@@ -460,6 +512,16 @@
   "run_id": "20261125T203110Z-narration",
   "sha256": "40d6910ff72f631b94be0bd8d665a5ecc42f7d52229c80c8b97700a75dd51907",
   "stage": "narration_join",
+  "status": "ok"
+ },
+ "9426b5499746cddf5296f532cd4539aea9c110d4375beba0cf4ba9026dbacba3": {
+  "bytes": 836181,
+  "created": "2026-11-25T21:50:50.215+00:00",
+  "file": "9426b5499746cddf5296f532cd4539aea9c110d4375beba0cf4ba9026dbacba3.jpg",
+  "kept": true,
+  "run_id": "20261125T214952Z-keyframes",
+  "sha256": "5ac514b28973eecd77cc2e88674ee61be456c72ac424f0b70abb96c1571637a6",
+  "stage": "keyframes",
   "status": "ok"
  },
  "98395207f9a141d1c0e71b8aaefae9e61ab15d36d7dbfdc5653b62f74379f5ea": {
@@ -484,6 +546,16 @@
   "run_id": "20261125T203110Z-narration",
   "sha256": "0a6a899cd7810bd0a404b4cc037cd9fef4554190282e8470322b6abe3847a785",
   "stage": "narration",
+  "status": "ok"
+ },
+ "a48ade6d54b92e8aa0b32acf273a3c65d0c142fdf7cd26780fb505fa2f6cefd6": {
+  "bytes": 934153,
+  "created": "2026-11-25T21:50:14.818+00:00",
+  "file": "a48ade6d54b92e8aa0b32acf273a3c65d0c142fdf7cd26780fb505fa2f6cefd6.jpg",
+  "kept": true,
+  "run_id": "20261125T214952Z-keyframes",
+  "sha256": "b7acc4f8495166b9050fdc8dd2f1790bee9c1e35785ef4d027b312d1752d3d48",
+  "stage": "keyframes",
   "status": "ok"
  },
  "a4d7e6ae7d3f6a4310c5b71cb0f1c91c07272128fc2c1abd6f919e5db8bdbec8": {
@@ -512,6 +584,16 @@
   "run_id": "20261125T203110Z-narration",
   "sha256": "fe911e42a58c2b7654d4f713dccad951a9cb1040f59bd33f6e2f2cbfab0813bb",
   "stage": "narration",
+  "status": "ok"
+ },
+ "a672fff62483b67d78a5c31229d6e63aa1e0da49795a9fd33acbd40e214d3a9e": {
+  "bytes": 972762,
+  "created": "2026-11-25T21:50:24.861+00:00",
+  "file": "a672fff62483b67d78a5c31229d6e63aa1e0da49795a9fd33acbd40e214d3a9e.jpg",
+  "kept": true,
+  "run_id": "20261125T214952Z-keyframes",
+  "sha256": "084d7fc50c60366ea4bf3b506e1b49e0d490a375bb33d8c8d8aebfe0d190ec44",
+  "stage": "keyframes",
   "status": "ok"
  },
  "b87b6a52cede4da989dc5dd02cc52c904f0e37fdf22b874637a1f9951f04af3c": {
@@ -666,6 +748,16 @@
   "stage": "reference",
   "status": "ok"
  },
+ "df056fe7b71c4ab104b40b052babd88332d954627b9fa081dd03d1d4da9ea64b": {
+  "bytes": 1195478,
+  "created": "2026-11-25T21:50:34.181+00:00",
+  "file": "df056fe7b71c4ab104b40b052babd88332d954627b9fa081dd03d1d4da9ea64b.jpg",
+  "kept": true,
+  "run_id": "20261125T214952Z-keyframes",
+  "sha256": "dcfd7d17e7d6f442156bbf2682e2342260885581da58c3f5095fbc37435dc316",
+  "stage": "keyframes",
+  "status": "ok"
+ },
  "e130dfad19a691850de9e61926dd0734e8573de28602237fb0c21e3b29244697": {
   "bytes": 1197121,
   "created": "2026-11-25T20:32:20.646+00:00",
@@ -675,6 +767,26 @@
   "run_id": "20261125T203213Z-nonames",
   "sha256": "ca00297ad376e78d28a240724edc97982778a589e6f22e1eb967599901490182",
   "stage": "radio",
+  "status": "ok"
+ },
+ "e4e390b5aa4a84837b09f190639e83a76a3332d535db9ad3107ccb708837cdd9": {
+  "bytes": 1421029,
+  "created": "2026-11-25T21:50:04.148+00:00",
+  "file": "e4e390b5aa4a84837b09f190639e83a76a3332d535db9ad3107ccb708837cdd9.jpg",
+  "kept": true,
+  "run_id": "20261125T214952Z-keyframes",
+  "sha256": "e18468727bfc96f1b1a9862868958d5d652789a1f8c8066881b794158bf2f8a5",
+  "stage": "keyframes",
+  "status": "ok"
+ },
+ "ea5f3e1bdf22a3ddd5ce47c7b9b858ebbf3ce614227d7a1da89603ec0c7911e8": {
+  "bytes": 893716,
+  "created": "2026-11-25T21:51:27.631+00:00",
+  "file": "ea5f3e1bdf22a3ddd5ce47c7b9b858ebbf3ce614227d7a1da89603ec0c7911e8.jpg",
+  "kept": true,
+  "run_id": "20261125T214952Z-keyframes",
+  "sha256": "10394e6ac0d68c37b550f386e6e98d0fe79c851eb3a919d7821700dd5fa3f7d0",
+  "stage": "keyframes",
   "status": "ok"
  },
  "ec361757c9de42b0651ede7631db60c5d4508f3b60aa835a34e5ede81dc6f823": {
@@ -695,6 +807,16 @@
   "run_id": "20261125T193752Z-script",
   "sha256": "0b918044dd08a9d86f6dc5dfd99ef2b064ddef2aa15568e12cb411baec0b9485",
   "stage": "script",
+  "status": "ok"
+ },
+ "eeef580f86c61831bdcdbe99d8654013a5b215ae650d0147456f2ae636c2018d": {
+  "bytes": 252044,
+  "created": "2026-11-25T21:49:17.625+00:00",
+  "file": "eeef580f86c61831bdcdbe99d8654013a5b215ae650d0147456f2ae636c2018d.wav",
+  "kept": true,
+  "run_id": "20261125T214913Z-etan-single",
+  "sha256": "7ad608e65e3945d2f88edb07ede0536dbf4ebfb19afd5e3011e92bdeea3d4cc9",
+  "stage": "narration_join",
   "status": "ok"
  },
  "f0c8c90c5bde1caf9c980af7a13bc93d0b5224f7e37760ea9c9631adc3b1be0e": {
@@ -804,6 +926,16 @@
   "run_id": "20261125T211356Z-narration-geez",
   "sha256": "be9822bacf310e5c22850e87446e32a2feb0805e4eda0732c416020d8e736dab",
   "stage": "narration",
+  "status": "ok"
+ },
+ "ff1c6cf8705ee033e7f7cb0d620e1a69e9d6243975312e3f4bd0efa18ed721f6": {
+  "bytes": 1195714,
+  "created": "2026-11-25T21:51:11.835+00:00",
+  "file": "ff1c6cf8705ee033e7f7cb0d620e1a69e9d6243975312e3f4bd0efa18ed721f6.jpg",
+  "kept": true,
+  "run_id": "20261125T214952Z-keyframes",
+  "sha256": "8c895f9e762046c98af91dda75a3f59a26e449b49fe24df83fee1880c33ebf77",
+  "stage": "keyframes",
   "status": "ok"
  }
 }

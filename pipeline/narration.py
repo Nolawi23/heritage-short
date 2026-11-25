@@ -323,10 +323,11 @@ def items(ctx: c.Ctx) -> list[dict]:
     for shot in ctx.sb["shots"]:
         for n, line in enumerate(shot["lines"], 1):
             v = ctx.sb["narration"]["voices"][line["speaker"]]
-            params = {"voice": v["voice"], "style": v["style_instruction"]}
+            style = v["style_instruction"] + (f"; {line['style_note']}" if line.get("style_note") else "")
+            params = {"voice": v["voice"], "style": style}
             spoken = line.get("tts_text", line["text"])
             out.append({"id": f"{shot['id']}_{n}", "shot": shot["id"], "seed": shot["seed"], "speaker": line["speaker"],
-                        "text": spoken, "voice": v["voice"], "style": v["style_instruction"], "params": params,
+                        "text": spoken, "voice": v["voice"], "style": style, "params": params,
                         "key": c.Cache.key("narration", model, params, spoken, shot["seed"])})
     return out
 

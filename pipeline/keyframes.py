@@ -105,7 +105,8 @@ def keyframe_key(ctx: c.Ctx, shot: dict) -> tuple[str, list[Path]]:
     refs, upstream = [], {}
     if cfg.get("accepts_reference_images"):
         chars = {ch["id"]: ch for ch in ctx.sb["characters"]}
-        for cid in shot.get("characters", [])[: cfg.get("max_reference_images", 4)]:
+        with_ref = [cid for cid in shot.get("characters", []) if chars[cid].get("reference") is not False]
+        for cid in with_ref[: cfg.get("max_reference_images", 4)]:
             p = c.repo_path(chars[cid]["reference_image"])
             refs.append(p)
             upstream[f"ref:{cid}"] = c.sha256_file(p)
@@ -128,7 +129,7 @@ def reference_candidates(ctx: c.Ctx) -> list[str]:
     cfg = c.model_cfg(ctx, "flux")
     waiting = []
     for ch in ctx.sb["characters"]:
-        if ch["reference_image"]:
+        if ch["reference_image"] or ch.get("reference") is False:  # approved, or deliberately without a sheet
             continue
         waiting.append(ch["id"])
         for n in range(1, REF_CANDIDATES + 1):

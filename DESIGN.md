@@ -20,7 +20,7 @@ At the end they feel seen and grateful: this ordinary Sunday ritual is what keep
   See ETHICS.md.
 - **2026-11-25 - Authenticity corrections from memory.** The first draft had grass under the whole living room
   (assumed from the traditional ceremony). Corrected: fresh grass only around the coffee-making area; the family sits
-  on four sofas around a carpet and a big table, in house slippers. The generic house was replaced with our real one
+  on sofas in a U shape around a carpet and a big table (one at the back, two at the sides facing each other), in house slippers. The generic house was replaced with our real one
   (two storeys, a white gate, a small garden). The ceremony is shown the traditional way: the housekeeper on a low
   wooden stool by the charcoal brazier, roasting in a long-handled iron pan, pouring from a height. The first reference
   sheets defaulted to Western, light-skinned people and small children, so they were rejected and the descriptions

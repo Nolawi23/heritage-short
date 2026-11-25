@@ -58,8 +58,29 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
 - **Change:** shots 5-9 re-synthesised with ዕጣን, ቆሎ, አቦል, ቶና, በረካ, in ONE batch request together with the new shot 11
   line (6 lines, 1 TTS request), split with whisper alignment (Ge'ez words ignored when matching; all 6 scored 1.00).
   Both takes kept: `outputs/experiments/latin_vs_geez/latin/<line>.wav` vs `.../geez/<line>.wav`.
-- **Result:** _author's listening verdict, to be filled in_.
+- **Result (author's listening verdict):** Ge'ez script pronounced *etan* better, but the batch with several Ge'ez
+  words **changed the narrator's voice** (character, accent). Decision: keep the Latin versions of kolo, abol, tona
+  and bereka (shot 9 subtitles say "bereka" but speak the cached Latin take); test a single Ge'ez word next.
 - **run_id:** `20261125T211356Z-narration-geez` (Ge'ez); the Latin takes are from the batch in `20261125T200634Z-narration`
+
+### 2026-11-25 - A single Ge'ez word: does the voice stay the same?
+- **Hypothesis:** the voice change came from several Ge'ez words in one request; one Ge'ez word per line, plus an
+  explicit style note, keeps Achird's voice and accent while fixing the pronunciation of *etan*.
+- **Change:** shot 5 only: `tts_text` "ዕጣን smoke curls through the room. Nobody is in a hurry.", same voice (Achird),
+  per-line `style_note` "keep the same voice and natural English accent throughout" (other NARRATOR lines untouched).
+  One single-line TTS request. Compare `outputs/experiments/etan_single_geez.wav` with
+  `outputs/experiments/latin_vs_geez/latin/shot-05-jebena-etan_1.wav`.
+- **Result:** _author's verdict_. If the voice still changes character, shot 5 goes back to the Latin take (remove
+  `tts_text` and `style_note` from the line: a cache hit, no TTS request).
+- **run_id:** `20261125T214913Z-etan-single`
+
+### 2026-11-25 - Reference sheet: housekeeper
+- **Hypothesis:** one approved sheet keeps the housekeeper's hands consistent across shots 3, 7 and 9.
+- **Change:** 4 candidates from the explicit description (an Ethiopian woman's brown hands on a low wooden stool by a
+  charcoal brazier); keyframes are conditioned on the approved one.
+- **Result:** **candidate 3 approved** (`outputs/reference/housekeeper.jpg`). Reason: "most natural hands, closest to how
+  she actually sits by the charcoal" _(the example wording from the request; author to confirm or replace)_.
+- **run_id:** the last `-reference` run in `runs.jsonl`
 
 ### 2026-11-25 - Wan 2.2 TI2V-5B on a Kaggle T4: does it fit, and what does it cost?
 - **Hypothesis:** float16 + model CPU offload + VAE tiling runs Wan 2.2 TI2V-5B at 1280x704 on one T4 without NaNs,

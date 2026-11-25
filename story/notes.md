@@ -8,11 +8,11 @@ Visual world: our home in Addis on a Sunday morning, warm light, a staircase, sm
 Home details:
 - The house: a two-storey white house behind a white gate with a small garden.
 - Staircase: we come down in house slippers.
-- Living room: a wooden floor; four sofas arranged around a carpeted area with a big table in the middle. Popcorn and kolo go on the big table.
+- Living room: a wooden floor; sofas arranged in a U shape around a carpet and a big table in the middle: one sofa at the back, and two sofas on the left and right turned sideways to face each other, set slightly forward. Popcorn and kolo go on the big table.
 - Coffee-making area (where the housekeeper works): fresh green grass is scattered ONLY around this area, never under the sofas, carpet or table. The jebena sits on glowing coals, the sini cups on a rekebot, etan burns in a small clay burner.
 Coffee ceremony, shown the traditional way: the housekeeper (an Ethiopian woman, only her brown hands and forearms are seen) sits on a low wooden stool beside a small charcoal brazier with glowing charcoal, on fresh green grass. She washes the raw green beans in a small bowl, roasts them in a flat long-handled iron pan stirred with a thin metal rod, brews in the jebena on the charcoal next to the etan burner, and pours from a height in one thin continuous stream into the sini cups on the rekebot.
-The family: father, mother, son 21, daughter 19, son 15 (teenagers and young adults, not small children), warm brown skin, only from behind or as silhouettes.
-Pronunciation: Amharic words are spoken from Ge'ez script inside the English sentence (tts_text): etan = ዕጣን, kolo = ቆሎ, abol = አቦል, tona = ቶና, bereka = በረካ. Subtitles keep the Latin spelling.
+The family: father, mother, son 21, daughter 19, son 15 (teenagers and young adults, not small children), warm brown skin, only from behind or as silhouettes. The exact head count in an image is not critical, and silhouettes need no identity consistency, so the family has no reference sheet.
+Pronunciation: Ge'ez script pronounced etan better, but a batch with several Ge'ez words changed the narrator's voice, so kolo, abol, tona and bereka are spoken from Latin spelling; only etan is tested in Ge'ez (ዕጣን) as a single word with an accent-preserving style note. Subtitles always keep the Latin spelling.
 Image prompts: image and video models don't know Amharic words, so prompts describe the objects visually; the Amharic words stay in these notes, the reasons and the narration:
 - jebena = a round-bodied black clay coffee pot with a long narrow neck and spout
 - sini cups = small handleless white porcelain coffee cups

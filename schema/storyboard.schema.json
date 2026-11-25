@@ -29,7 +29,9 @@
           "reference_image": {
             "type": ["string", "null"],
             "description": "Approved reference sheet (repo-relative path), set by `python -m pipeline.keyframes --approve <id>=N`. null = not approved yet."
-          }
+          },
+          "reference": {"type": "boolean", "default": true,
+                        "description": "false = no reference sheet for this character: its description is still added to prompts, but keyframes are not conditioned on an image."}
         }
       }
     },
@@ -105,6 +107,7 @@
               "properties": {
                 "speaker": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
                 "text": {"type": "string", "minLength": 1, "description": "The line as written (subtitles, reasons, notes)."},
+                "style_note": {"type": "string", "minLength": 1, "description": "Optional extra style for this line only, appended to the speaker's style_instruction (changes only this line's cache key)."},
                 "tts_text": {"type": "string", "minLength": 1, "description": "Optional spoken text sent to TTS, e.g. Amharic words in Ge'ez script inside the English sentence for correct pronunciation. Default: text."},
                 "subtitle_en": {"type": "string", "minLength": 1, "description": "Optional subtitle override; default is the line text."}
               }
