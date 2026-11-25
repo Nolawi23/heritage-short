@@ -75,6 +75,33 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   Cheaper settings (fewer frames, 20 steps, 832x480) to be chosen with the author.
 - **run_id:** `20261125T194102Z-make` (run 2; run 1 is the earlier `-make` run with the OutOfMemoryError line)
 
+### 2026-11-25 - Amharic words in image prompts
+- **Hypothesis:** image and video models don't know jebena, sini, rekebot, etan or kolo and may garble or ignore them.
+- **Change:** every image/motion prompt describes the objects visually ("a round-bodied black clay coffee pot with a
+  long narrow neck and spout", "small handleless white porcelain coffee cups", "a low wooden coffee stand", "white
+  frankincense smoke from a small clay incense burner", "roasted barley grains"); the Amharic words stay in the notes,
+  reasons and narration. `tests/test_schema.py::test_visual_prompts_describe_objects_instead_of_naming_them` enforces it.
+- **Result:** _check after keyframes_ (are the coffee pot, cups, stand and incense burner recognisable?).
+- **run_id:** _keyframes run_
+
+### 2026-11-25 - Music caption: masenqo vs tizita-inspired
+- **Hypothesis:** naming the masenqo (one-string Ethiopian fiddle) may not work, because ACE-Step may not know how to
+  render one; describing the feeling instead (tizita, the Ethiopian nostalgic mode, which matches the film) with
+  instruments the model surely knows (acoustic guitar, plucked lyre, light hand percussion) gives a more fitting score.
+- **Change:** candidates 1 and 2 use the tizita-inspired caption (seeds 42, 43); candidate 3 uses the original
+  masenqo caption (`music_cues[].ab_caption`, seed 44). Same bpm (75), key (D minor) and duration.
+- **Result:** _pending (needs a working music route, see FAILURES.md #16-19)_.
+- **run_id:**
+
+### 2026-11-25 - Which shots get Wan video
+- **Hypothesis:** video models handle gentle physical motion (water, smoke, a pouring stream) well but morph moving
+  bodies and limbs.
+- **Change:** `wan` for shots 3 (washing beans), 4 (roasting smoke), 5 (incense smoke), 9 (pouring); people and limbs
+  (shot 2, the feet on the stairs; shot 8, the siblings gesturing) stay Ken Burns. Four clips at 81 frames, 20 steps,
+  1280x704 fit the ~5.4 h of weekly GPU left (about 25 min each by extrapolation).
+- **Result:** _pending (after keyframe approval and the Wan session)_.
+- **run_id:**
+
 ### Planned - 9:16 treatment of the Wan shots: centre crop vs blurred fill
 - **Hypothesis:** the 1280x704 Wan clips lose too much when centre-cropped to 9:16 (about 1.8x upscale of a
   396x704 slice); a sharp fit on a blurred fill keeps the whole frame but leaves the subject small.

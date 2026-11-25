@@ -79,7 +79,7 @@ def env(tmp_path, monkeypatch):
         calls["flux"].append(prompt)
         return PNG + str(seed).encode(), {"output_tiles": 8}
 
-    def fake_kaggle(stage, notebook, jobs, config, models, files=None, gpu=True):
+    def fake_kaggle(stage, notebook, jobs, config, models, files=None, gpu=True, machine_shape=None):
         calls["kaggle"].append([j["id"] for j in jobs])
         out = tmp_path / "kaggle_out" / stage
         (out / "out").mkdir(parents=True, exist_ok=True)

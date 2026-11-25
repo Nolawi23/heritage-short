@@ -88,6 +88,14 @@ plus re-assembly; a variant storyboard that differs in one line costs exactly on
 Rule: an item whose key exists is never regenerated unless `FORCE=1`. Keys are only required on a cache miss, so a
 clean clone with committed outputs rebuilds the film without `.env`. `make gc` lists objects no symlink points to.
 
+**Why media is committed.** Reproduce = rebuild from the committed cache on a clean clone with no keys (every
+item is a cache hit; only ffmpeg is needed to re-assemble). Regenerate = `FORCE=1` (all providers, all quota).
+Committing the objects once and linking to them keeps the repository small: the same line or keyframe is never stored twice.
+
+**Quota strategy.** Narration is designed around the 10 TTS requests/day of the free tier: one batch request plus a
+local whisper split (above) instead of one request per line; a daily budget guard refuses requests locally when the
+budget is used up; retries back off 15-60 s on overload because failed requests count too.
+
 ## Kaggle jobs (`kaggle_job.py`)
 
 Only called when at least one key is missing. One batch, one kernel run:

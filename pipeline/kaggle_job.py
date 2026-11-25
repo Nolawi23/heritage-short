@@ -114,10 +114,10 @@ def poll(k, kernel_ref: str, timeout_s: int, poll_s: int) -> tuple[str, str]:
 
 
 def run(stage: str, notebook: str, jobs: list[dict], config: dict, models: dict, files: dict[str, Path] | None = None,
-        gpu: bool = True) -> dict:
+        gpu: bool = True, machine_shape: str | None = None) -> dict:
     """Returns {"results": {job id: last timing line}, "lines": all timing lines, "dir": output dir,
     "status": kernel status, "failure": message, "wall_s": seconds}."""
-    kcfg = models["kaggle"]
+    kcfg = models["kaggle"] | ({"machine_shape": machine_shape} if machine_shape else {})
     payload = {"config": config, "jobs": jobs}
     # unique per push (run id + time), so output left over from an earlier kernel version is detected as stale
     job_id = c.sha256_bytes((c.canonical(payload) + c.RUN_ID + str(time.time())).encode())[:12]

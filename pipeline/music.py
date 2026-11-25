@@ -66,7 +66,8 @@ def run(ctx: c.Ctx) -> None:
         jobs = [{"id": f"{cue['id']}_c{n}", "key": key, "caption": caption(ctx, cue, n), "seed": cue.get("seed", 7) + n - 1,
                  **cue_params(ctx, cue)} for cue, n, key in pending]
         gpu = m.get("mode", "gpu-mixed") != "cpu"
-        res = kaggle_job.run("music", NOTEBOOK, jobs, {"model": m["id"], "mode": m.get("mode", "gpu-mixed")}, ctx.models, gpu=gpu)
+        res = kaggle_job.run("music", NOTEBOOK, jobs, {"model": m["id"], "mode": m.get("mode", "gpu-mixed")}, ctx.models,
+                            gpu=gpu, machine_shape=m.get("machine_shape"))
         kaggle_job.log_session("music", m["id"], res, gpu=gpu)
         for ln in res["lines"]:
             if ln.get("id"):

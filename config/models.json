@@ -55,8 +55,9 @@
     "shift": 3.0,
     "timesignature": "4",
     "candidates": 3,
-    "dtype": "float32",
-    "mode": "cpu"
+    "dtype": "bfloat16",
+    "mode": "gpu-bf16",
+    "machine_shape": "NvidiaL4"
   },
   "kaggle": {
     "machine_shape": "NvidiaTeslaT4",

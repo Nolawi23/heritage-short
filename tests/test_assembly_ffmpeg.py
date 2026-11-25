@@ -26,7 +26,7 @@ def media(env, tmp_path, monkeypatch):
         av.ffmpeg("-f", "lavfi", "-i", f"testsrc2=s=640x360:d=1", "-frames:v", 1, out)
         return out.read_bytes(), {}
 
-    def kaggle(stage, notebook, jobs, config, models, files=None, gpu=True):
+    def kaggle(stage, notebook, jobs, config, models, files=None, gpu=True, machine_shape=None):
         out = tmp_path / "k" / stage
         (out / "out").mkdir(parents=True, exist_ok=True)
         lines = []

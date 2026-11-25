@@ -40,6 +40,20 @@ Keys go in `.env` (copy [`.env.example`](.env.example)): `GEMINI_API_KEY`, `CLOU
 - To regenerate: a Google AI Studio key, a Cloudflare account (Workers AI) and a Kaggle account with phone
   verification (GPU + internet notebooks).
 
+### Why the media in `outputs/` is committed
+
+A clean clone must rebuild the film **without any keys**: every generated file (narration, keyframes, clips, the
+chosen score, the films) is committed once in the content-addressed `outputs/cache/`, and the stage outputs are small
+symlinks to it. So `make film` on a fresh clone is all cache hits, while `FORCE=1` regenerates everything (and costs
+the free-tier quota). Unselected candidates and temp files are not committed (`.gitignore`); every file is < 100 MB.
+
+### Quota strategy
+
+The free tier allows only **10 TTS requests a day**, so narration sends all changed lines in **one** multi-speaker
+request and splits the recording locally with faster-whisper word timestamps, verifying each piece against its line;
+a later edit of one line costs exactly one request. `make budget` shows what is left today. Image generation stays
+within Workers AI's 10,000 free Neurons/day, and the Kaggle GPU work (6 h/week) is measured first (`make shots-test`).
+
 ## Stages
 
 | Stage (`make …`) | What it does | Provider / model | Cost per film (free tiers) |
