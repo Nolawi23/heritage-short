@@ -38,9 +38,20 @@ At the end they feel seen and grateful: this ordinary Sunday ritual is what keep
   Pinned as `music_cues[0].selected = 2` (MusicGen, tizita caption, seed 43), so assembly always uses it. Mix check:
   ducking pulls the music down 7-13 dB under speech and keeps the voice 8-20 dB on top for lines 2-12, but MOM's opening
   call (short, filtered for the "downstairs" effect, at 0.25 s before the compressor engages) measured 2 dB *below*
-  the music; a fix is proposed to the author.
+  the music. **Fixed (author's decision, 2026-11-26, option A):** the score now starts 0.3 s after Mom's call
+  (`music_start_after_line`) with a 1.5 s fade-in rather than a hard start (`music_fade_in_s`; the author asked for
+  1-2 s), so the film's hook plays over silence, clearly on top.
 - **2026-11-25 - "Etan" stays in Latin spelling.** After the single-word Ge'ez test the author kept the original Latin
   take (no TTS request; EXPERIMENTS.md).
+- **2026-11-26 - Keyframe picks (round 2).** Shot 1 = c2 (closer to the centre, for the 9:16 crop), 2 = c1, 4 = c1,
+  7 = c1, 8 = c2, 9 = c1, 10 = c2, 11 = c1; shot 6 stays as approved in round 1 (`shots[].keyframe_seed`).
+  - Shot 7: the brother looks younger than 15; accepted by the author (FAILURES.md #28).
+  - Shot 10: fewer cups than five is accurate, because the author and his brother don't really drink coffee.
+  - Redo only shots 3 and 5 (2 candidates each). Shot 3 drops the housekeeper reference, which forced her frontal
+    pose: her clothes are described in the text instead (the beige-grey dress and light head scarf of the reference),
+    three-quarter view from the side, medium close-up, hands rinsing the beans in a metal bowl. Shot 5 describes the
+    coffee pot's real shape (a round gourd, a narrow vertical neck as tall as the body, a short spout, a handle from the
+    neck to the body, a tuft of straw in the opening); if neither candidate works, the author takes round-2 c2.
 
 ## User tests
 

@@ -32,19 +32,6 @@
       }
     }
   },
-  "music_cues": [
-    {
-      "id": "ethiopian-acoustic",
-      "caption": "gentle acoustic guitar and soft plucked lyre, light hand percussion, Ethiopian tizita-inspired nostalgic pentatonic feel, warm, reflective, homely, no strong lead melody, instrumental",
-      "bpm": 75,
-      "key": "D minor",
-      "duration_s": 60.0,
-      "instrumental": true,
-      "seed": 42,
-      "ab_caption": "Warm acoustic guitar paired with soft traditional masenqo and gentle percussive rhythm, warm, reflective, homely.",
-      "selected": 2
-    }
-  ],
   "shots": [
     {
       "id": "shot-01-bedroom",
@@ -69,7 +56,8 @@
       "max_attempts": 1,
       "people": [
         "NOLAWI"
-      ]
+      ],
+      "keyframe_seed": 2101
     },
     {
       "id": "shot-02-staircase",
@@ -90,17 +78,15 @@
       "max_attempts": 1,
       "reference_images": [
         "outputs/reference/composition/shot-02-staircase.jpg"
-      ]
+      ],
+      "keyframe_seed": 1102
     },
     {
       "id": "shot-03-washing-beans",
       "duration_s": 5.0,
       "reason": "Introduces the careful preparation of the coffee ritual already underway.",
       "shot_size": "close_up",
-      "image_prompt": "A single full-frame scene of one woman: she sits on a low wooden stool, rinsing raw green coffee beans in a bowl of water with both hands, water droplets, each hand with five fingers; a small charcoal brazier stands on the floor beside her stool, indoors in the living room, fresh cut grass scattered on the wooden floor around the coffee area, in a family home in Addis Ababa, Ethiopia.",
-      "characters": [
-        "housekeeper"
-      ],
+      "image_prompt": "A single full-frame scene of one woman: an Ethiopian woman with brown skin in a simple beige-grey dress and a light head scarf, seen in a three-quarter view from the side, medium close-up; she sits on a low wooden stool, her hands rinsing raw green coffee beans in a metal bowl of water, water dripping between her fingers, each hand with five fingers; a small charcoal brazier stands on the floor beside her, indoors in the living room, fresh cut grass scattered on the wooden floor around the coffee area, in a family home in Addis Ababa, Ethiopia.",
       "motion_prompt": "The hands gently swirl the beans in the water; the camera slowly pushes in.",
       "lines": [
         {
@@ -132,14 +118,15 @@
       "max_attempts": 2,
       "reference_images": [
         "outputs/reference/composition/shot-04-roasting-beans.jpg"
-      ]
+      ],
+      "keyframe_seed": 1104
     },
     {
       "id": "shot-05-jebena-etan",
       "duration_s": 5.5,
       "reason": "Captures the unhurried atmosphere enhanced by fragrant frankincense smoke.",
       "shot_size": "insert",
-      "image_prompt": "A black clay coffee pot with a round body, long thin neck, small spout and handle, sitting directly on a small metal charcoal brazier; beside it a small clay incense burner with white smoke curling up, indoors in the living room, fresh cut grass scattered on the wooden floor around the coffee area, in a family home in Addis Ababa, Ethiopia.",
+      "image_prompt": "A black clay coffee pot shaped like a round gourd with a narrow vertical neck as tall as the body; a short spout from the round body; a handle from the neck down to the body; the opening at the top of the neck plugged with a small tuft of straw; the pot sits directly on a small metal charcoal brazier; beside it a small clay incense burner with white smoke curling up, indoors in the living room, fresh cut grass scattered on the wooden floor around the coffee area, in a family home in Addis Ababa, Ethiopia.",
       "motion_prompt": "White smoke curls gently upward; the camera slowly pushes in.",
       "lines": [
         {
@@ -193,7 +180,8 @@
         "NOLAWI",
         "DELINA",
         "BROTHER"
-      ]
+      ],
+      "keyframe_seed": 1107
     },
     {
       "id": "shot-08-tona-discussion",
@@ -216,7 +204,8 @@
         "NOLAWI",
         "DELINA",
         "BROTHER"
-      ]
+      ],
+      "keyframe_seed": 2108
     },
     {
       "id": "shot-09-baraka-pour",
@@ -238,7 +227,8 @@
       "max_attempts": 2,
       "characters": [
         "housekeeper"
-      ]
+      ],
+      "keyframe_seed": 1109
     },
     {
       "id": "shot-10-empty-cups",
@@ -256,7 +246,8 @@
       "music_cue": "ethiopian-acoustic",
       "seed": 110,
       "motion": "kenburns",
-      "max_attempts": 1
+      "max_attempts": 1,
+      "keyframe_seed": 2110
     },
     {
       "id": "shot-11-house-exterior",
@@ -274,7 +265,8 @@
       "music_cue": "ethiopian-acoustic",
       "seed": 111,
       "motion": "kenburns",
-      "max_attempts": 1
+      "max_attempts": 1,
+      "keyframe_seed": 1111
     }
   ],
   "end_card": {
@@ -293,5 +285,20 @@
         1280
       ]
     }
-  }
+  },
+  "music_start_after_line": "shot-01-bedroom_1",
+  "music_fade_in_s": 1.5,
+  "music_cues": [
+    {
+      "id": "ethiopian-acoustic",
+      "caption": "gentle acoustic guitar and soft plucked lyre, light hand percussion, Ethiopian tizita-inspired nostalgic pentatonic feel, warm, reflective, homely, no strong lead melody, instrumental",
+      "bpm": 75,
+      "key": "D minor",
+      "duration_s": 60.0,
+      "instrumental": true,
+      "seed": 42,
+      "ab_caption": "Warm acoustic guitar paired with soft traditional masenqo and gentle percussive rhythm, warm, reflective, homely.",
+      "selected": 2
+    }
+  ]
 }

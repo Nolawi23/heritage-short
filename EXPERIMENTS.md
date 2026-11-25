@@ -80,8 +80,9 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
 - **Hypothesis:** one approved sheet keeps the housekeeper's hands consistent across shots 3, 7 and 9.
 - **Change:** 4 candidates from the explicit description (an Ethiopian woman's brown hands on a low wooden stool by a
   charcoal brazier); keyframes are conditioned on the approved one.
-- **Result:** **candidate 3 approved** (`outputs/reference/housekeeper.jpg`). Reason: "most natural hands, closest to how
-  she actually sits by the charcoal" _(the example wording from the request; author to confirm or replace)_.
+- **Result:** **candidate 3 approved** (`outputs/reference/housekeeper.jpg`). Reason (author): "c3 had the details of our ceremony, the fresh grass, the charcoal (kesel) and the low wooden stool, and I liked that her face is only half visible."
+  Later: the left full-figure panel is used (`housekeeper_single.jpg`, FAILURES.md #26); shot 7 stopped using it (#27)
+  and so did shot 3, whose pose it forced (#29), so only shot 9 is conditioned on it.
 - **run_id:** the last `-reference` run in `runs.jsonl`
 
 ### 2026-11-25 - Wan 2.2 TI2V-5B on a Kaggle T4: does it fit, and what does it cost?

@@ -41,6 +41,7 @@ NARR_LUFS, MUSIC_LUFS = -20.0, -20.0
 FINAL = "I=-14:TP=-1:LRA=11"
 DUCK = "sidechaincompress=threshold=0.02:ratio=6:attack=300:release=1500"
 MUSIC_XFADE_S = 2.0
+MUSIC_FADE_IN_S = 0.5  # default fade-in of a music span; the first one can be longer (music_fade_in_s)
 CHARS_PER_LINE = 40
 SUB_STYLE = {"16:9": {"size": 34, "margin_v": 42, "margin_lr": 90},
              "9:16": {"size": 30, "margin_v": 330, "margin_lr": 50}}  # 9:16: clear of the bottom ~25% UI zone
@@ -169,9 +170,15 @@ def end_card(text: str, w: int, h: int, fps: int, seconds: float, out: Path, tmp
 
 
 # ----------------------------------------------------------------- audio ----
-def fit_music(src: Path, length: float, out: Path) -> None:
+def music_tail(length: float, fade_in: float = MUSIC_FADE_IN_S) -> str:
+    """Trim a music span to its length, fade it in, and fade it out over its last 2 s."""
+    return (f"atrim=0:{length:.3f},afade=t=in:d={fade_in:g},afade=t=out:st={max(0.0, length - 2):.3f}:d=2,"
+            "aformat=channel_layouts=stereo")
+
+
+def fit_music(src: Path, length: float, out: Path, fade_in: float = MUSIC_FADE_IN_S) -> None:
     d = av.duration(src)
-    tail = f"atrim=0:{length:.3f},afade=t=in:d=0.5,afade=t=out:st={max(0.0, length - 2):.3f}:d=2,aformat=channel_layouts=stereo"
+    tail = music_tail(length, fade_in)
     if d >= length:
         av.ffmpeg("-i", src, "-af", tail, "-ar", 48000, out)
         return
@@ -198,11 +205,19 @@ def build_audio(ctx: c.Ctx, tl: dict, music: dict, tmp: Path) -> tuple[Path, dic
     narr, bed, pre, out = tmp / "narration.wav", tmp / "music.wav", tmp / "premix.wav", tmp / "mix.wav"
     av.narration_stem(tl, ctx.sb["narration"]["voices"], narr)
     parts, args = [], []
+    after = ctx.sb.get("music_start_after_line")
+    start0 = next((ln["end_s"] + 0.3 for s in tl["shots"] for ln in s["lines"]
+                   if after and ln["wav"] == f"narration/{after}.wav"), None)
+    if after and start0 is None:
+        raise c.PipelineStop(f"music_start_after_line: no line {after} in the timeline")
     for i, sp in enumerate(tl["music_spans"]):
         seg = tmp / f"music_{i}.wav"
+        if i == 0 and start0:
+            sp = sp | {"start_s": start0}  # the hook (e.g. Mom's call) plays over silence
         length = sp["end_s"] - sp["start_s"]
+        fade_in = ctx.sb.get("music_fade_in_s", MUSIC_FADE_IN_S) if i == 0 else MUSIC_FADE_IN_S
         if music.get(sp["cue"]):
-            fit_music(music[sp["cue"]], length, seg)
+            fit_music(music[sp["cue"]], length, seg, fade_in)
         else:
             av.placeholder_pad(length, seg)
         args += ["-i", seg]
@@ -300,7 +315,9 @@ def film_key(ctx: c.Ctx, tl_sha: str, srcs: dict, music: dict, aspect: str, mode
     for cid, p in music.items():
         upstream[f"music:{cid}"] = c.sha256_file(p) if p else "placeholder"
     params = {"aspect": aspect, "mode": mode, "end_card": ctx.sb["end_card"], "outputs": ctx.sb["outputs"],
-              "voices": ctx.sb["narration"]["voices"], "preview": preview()}
+              "voices": ctx.sb["narration"]["voices"], "preview": preview(),
+              "music_start_after_line": ctx.sb.get("music_start_after_line"),
+              "music_fade_in_s": ctx.sb.get("music_fade_in_s")}
     return c.Cache.key("assemble", "ffmpeg", params, None, None, upstream)
 
 

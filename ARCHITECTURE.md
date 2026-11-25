@@ -138,7 +138,9 @@ Only called when at least one key is missing. One batch, one kernel run:
 - **Audio:** the narration stem (a per-speaker effect, e.g. MOM "downstairs" = band-pass + short echo) and the music
   bed are gain-matched to −20 LUFS. The music is ducked with `sidechaincompress=threshold=0.02:ratio=6:attack=300:release=1500`,
   the two are mixed, then two-pass `loudnorm` brings the mix to −14 LUFS / −1 dBTP (the measured result is logged).
-  Music sections are joined with 2 s crossfades to fill their span.
+  Music sections are joined with 2 s crossfades to fill their span. The score can enter after a given line instead of
+  at 0 s (`music_start_after_line`: here Mom's call, so the hook plays over silence), with a longer fade-in for that
+  first entrance (`music_fade_in_s`, here 1.5 s; default 0.5 s). Both are part of the film's cache key.
 - **Subtitles:** cues come from the line timings (at most 2 lines of about 40 characters). The SRT is exported, and
   an ASS file per aspect is burned in (9:16 sits above the bottom 25% UI zone).
 - **End card:** drawn with `drawtext`, and always includes "Made with AI".

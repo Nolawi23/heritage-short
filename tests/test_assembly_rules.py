@@ -1,5 +1,12 @@
-"""Pure assembly rules (no ffmpeg): clip fitting and subtitle wrapping."""
-from pipeline.assemble import CHARS_PER_LINE, fit_plan, srt, subtitle_cues
+"""Pure assembly rules (no ffmpeg): clip fitting, music fades and subtitle wrapping."""
+from pipeline.assemble import CHARS_PER_LINE, MUSIC_FADE_IN_S, fit_plan, music_tail, srt, subtitle_cues
+
+
+def test_music_entrance_fades_in_and_out():
+    soft = music_tail(30.0, 1.5)  # after Mom's call: no hard start
+    assert soft.startswith("atrim=0:30.000,afade=t=in:d=1.5,")
+    assert "afade=t=out:st=28.000:d=2" in soft
+    assert f"afade=t=in:d={MUSIC_FADE_IN_S:g}," in music_tail(30.0)
 
 
 def test_long_clip_drops_weak_ends_first():

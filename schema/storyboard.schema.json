@@ -64,6 +64,10 @@
         }
       }
     },
+    "music_start_after_line": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*_[0-9]+$",
+      "description": "Optional line id (<shot>_<n>): the score starts just after this line ends (e.g. Mom's opening call plays over silence)."},
+    "music_fade_in_s": {"type": "number", "minimum": 0, "maximum": 5,
+      "description": "Optional fade-in (seconds) of the score's first entrance, so it doesn't start hard after the hook. Default 0.5."},
     "music_cues": {
       "type": "array",
       "minItems": 1,
