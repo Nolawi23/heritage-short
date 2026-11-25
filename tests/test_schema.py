@@ -46,7 +46,7 @@ def test_live_storyboard_is_valid():
     assert validate(json.loads((ROOT / "storyboard.json").read_text())) == []
 
 
-IMAGE_MODEL_UNKNOWN_WORDS = ("jebena", "sini", "rekebot", "etan", "kolo", "abol", "tona", "baraka", "finjal")
+IMAGE_MODEL_UNKNOWN_WORDS = ("jebena", "sini", "rekebot", "etan", "kolo", "abol", "tona", "baraka", "bereka", "finjal")
 
 
 def test_visual_prompts_describe_objects_instead_of_naming_them():

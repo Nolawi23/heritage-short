@@ -55,12 +55,13 @@
     "shift": 3.0,
     "timesignature": "4",
     "candidates": 3,
-    "dtype": "float16"
+    "dtype": "float32",
+    "mode": "cpu"
   },
   "kaggle": {
     "machine_shape": "NvidiaTeslaT4",
     "poll_s": 60,
-    "timeout_s": 10800
+    "timeout_s": 21600
   },
   "min_interval_s": {
     "gemini_text": 13,

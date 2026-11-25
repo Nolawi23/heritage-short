@@ -72,7 +72,8 @@ def publish_dataset(k, user: str, stage: str, files: dict[str, Path], build: Pat
     raise c.PipelineStop(f"Kaggle dataset {ref} not ready after 10 minutes")
 
 
-def render_kernel(stage: str, notebook: str, jobs: dict, user: str, dataset: str | None, cfg: dict, dest: Path) -> str:
+def render_kernel(stage: str, notebook: str, jobs: dict, user: str, dataset: str | None, cfg: dict, dest: Path,
+                  gpu: bool = True) -> str:
     src = KAGGLE_DIR / stage
     shutil.rmtree(dest, ignore_errors=True)
     dest.mkdir(parents=True)
@@ -89,8 +90,11 @@ def render_kernel(stage: str, notebook: str, jobs: dict, user: str, dataset: str
     (dest / notebook).write_text(json.dumps(nb, indent=1))
     meta = json.loads((src / "kernel-metadata.json").read_text())
     kernel_ref = meta["id"].replace("USERNAME", user)
-    meta |= {"id": kernel_ref, "dataset_sources": [dataset] if dataset else [],
-             "machine_shape": cfg["machine_shape"]}
+    meta |= {"id": kernel_ref, "dataset_sources": [dataset] if dataset else [], "enable_gpu": gpu}
+    if gpu:
+        meta["machine_shape"] = cfg["machine_shape"]
+    else:
+        meta.pop("machine_shape", None)  # CPU session: no accelerator, no GPU quota
     (dest / "kernel-metadata.json").write_text(json.dumps(meta, indent=2))
     return kernel_ref
 
@@ -109,7 +113,8 @@ def poll(k, kernel_ref: str, timeout_s: int, poll_s: int) -> tuple[str, str]:
         time.sleep(poll_s)
 
 
-def run(stage: str, notebook: str, jobs: list[dict], config: dict, models: dict, files: dict[str, Path] | None = None) -> dict:
+def run(stage: str, notebook: str, jobs: list[dict], config: dict, models: dict, files: dict[str, Path] | None = None,
+        gpu: bool = True) -> dict:
     """Returns {"results": {job id: last timing line}, "lines": all timing lines, "dir": output dir,
     "status": kernel status, "failure": message, "wall_s": seconds}."""
     kcfg = models["kaggle"]
@@ -122,8 +127,9 @@ def run(stage: str, notebook: str, jobs: list[dict], config: dict, models: dict,
     user = username(k)
     t0 = time.monotonic()
     dataset = publish_dataset(k, user, stage, files, build, f"job {job_id}") if files else None
-    kernel_ref = render_kernel(stage, notebook, payload, user, dataset, kcfg, build / "kernel")
-    print(f"kaggle: pushing {kernel_ref.split('/')[-1]} with {len(jobs)} job(s) (job {job_id}, {kcfg['machine_shape']})", flush=True)
+    kernel_ref = render_kernel(stage, notebook, payload, user, dataset, kcfg, build / "kernel", gpu)
+    print(f"kaggle: pushing {kernel_ref.split('/')[-1]} with {len(jobs)} job(s) (job {job_id}, "
+          f"{kcfg['machine_shape'] if gpu else 'CPU only'})", flush=True)
     try:
         resp = k.kernels_push(str(build / "kernel"))
     except Exception as e:  # noqa: BLE001
@@ -156,13 +162,13 @@ def run(stage: str, notebook: str, jobs: list[dict], config: dict, models: dict,
             "wall_s": time.monotonic() - t0, "kernel": kernel_ref, "job_id": job_id}
 
 
-def log_session(stage: str, model: str, res: dict, price_kind: str = "kaggle_t4") -> None:
+def log_session(stage: str, model: str, res: dict, price_kind: str = "kaggle_t4", gpu: bool = True) -> None:
     """One runs.jsonl line for session overhead (pip, downloads, model load): session time minus clip time."""
     done = next((ln for ln in res["lines"] if ln.get("event") == "done"), None)
     setup = next((ln for ln in res["lines"] if ln.get("event") == "setup"), {})
     session_s = (done or {}).get("seconds", 0)
-    work = sum(ln.get("gpu_seconds", 0) for ln in res["lines"] if ln.get("id"))
-    overhead = max(0.0, session_s - work)
+    work = sum(ln.get("gpu_seconds", 0) or ln.get("cpu_seconds", 0) for ln in res["lines"] if ln.get("id"))
+    overhead = max(0.0, session_s - work) if gpu else 0.0  # a CPU session uses no GPU quota
     price = c.list_price(price_kind, gpu_seconds=overhead)
     c.log_call(stage, "kaggle", model, params={"event": "session", "kernel": res["kernel"].split("/")[-1], "job_id": res["job_id"],
                                                 "kernel_status": res["status"], "gpu": setup.get("gpu"),

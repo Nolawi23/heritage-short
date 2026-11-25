@@ -51,6 +51,16 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   cost exactly 1 request (70.1 s).
 - **run_id:** (a) `20261125T200511Z-narration`, (b) `20261125T200634Z-narration`, (c) the last `-narration` run in `runs.jsonl`
 
+### 2026-11-25 - Pronunciation: Latin spelling vs Ge'ez script inside English text
+- **Hypothesis:** the English TTS voice mispronounces Amharic words written in Latin letters (all of them were wrong:
+  etan, kolo, abol, tona, baraka); writing those words in Ge'ez script inside the English sentence
+  (`lines[].tts_text`; subtitles keep `text`) makes the model pronounce them as Amharic.
+- **Change:** shots 5-9 re-synthesised with ዕጣን, ቆሎ, አቦል, ቶና, በረካ, in ONE batch request together with the new shot 11
+  line (6 lines, 1 TTS request), split with whisper alignment (Ge'ez words ignored when matching; all 6 scored 1.00).
+  Both takes kept: `outputs/experiments/latin_vs_geez/latin/<line>.wav` vs `.../geez/<line>.wav`.
+- **Result:** _author's listening verdict, to be filled in_.
+- **run_id:** `20261125T211356Z-narration-geez` (Ge'ez); the Latin takes are from the batch in `20261125T200634Z-narration`
+
 ### 2026-11-25 - Wan 2.2 TI2V-5B on a Kaggle T4: does it fit, and what does it cost?
 - **Hypothesis:** float16 + model CPU offload + VAE tiling runs Wan 2.2 TI2V-5B at 1280x704 on one T4 without NaNs,
   at a cost that fits a 6 h/week GPU quota.

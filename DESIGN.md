@@ -31,6 +31,12 @@ The `reason` field of every shot in `storyboard.json` is the source of truth; th
 | s02 | close_up | kenburns | PLACEHOLDER: shows a character close up |
 | s03 | medium | kenburns | PLACEHOLDER: closes on a still image |
 
+## Decisions log
+
+- **2026-11-25 - "one hour" corrected to "few hours":** the author corrected the length of the Sunday coffee from their
+  own knowledge: it lasts two to three hours, not one. The shot 11 line is now "It's the few hours every week we're all
+  in the same room. ..." and the logline says "the few hours a week".
+
 ## Fixed design rules (enforced in code)
 
 - Subject centred and important content in the central third of every keyframe, so the 9:16 version is cut from the same frame.

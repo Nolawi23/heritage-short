@@ -1,6 +1,6 @@
 {
   "title": "Come Down Here",
-  "logline": "Every Sunday morning my mom calls us downstairs for coffee, the one hour a week our whole family is in the same room.",
+  "logline": "Every Sunday morning my mom calls us downstairs for coffee, the few hours a week our whole family is in the same room.",
   "audience": "my family (mom, dad, my sister, my brother), watching on their phones (vertical) in our family chat.",
   "intent": "at the end they feel seen and grateful: this ordinary Sunday ritual is what keeps us close, whatever the week brought.",
   "language": "en",
@@ -8,12 +8,12 @@
   "characters": [
     {
       "id": "housekeeper",
-      "description": "Housekeeper preparing coffee, seen only as gentle, adept hands.",
+      "description": "an Ethiopian woman's hands and forearms, warm brown skin, wearing simple everyday clothes, sitting on a low wooden stool beside a small charcoal brazier with glowing charcoal, fresh green grass on the floor around her; face never shown",
       "reference_image": null
     },
     {
       "id": "family",
-      "description": "Parents and three teenage/young-adult siblings, only from behind or as dark silhouettes.",
+      "description": "an Ethiopian family of five (father, mother, son 21, daughter 19, son 15), teenagers and young adults, not small children, warm brown skin, seen only from behind or as dark silhouettes, no faces, sitting together on sofas",
       "reference_image": null
     }
   ],
@@ -88,7 +88,7 @@
       "duration_s": 5.0,
       "reason": "Introduces the careful preparation of the coffee ritual already underway.",
       "shot_size": "close_up",
-      "image_prompt": "Adept hands washing raw green coffee beans in a clay bowl of clear water, water drops glistening in warm morning light, fresh green grass scattered around the coffee-making area.",
+      "image_prompt": "The woman sitting on a low wooden stool, her brown hands washing raw green coffee beans in a small bowl, fresh green grass around her.",
       "characters": [
         "housekeeper"
       ],
@@ -109,7 +109,7 @@
       "duration_s": 6.0,
       "reason": "Focuses on the sensory aroma of roasting beans wafting up through the house.",
       "shot_size": "close_up",
-      "image_prompt": "Darkening coffee beans roasting over glowing embers in a flat pan, gentle smoke rising upward toward a background staircase, fresh green grass scattered around the coffee-making area.",
+      "image_prompt": "Green coffee beans roasting in a flat long-handled iron pan over a small charcoal brazier, stirred with a thin metal rod, smoke rising, fresh green grass around.",
       "motion_prompt": "Thin smoke rises slowly from the pan; the camera holds steady with a very slow push in.",
       "lines": [
         {
@@ -127,12 +127,13 @@
       "duration_s": 5.5,
       "reason": "Captures the unhurried atmosphere enhanced by fragrant frankincense smoke.",
       "shot_size": "insert",
-      "image_prompt": "A round-bodied black clay coffee pot with a long narrow neck and spout, on glowing coals, beside a small clay incense burner with white frankincense smoke curling upward, fresh green grass scattered around the coffee-making area.",
+      "image_prompt": "A round-bodied black clay coffee pot with a long neck, spout and handle, sitting on glowing charcoal in a small brazier, beside a small clay incense burner with white smoke curling up, fresh green grass around.",
       "motion_prompt": "White smoke curls gently upward; the camera slowly pushes in.",
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "Etan smoke curls through the room. Nobody is in a hurry."
+          "text": "Etan smoke curls through the room. Nobody is in a hurry.",
+          "tts_text": "ዕጣን smoke curls through the room. Nobody is in a hurry."
         }
       ],
       "music_cue": "ethiopian-acoustic",
@@ -150,7 +151,8 @@
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "There's popcorn, sometimes kolo, and a lot of noise."
+          "text": "There's popcorn, sometimes kolo, and a lot of noise.",
+          "tts_text": "There's popcorn, sometimes ቆሎ, and a lot of noise."
         }
       ],
       "music_cue": "ethiopian-acoustic",
@@ -163,15 +165,17 @@
       "duration_s": 6.0,
       "reason": "Shows the initial round of coffee, abol, as conversation about the week begins.",
       "shot_size": "medium_wide",
-      "image_prompt": "The family seen from behind, sitting on sofas around a carpet and a big table, small handleless white porcelain coffee cups in their hands, in a living room with a wooden floor and four sofas arranged around a carpeted area with a big table in the middle; in the foreground, the coffee-making area with a round-bodied black clay coffee pot with a long narrow neck and spout and a low wooden coffee stand holding more small handleless white porcelain coffee cups, fresh green grass scattered around the coffee-making area.",
+      "image_prompt": "The family seen from behind, sitting on sofas around a carpet and a big table, small handleless white porcelain coffee cups in their hands, in a living room with a wooden floor and four sofas arranged around a carpeted area with a big table in the middle; in the foreground, the woman on a low wooden stool beside the charcoal brazier and the low wooden stand of cups, on fresh green grass.",
       "characters": [
-        "family"
+        "family",
+        "housekeeper"
       ],
       "motion_prompt": "Slow pan left across the family seen from behind on the sofas.",
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "With the first cup, abol, we catch up on the week: school, tests, work."
+          "text": "With the first cup, abol, we catch up on the week: school, tests, work.",
+          "tts_text": "With the first cup, አቦል, we catch up on the week: school, tests, work."
         }
       ],
       "music_cue": "ethiopian-acoustic",
@@ -192,7 +196,8 @@
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "With the second, tona, it's university applications, and everyone has an opinion."
+          "text": "With the second, tona, it's university applications, and everyone has an opinion.",
+          "tts_text": "With the second, ቶና, it's university applications, and everyone has an opinion."
         }
       ],
       "music_cue": "ethiopian-acoustic",
@@ -203,14 +208,15 @@
     {
       "id": "shot-09-baraka-pour",
       "duration_s": 5.5,
-      "reason": "Focuses on the calmer third round, baraka, bringing peaceful blessing.",
+      "reason": "Focuses on the calmer third round, bereka, bringing peaceful blessing.",
       "shot_size": "close_up",
-      "image_prompt": "The housekeeper's hand pouring coffee from the round-bodied black clay pot into a small handleless white cup, soft warm late-morning light, fresh green grass scattered around the coffee-making area.",
+      "image_prompt": "The woman's brown hand pouring coffee from a height in one thin continuous stream from the black clay pot into small handleless white cups on a low wooden stand, fresh green grass around.",
       "motion_prompt": "A thin steady stream of coffee pours into the cup; the camera holds still.",
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "The third cup is baraka, the blessing. The room gets quieter."
+          "text": "The third cup is bereka, the blessing. The room gets quieter.",
+          "tts_text": "The third cup is በረካ, the blessing. The room gets quieter."
         }
       ],
       "music_cue": "ethiopian-acoustic",
@@ -249,7 +255,7 @@
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "It's the one hour every week we're all in the same room. Next Sunday, she'll call again, and we'll come down."
+          "text": "It's the few hours every week we're all in the same room. Next Sunday, she'll call again, and we'll come down."
         }
       ],
       "music_cue": "ethiopian-acoustic",

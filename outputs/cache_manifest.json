@@ -27,6 +27,16 @@
   "stage": "narration",
   "status": "ok"
  },
+ "061a6859397da53cbca2f37a5ca6c743ac61a989f72afe073822d7648fec4f0e": {
+  "bytes": 321680,
+  "created": "2026-11-25T21:14:30.735+00:00",
+  "file": "061a6859397da53cbca2f37a5ca6c743ac61a989f72afe073822d7648fec4f0e.wav",
+  "kept": true,
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "b46384eed265f4320cab11c486c5d9c7ce6156b1a7b72b20c9321db5e62e59d5",
+  "stage": "narration_join",
+  "status": "ok"
+ },
  "0c2a321751285d703a9b21134b10cecae142f5d0c8bf20084e4fcf921fdd5305": {
   "batch_key": "37f977722eff6c85",
   "bytes": 106122,
@@ -39,6 +49,34 @@
   "run_id": "20261125T203110Z-narration",
   "sha256": "bf28e1b7edef5a3024a3b5d028aafc4630d61d8f7c529091e3108f77a89c609e",
   "stage": "narration",
+  "status": "ok"
+ },
+ "1c09fd9d137b6f83087b929491312594d7a6f2c968120d94e37adcf5b5c02297": {
+  "bytes": 2024684,
+  "created": "2026-11-25T21:14:13.603+00:00",
+  "file": "1c09fd9d137b6f83087b929491312594d7a6f2c968120d94e37adcf5b5c02297.wav",
+  "kept": false,
+  "lines": [
+   "shot-05-jebena-etan_1",
+   "shot-06-popcorn-table_1",
+   "shot-07-abol-first-pour_1",
+   "shot-08-tona-discussion_1",
+   "shot-09-baraka-pour_1",
+   "shot-11-house-exterior_1"
+  ],
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "eb43e0b50759b89b83c4c8a5391b7ff5c00f3bb8016351765cf68d22584e1ada",
+  "stage": "narration_batch",
+  "status": "ok"
+ },
+ "1d534e5772765dc0ae67e75e157c88f7b8dff613edf276eb4be3566513637022": {
+  "bytes": 204286,
+  "created": "2026-11-25T21:14:30.731+00:00",
+  "file": "1d534e5772765dc0ae67e75e157c88f7b8dff613edf276eb4be3566513637022.wav",
+  "kept": true,
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "7de97d79313eb9ed070ebf19f215d6727213dd61cdad52eb7beafd4db98c9086",
+  "stage": "narration_join",
   "status": "ok"
  },
  "212e08fe4fcbcabf6ff8150126c519204e07e57153df48c03aacd73bc36e325a": {
@@ -88,6 +126,20 @@
   "run_id": "recovered",
   "sha256": "2c674e39042b44ae50ace91ed43d5faa197a9517875f45cf2b8cf1602a047674",
   "stage": "narration_batch",
+  "status": "ok"
+ },
+ "2a8ec05383c5e1aed8e76a5e65fa302606354f37dad3243e56625e46f83ebf35": {
+  "batch_key": "1c09fd9d137b6f83",
+  "bytes": 309596,
+  "created": "2026-11-25T21:14:30.719+00:00",
+  "duration_s": 6.449,
+  "file": "2a8ec05383c5e1aed8e76a5e65fa302606354f37dad3243e56625e46f83ebf35.wav",
+  "kept": true,
+  "match_score": 1.0,
+  "mode": "batch",
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "f8d8c0d87345508a81fa54f29491efa9e6e2fce154568d3c2861f1afda8d6da7",
+  "stage": "narration",
   "status": "ok"
  },
  "32f88c95a4e5f84bf47241d0e73669adc390232779fe5f2d4d4f54449b3719e5": {
@@ -275,6 +327,26 @@
   "stage": "narration",
   "status": "ok"
  },
+ "7765983b8559203974a4ad0db5783b75a765bcc9c00cfe6b1eda05c992430327": {
+  "bytes": 309596,
+  "created": "2026-11-25T21:14:30.740+00:00",
+  "file": "7765983b8559203974a4ad0db5783b75a765bcc9c00cfe6b1eda05c992430327.wav",
+  "kept": true,
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "f8d8c0d87345508a81fa54f29491efa9e6e2fce154568d3c2861f1afda8d6da7",
+  "stage": "narration_join",
+  "status": "ok"
+ },
+ "780c01ba748870ba988f0e7d908626cfad3b306cfd4eada68d7226b395b6931d": {
+  "bytes": 974155,
+  "created": "2026-11-25T21:12:25.805+00:00",
+  "file": "780c01ba748870ba988f0e7d908626cfad3b306cfd4eada68d7226b395b6931d.jpg",
+  "kept": false,
+  "run_id": "20261125T211143Z-reference",
+  "sha256": "33080b89c203ab1654c806a67f92933bd19b6407b57ab42a517afcbe0bf4650d",
+  "stage": "reference",
+  "status": "ok"
+ },
  "789b0aa4480aaf801b4f6956da3f12828cb82fbcb5d3b910597329f1a042b80d": {
   "bytes": 1215167,
   "created": "2026-11-25T20:32:02.786+00:00",
@@ -284,6 +356,44 @@
   "run_id": "20261125T203158Z-radio",
   "sha256": "3ae8722559f802649e804f8257ff068c8d00fb02fb4ef662e31a825c1820a1fc",
   "stage": "radio",
+  "status": "ok"
+ },
+ "7945f986914fc96d9addc45d59ff7ff5c6d76e2fc7b7867f96d7f51bde3ba07b": {
+  "bytes": 955420,
+  "created": "2026-11-25T21:12:11.879+00:00",
+  "file": "7945f986914fc96d9addc45d59ff7ff5c6d76e2fc7b7867f96d7f51bde3ba07b.jpg",
+  "kept": false,
+  "run_id": "20261125T211143Z-reference",
+  "sha256": "97a0cfc1c02a9939b1f5ce7756b7a9e3f8a50467751418430b3f9cc2dd7b5b4e",
+  "stage": "reference",
+  "status": "ok"
+ },
+ "7f327ef62ab00d78e67257ad1d0abdcc2711db5e91d5ceef282689d23fbc36a0": {
+  "batch_key": "1c09fd9d137b6f83",
+  "bytes": 321680,
+  "created": "2026-11-25T21:14:30.717+00:00",
+  "duration_s": 6.701,
+  "file": "7f327ef62ab00d78e67257ad1d0abdcc2711db5e91d5ceef282689d23fbc36a0.wav",
+  "kept": true,
+  "match_score": 1.0,
+  "mode": "batch",
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "b46384eed265f4320cab11c486c5d9c7ce6156b1a7b72b20c9321db5e62e59d5",
+  "stage": "narration",
+  "status": "ok"
+ },
+ "84cd0679555cfb68cf5207ce3f83d4230c1067207343f301709ca830bdf29169": {
+  "batch_key": "1c09fd9d137b6f83",
+  "bytes": 267926,
+  "created": "2026-11-25T21:14:30.720+00:00",
+  "duration_s": 5.581,
+  "file": "84cd0679555cfb68cf5207ce3f83d4230c1067207343f301709ca830bdf29169.wav",
+  "kept": true,
+  "match_score": 1.0,
+  "mode": "batch",
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "b59cebbf4b61f8ef9de4cb5622217656c492df10a34927d4b9d467298f732304",
+  "stage": "narration",
   "status": "ok"
  },
  "87813b5879f0852de98ac55877d0556964ff9aff6a428529bbc10f601cd64f2a": {
@@ -330,6 +440,16 @@
   "stage": "narration_join",
   "status": "ok"
  },
+ "98395207f9a141d1c0e71b8aaefae9e61ab15d36d7dbfdc5653b62f74379f5ea": {
+  "bytes": 277836,
+  "created": "2026-11-25T21:13:20.822+00:00",
+  "file": "98395207f9a141d1c0e71b8aaefae9e61ab15d36d7dbfdc5653b62f74379f5ea.jpg",
+  "kept": false,
+  "run_id": "20261125T211143Z-reference",
+  "sha256": "b6e7e9ff65959d0bf9c0a2560a87f2b080e9886f35b95dc0f9f060c19a5b4abf",
+  "stage": "reference",
+  "status": "ok"
+ },
  "99e264fbe046ac8f5a078673e5b193ac1135602fb23ec1ece28edae4aa981599": {
   "batch_key": "37f977722eff6c85",
   "bytes": 170756,
@@ -341,6 +461,20 @@
   "mode": "batch",
   "run_id": "20261125T203110Z-narration",
   "sha256": "0a6a899cd7810bd0a404b4cc037cd9fef4554190282e8470322b6abe3847a785",
+  "stage": "narration",
+  "status": "ok"
+ },
+ "a4d7e6ae7d3f6a4310c5b71cb0f1c91c07272128fc2c1abd6f919e5db8bdbec8": {
+  "batch_key": "1c09fd9d137b6f83",
+  "bytes": 204286,
+  "created": "2026-11-25T21:14:30.715+00:00",
+  "duration_s": 4.255,
+  "file": "a4d7e6ae7d3f6a4310c5b71cb0f1c91c07272128fc2c1abd6f919e5db8bdbec8.wav",
+  "kept": true,
+  "match_score": 1.0,
+  "mode": "batch",
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "7de97d79313eb9ed070ebf19f215d6727213dd61cdad52eb7beafd4db98c9086",
   "stage": "narration",
   "status": "ok"
  },
@@ -356,6 +490,37 @@
   "run_id": "20261125T203110Z-narration",
   "sha256": "fe911e42a58c2b7654d4f713dccad951a9cb1040f59bd33f6e2f2cbfab0813bb",
   "stage": "narration",
+  "status": "ok"
+ },
+ "b87b6a52cede4da989dc5dd02cc52c904f0e37fdf22b874637a1f9951f04af3c": {
+  "bytes": 1227752,
+  "created": "2026-11-25T21:17:53.250+00:00",
+  "duration_s": 71.9167,
+  "file": "b87b6a52cede4da989dc5dd02cc52c904f0e37fdf22b874637a1f9951f04af3c.mp4",
+  "kept": true,
+  "run_id": "20261125T211749Z-radio-nonames",
+  "sha256": "abe949f141aa930036d894d32dbcdfcde8cdaa2747a81c274f6ce990c7f6d9c6",
+  "stage": "radio",
+  "status": "ok"
+ },
+ "bd8c59400be8bbda733346e9d977a47a4b954d75f2f280d8b6af38a46b2c21ad": {
+  "bytes": 384950,
+  "created": "2026-11-25T21:14:30.748+00:00",
+  "file": "bd8c59400be8bbda733346e9d977a47a4b954d75f2f280d8b6af38a46b2c21ad.wav",
+  "kept": true,
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "a61d3d1dcbaac70330e6a2d81b96c08a3fe09107e05d97c61d715d73d579c78d",
+  "stage": "narration_join",
+  "status": "ok"
+ },
+ "bff54645c6673256d8c10d360d10bdabdee41f22eadeaa12132223ee783c0e3e": {
+  "bytes": 1086030,
+  "created": "2026-11-25T21:12:41.752+00:00",
+  "file": "bff54645c6673256d8c10d360d10bdabdee41f22eadeaa12132223ee783c0e3e.jpg",
+  "kept": false,
+  "run_id": "20261125T211143Z-reference",
+  "sha256": "a79548babddc38c08b39abef812ff8a4875cb3805ba7f57dabc7a922eea45949",
+  "stage": "reference",
   "status": "ok"
  },
  "c1c2a8e6043fff19f8b8c3ce318a7a41792f36ff513150d4a18246d0710fbc8f": {
@@ -382,6 +547,16 @@
   "run_id": "20261125T203213Z-nonames",
   "sha256": "df8c0e8a92fd0094d8d6624e3afc51f47dab567ed5efbd21cebae32a90d707dc",
   "stage": "narration",
+  "status": "ok"
+ },
+ "d0c14c0a0adc8856b8b9c6e4f1b4f361dc7f7ec6b6f7df33ae310dc9a19deebc": {
+  "bytes": 353266,
+  "created": "2026-11-25T21:12:56.195+00:00",
+  "file": "d0c14c0a0adc8856b8b9c6e4f1b4f361dc7f7ec6b6f7df33ae310dc9a19deebc.jpg",
+  "kept": false,
+  "run_id": "20261125T211143Z-reference",
+  "sha256": "400b92cdbd20ddfe2fbcab89b445b20180b199b84ee1e9dc68e0e7eb169576dc",
+  "stage": "reference",
   "status": "ok"
  },
  "d3351a9896b978595053c1cfdb60dfb98df7e532d5e9821099f44555f4851369": {
@@ -418,6 +593,16 @@
   "stage": "reference",
   "status": "ok"
  },
+ "d87b924ceab50c9e3bbe91c7e67fbc1589e2fde6211063a0aa11915bbd0bbc86": {
+  "bytes": 267926,
+  "created": "2026-11-25T21:14:30.744+00:00",
+  "file": "d87b924ceab50c9e3bbe91c7e67fbc1589e2fde6211063a0aa11915bbd0bbc86.wav",
+  "kept": true,
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "b59cebbf4b61f8ef9de4cb5622217656c492df10a34927d4b9d467298f732304",
+  "stage": "narration_join",
+  "status": "ok"
+ },
  "d89ce7516d46ac25921b27fd45ce6a2914e028cc7790edb39a235acfbbb5a2c4": {
   "bytes": 197498,
   "created": "2026-11-25T20:31:41.658+00:00",
@@ -426,6 +611,26 @@
   "run_id": "20261125T203110Z-narration",
   "sha256": "92a90e4701421fca0b5b6c9e02a2632da84afe38dd195678819a3330ed4a2649",
   "stage": "narration_join",
+  "status": "ok"
+ },
+ "db7984c8607bac1846d4686f4c910ba4b71f67fb0c332a5db5ae66c3814815aa": {
+  "bytes": 399700,
+  "created": "2026-11-25T21:13:35.963+00:00",
+  "file": "db7984c8607bac1846d4686f4c910ba4b71f67fb0c332a5db5ae66c3814815aa.jpg",
+  "kept": false,
+  "run_id": "20261125T211143Z-reference",
+  "sha256": "d25afcd4ee78c4d3a0f26030d6d12bab1537c32db697de9474ed068f1ccfa835",
+  "stage": "reference",
+  "status": "ok"
+ },
+ "ddc128759d271091b8cb89d458433c266d604ea90523f61a38e01802672fbd36": {
+  "bytes": 342455,
+  "created": "2026-11-25T21:13:08.452+00:00",
+  "file": "ddc128759d271091b8cb89d458433c266d604ea90523f61a38e01802672fbd36.jpg",
+  "kept": false,
+  "run_id": "20261125T211143Z-reference",
+  "sha256": "0230c6d049e55413008eb28b64041fb2f3cca5a00a8b598ada5a5fb6de875bb6",
+  "stage": "reference",
   "status": "ok"
  },
  "e130dfad19a691850de9e61926dd0734e8573de28602237fb0c21e3b29244697": {
@@ -479,6 +684,20 @@
   "stage": "narration_join",
   "status": "ok"
  },
+ "f2c4e3b298622c7af94b6bc83ce12ad42c99de1649e2b4ea8acab13806ab8ef3": {
+  "batch_key": "1c09fd9d137b6f83",
+  "bytes": 384950,
+  "created": "2026-11-25T21:14:30.721+00:00",
+  "duration_s": 8.019,
+  "file": "f2c4e3b298622c7af94b6bc83ce12ad42c99de1649e2b4ea8acab13806ab8ef3.wav",
+  "kept": true,
+  "match_score": 1.0,
+  "mode": "batch",
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "a61d3d1dcbaac70330e6a2d81b96c08a3fe09107e05d97c61d715d73d579c78d",
+  "stage": "narration",
+  "status": "ok"
+ },
  "f8dfc89e819f0df4169402320ef275cd8764263648d19f87ec8e3d88af76eb4d": {
   "bytes": 338362,
   "created": "2026-11-25T20:18:26.333+00:00",
@@ -499,6 +718,26 @@
   "stage": "reference",
   "status": "ok"
  },
+ "f959f19229ac886a386f3d2c917b1c8ec38d57fc0a5fb0717e7ba7308a435818": {
+  "bytes": 197740,
+  "created": "2026-11-25T21:14:30.732+00:00",
+  "file": "f959f19229ac886a386f3d2c917b1c8ec38d57fc0a5fb0717e7ba7308a435818.wav",
+  "kept": true,
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "be9822bacf310e5c22850e87446e32a2feb0805e4eda0732c416020d8e736dab",
+  "stage": "narration_join",
+  "status": "ok"
+ },
+ "f97c17722ab778877e939fa5b072ec1f321049a69b36649c036af43e6a9192ed": {
+  "bytes": 1098475,
+  "created": "2026-11-25T21:11:58.774+00:00",
+  "file": "f97c17722ab778877e939fa5b072ec1f321049a69b36649c036af43e6a9192ed.jpg",
+  "kept": false,
+  "run_id": "20261125T211143Z-reference",
+  "sha256": "05784d9af5666a6e6b876565833482da48008ae8a8f91ca2f8c802c283444225",
+  "stage": "reference",
+  "status": "ok"
+ },
  "fac39c8e39b5276fed80cf9efa5e1cf0af51c2ce23bbc65c67001b7e09b2a663": {
   "bytes": 709874,
   "created": "2026-11-25T20:18:04.049+00:00",
@@ -507,6 +746,31 @@
   "run_id": "20261125T201658Z-reference",
   "sha256": "93b9ab05462b8cd7ae9b823cc8c415630a8bb3beeed3f313cc48e616c878ca1e",
   "stage": "reference",
+  "status": "ok"
+ },
+ "faf40964d5d33270af10e52378c0ccf6b51411cf3bdab00f1219258238c777d4": {
+  "bytes": 1248117,
+  "created": "2026-11-25T21:17:49.140+00:00",
+  "duration_s": 73.0,
+  "file": "faf40964d5d33270af10e52378c0ccf6b51411cf3bdab00f1219258238c777d4.mp4",
+  "kept": true,
+  "run_id": "20261125T211744Z-radio",
+  "sha256": "5afaeee6d197de379fe03ec31e1bd791944f7811d66a9461c9826a900af32cb0",
+  "stage": "radio",
+  "status": "ok"
+ },
+ "fe3e90381f802c5fd7a768bdef0608921949817fd5d04552a275fdb9ca6ed83f": {
+  "batch_key": "1c09fd9d137b6f83",
+  "bytes": 197740,
+  "created": "2026-11-25T21:14:30.716+00:00",
+  "duration_s": 4.119,
+  "file": "fe3e90381f802c5fd7a768bdef0608921949817fd5d04552a275fdb9ca6ed83f.wav",
+  "kept": true,
+  "match_score": 1.0,
+  "mode": "batch",
+  "run_id": "20261125T211356Z-narration-geez",
+  "sha256": "be9822bacf310e5c22850e87446e32a2feb0805e4eda0732c416020d8e736dab",
+  "stage": "narration",
   "status": "ok"
  }
 }

@@ -104,7 +104,8 @@
               "required": ["speaker", "text"],
               "properties": {
                 "speaker": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
-                "text": {"type": "string", "minLength": 1},
+                "text": {"type": "string", "minLength": 1, "description": "The line as written (subtitles, reasons, notes)."},
+                "tts_text": {"type": "string", "minLength": 1, "description": "Optional spoken text sent to TTS, e.g. Amharic words in Ge'ez script inside the English sentence for correct pronunciation. Default: text."},
                 "subtitle_en": {"type": "string", "minLength": 1, "description": "Optional subtitle override; default is the line text."}
               }
             }

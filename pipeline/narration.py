@@ -221,13 +221,40 @@ def transcribe(ctx: c.Ctx, wav: Path) -> list[tuple[str, float, float]]:
     return [(w.word.strip(), w.start, w.end) for seg in segs for w in seg.words]
 
 
+GEEZ = re.compile(r"[\u1200-\u137F\u1380-\u139F\u2D80-\u2DDF]")  # Ethiopic script blocks
+SLOT = "\x00"  # placeholder for a Ge'ez word: what whisper (English) hears there is not held against the line
+
+
 def tokens(text: str) -> list[str]:
     return re.findall(r"[a-z0-9']+", re.sub(r"<[^>]+>", " ", text).lower().replace("\u2019", "'"))
 
 
+def slot_tokens(text: str) -> list[str]:
+    """Tokens of the spoken text with every Ge'ez word replaced by SLOT."""
+    out = []
+    for w in re.sub(r"<[^>]+>", " ", text).split():
+        out += [SLOT] if GEEZ.search(w) else tokens(w)
+    return out
+
+
 def match_score(expected: str, heard: str) -> float:
-    """Character-level similarity of the normalised texts (robust to spelling of unusual names)."""
-    return round(difflib.SequenceMatcher(None, " ".join(tokens(expected)), " ".join(tokens(heard))).ratio(), 3)
+    """How well a transcript matches the spoken line, 0..1 (F-measure over words, order-aware).
+
+    Heard words that are near-misses of an expected word (character ratio >= 0.75, e.g. "Nolawe") count as that
+    word; up to 2 heard words in the place of each Ge'ez word are ignored (an English model cannot spell them)."""
+    exp, got = slot_tokens(expected), tokens(heard)
+    vocab = [t for t in exp if t != SLOT]
+    got = [t if t in vocab else max(vocab, key=lambda v: difflib.SequenceMatcher(None, t, v).ratio(), default=t)
+           if vocab and max(difflib.SequenceMatcher(None, t, v).ratio() for v in vocab) >= 0.75 else t for t in got]
+    sm = difflib.SequenceMatcher(None, exp, got, autojunk=False)
+    matched = bad = 0
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag == "equal":
+            matched += i2 - i1
+            continue
+        slots = exp[i1:i2].count(SLOT)
+        bad += (i2 - i1 - slots) + max(0, (j2 - j1) - 2 * slots)
+    return round(matched / (matched + bad), 3) if matched + bad else 1.0
 
 
 def align_split(ctx: c.Ctx, wav: Path, texts: list[str]) -> tuple[list[bytes | None], list[dict]]:
@@ -290,15 +317,17 @@ def align_split(ctx: c.Ctx, wav: Path, texts: list[str]) -> tuple[list[bytes | N
 
 # ---------------------------------------------------------------- items -----
 def items(ctx: c.Ctx) -> list[dict]:
+    """One item per line. "text" here is what is SPOKEN (tts_text if set, else text); subtitles use the line's text."""
     model = c.model_cfg(ctx, "gemini_tts")["id"]
     out = []
     for shot in ctx.sb["shots"]:
         for n, line in enumerate(shot["lines"], 1):
             v = ctx.sb["narration"]["voices"][line["speaker"]]
             params = {"voice": v["voice"], "style": v["style_instruction"]}
+            spoken = line.get("tts_text", line["text"])
             out.append({"id": f"{shot['id']}_{n}", "shot": shot["id"], "seed": shot["seed"], "speaker": line["speaker"],
-                        "text": line["text"], "voice": v["voice"], "style": v["style_instruction"], "params": params,
-                        "key": c.Cache.key("narration", model, params, line["text"], shot["seed"])})
+                        "text": spoken, "voice": v["voice"], "style": v["style_instruction"], "params": params,
+                        "key": c.Cache.key("narration", model, params, spoken, shot["seed"])})
     return out
 
 
@@ -412,7 +441,8 @@ def run(ctx: c.Ctx, use_batch: bool = True) -> dict:
             keep.add(name)
             line_paths.append(obj)
             line = shot["lines"][int(it["id"].rsplit("_", 1)[1]) - 1]
-            lines_tl.append({"speaker": line["speaker"], "text": line["text"], "subtitle": line.get("subtitle_en", line["text"]),
+            lines_tl.append({"speaker": line["speaker"], "text": line["text"], "spoken": it["text"],
+                             "subtitle": line.get("subtitle_en", line["text"]),
                              "wav": f"narration/{name}", "sha256": ctx.cache.sha(it["key"]), "dur": _dur(obj)})
         narr = 0.0
         if line_paths:  # joined shot narration (derived, cached by its inputs)

@@ -26,7 +26,7 @@ def cue_params(ctx: c.Ctx, cue: dict) -> dict:
     m = c.model_cfg(ctx, "music")
     return {"bpm": cue["bpm"], "keyscale": cue["key"], "timesignature": m["timesignature"],
             "duration_s": cue["duration_s"], "instrumental": cue["instrumental"], "steps": m["steps"],
-            "shift": m["shift"], "dtype": m["dtype"]}
+            "shift": m["shift"], "dtype": m["dtype"], "mode": m.get("mode", "gpu-mixed")}
 
 
 def caption(ctx: c.Ctx, cue: dict, n: int) -> str:
@@ -65,14 +65,16 @@ def run(ctx: c.Ctx) -> None:
     if pending:
         jobs = [{"id": f"{cue['id']}_c{n}", "key": key, "caption": caption(ctx, cue, n), "seed": cue.get("seed", 7) + n - 1,
                  **cue_params(ctx, cue)} for cue, n, key in pending]
-        res = kaggle_job.run("music", NOTEBOOK, jobs, {"model": m["id"]}, ctx.models)
-        kaggle_job.log_session("music", m["id"], res)
+        gpu = m.get("mode", "gpu-mixed") != "cpu"
+        res = kaggle_job.run("music", NOTEBOOK, jobs, {"model": m["id"], "mode": m.get("mode", "gpu-mixed")}, ctx.models, gpu=gpu)
+        kaggle_job.log_session("music", m["id"], res, gpu=gpu)
         for ln in res["lines"]:
             if ln.get("id"):
                 job = next(j for j in jobs if j["id"] == ln["id"])
                 c.log_call("music", "kaggle", m["id"], shot_id=ln["id"], seed=ln.get("seed"),
                            params={"prompt": job["caption"], **{k: job[k] for k in ("bpm", "keyscale", "duration_s", "instrumental", "steps")}},
-                           gpu_seconds=ln.get("gpu_seconds", 0), latency_ms=ln.get("gpu_seconds", 0) * 1000,
+                           gpu_seconds=ln.get("gpu_seconds", 0),
+                           latency_ms=(ln.get("gpu_seconds", 0) or ln.get("cpu_seconds", 0)) * 1000,
                            list_price_usd=c.list_price("kaggle_t4", gpu_seconds=ln.get("gpu_seconds", 0)),
                            status=ln.get("status", "error"), attempt=ln.get("attempt", 1), error=ln.get("error"))
         failed = []

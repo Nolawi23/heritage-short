@@ -1,7 +1,7 @@
 {
   "storyboard": "storyboard.json",
   "fps": 24,
-  "total_s": 71.2083,
+  "total_s": 73.0,
   "shots": [
     {
       "id": "shot-01-bedroom",
@@ -14,6 +14,7 @@
         {
           "speaker": "MOM",
           "text": "Nolawi! Delina! Come down here!",
+          "spoken": "Nolawi! Delina! Come down here!",
           "subtitle": "Nolawi! Delina! Come down here!",
           "wav": "narration/shot-01-bedroom_1.wav",
           "sha256": "ec588ac7039d614a5bc24039ae0c973dd0d32651343b88fd84cccb919e772151",
@@ -23,6 +24,7 @@
         {
           "speaker": "NARRATOR",
           "text": "Every Sunday morning, it starts the same way: my mom's voice, from downstairs.",
+          "spoken": "Every Sunday morning, it starts the same way: my mom's voice, from downstairs.",
           "subtitle": "Every Sunday morning, it starts the same way: my mom's voice, from downstairs.",
           "wav": "narration/shot-01-bedroom_2.wav",
           "sha256": "bb9f100a08ac9e0020ae71f419069f68a3cfcabb966110d7b84837faaf8c828b",
@@ -42,6 +44,7 @@
         {
           "speaker": "NARRATOR",
           "text": "Whatever the week was, we come down.",
+          "spoken": "Whatever the week was, we come down.",
           "subtitle": "Whatever the week was, we come down.",
           "wav": "narration/shot-02-staircase_1.wav",
           "sha256": "bf28e1b7edef5a3024a3b5d028aafc4630d61d8f7c529091e3108f77a89c609e",
@@ -55,12 +58,13 @@
       "start_s": 14.208,
       "duration_s": 5.0,
       "narration_s": 2.182,
-      "motion": "kenburns",
+      "motion": "wan",
       "music_cue": "ethiopian-acoustic",
       "lines": [
         {
           "speaker": "NARRATOR",
           "text": "Downstairs, the coffee has already begun.",
+          "spoken": "Downstairs, the coffee has already begun.",
           "subtitle": "Downstairs, the coffee has already begun.",
           "wav": "narration/shot-03-washing-beans_1.wav",
           "sha256": "94d4307737310dfb0745a137538399bf2a2eec3960ac2e7f3bb24649e035e1c6",
@@ -74,12 +78,13 @@
       "start_s": 19.208,
       "duration_s": 6.0,
       "narration_s": 4.09,
-      "motion": "kenburns",
+      "motion": "wan",
       "music_cue": "ethiopian-acoustic",
       "lines": [
         {
           "speaker": "NARRATOR",
           "text": "The beans crackle in the pan, and the smell climbs the stairs before we do.",
+          "spoken": "The beans crackle in the pan, and the smell climbs the stairs before we do.",
           "subtitle": "The beans crackle in the pan, and the smell climbs the stairs before we do.",
           "wav": "narration/shot-04-roasting-beans_1.wav",
           "sha256": "486003561abf8d730d42c170b2cd39006c66e5a71858454046af56e2e5f0ec9b",
@@ -92,18 +97,19 @@
       "id": "shot-05-jebena-etan",
       "start_s": 25.208,
       "duration_s": 5.5,
-      "narration_s": 3.557,
-      "motion": "kenburns",
+      "narration_s": 4.255,
+      "motion": "wan",
       "music_cue": "ethiopian-acoustic",
       "lines": [
         {
           "speaker": "NARRATOR",
           "text": "Etan smoke curls through the room. Nobody is in a hurry.",
+          "spoken": "ዕጣን smoke curls through the room. Nobody is in a hurry.",
           "subtitle": "Etan smoke curls through the room. Nobody is in a hurry.",
           "wav": "narration/shot-05-jebena-etan_1.wav",
-          "sha256": "0a6a899cd7810bd0a404b4cc037cd9fef4554190282e8470322b6abe3847a785",
+          "sha256": "7de97d79313eb9ed070ebf19f215d6727213dd61cdad52eb7beafd4db98c9086",
           "start_s": 25.458,
-          "end_s": 29.015
+          "end_s": 29.713
         }
       ]
     },
@@ -111,81 +117,85 @@
       "id": "shot-06-popcorn-table",
       "start_s": 30.708,
       "duration_s": 5.0,
-      "narration_s": 4.114,
+      "narration_s": 4.119,
       "motion": "kenburns",
       "music_cue": "ethiopian-acoustic",
       "lines": [
         {
           "speaker": "NARRATOR",
           "text": "There's popcorn, sometimes kolo, and a lot of noise.",
+          "spoken": "There's popcorn, sometimes ቆሎ, and a lot of noise.",
           "subtitle": "There's popcorn, sometimes kolo, and a lot of noise.",
           "wav": "narration/shot-06-popcorn-table_1.wav",
-          "sha256": "92a90e4701421fca0b5b6c9e02a2632da84afe38dd195678819a3330ed4a2649",
+          "sha256": "be9822bacf310e5c22850e87446e32a2feb0805e4eda0732c416020d8e736dab",
           "start_s": 30.958,
-          "end_s": 35.072
+          "end_s": 35.077
         }
       ]
     },
     {
       "id": "shot-07-abol-first-pour",
       "start_s": 35.708,
-      "duration_s": 6.9583,
-      "narration_s": 6.454,
+      "duration_s": 7.2083,
+      "narration_s": 6.701,
       "motion": "kenburns",
       "music_cue": "ethiopian-acoustic",
       "lines": [
         {
           "speaker": "NARRATOR",
           "text": "With the first cup, abol, we catch up on the week: school, tests, work.",
+          "spoken": "With the first cup, አቦል, we catch up on the week: school, tests, work.",
           "subtitle": "With the first cup, abol, we catch up on the week: school, tests, work.",
           "wav": "narration/shot-07-abol-first-pour_1.wav",
-          "sha256": "ff51a38c586bd153ccd47a98ad17ef9361bf9f481e348f28ebdd78b9cf390897",
+          "sha256": "b46384eed265f4320cab11c486c5d9c7ce6156b1a7b72b20c9321db5e62e59d5",
           "start_s": 35.958,
-          "end_s": 42.412
+          "end_s": 42.659
         }
       ]
     },
     {
       "id": "shot-08-tona-discussion",
-      "start_s": 42.667,
-      "duration_s": 6.5417,
-      "narration_s": 6.013,
+      "start_s": 42.917,
+      "duration_s": 6.9583,
+      "narration_s": 6.449,
       "motion": "kenburns",
       "music_cue": "ethiopian-acoustic",
       "lines": [
         {
           "speaker": "NARRATOR",
           "text": "With the second, tona, it's university applications, and everyone has an opinion.",
+          "spoken": "With the second, ቶና, it's university applications, and everyone has an opinion.",
           "subtitle": "With the second, tona, it's university applications, and everyone has an opinion.",
           "wav": "narration/shot-08-tona-discussion_1.wav",
-          "sha256": "fe911e42a58c2b7654d4f713dccad951a9cb1040f59bd33f6e2f2cbfab0813bb",
-          "start_s": 42.917,
-          "end_s": 48.93
+          "sha256": "f8d8c0d87345508a81fa54f29491efa9e6e2fce154568d3c2861f1afda8d6da7",
+          "start_s": 43.167,
+          "end_s": 49.616
         }
       ]
     },
     {
       "id": "shot-09-baraka-pour",
-      "start_s": 49.208,
-      "duration_s": 5.5,
-      "narration_s": 4.683,
-      "motion": "kenburns",
+      "start_s": 49.875,
+      "duration_s": 6.0833,
+      "narration_s": 5.581,
+      "motion": "wan",
       "music_cue": "ethiopian-acoustic",
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "The third cup is baraka, the blessing. The room gets quieter.",
-          "subtitle": "The third cup is baraka, the blessing. The room gets quieter.",
+          "text": "The third cup is bereka, the blessing. The room gets quieter.",
+          "spoken": "The third cup is በረካ, the blessing. The room gets quieter.",
+          "subtitle": "The third cup is bereka, the blessing. The room gets quieter.",
           "wav": "narration/shot-09-baraka-pour_1.wav",
-          "sha256": "a452360d2eebc145016f2432fe5e77aba23592a4dd7658421a602d45e1a8db17",
-          "start_s": 49.458,
-          "end_s": 54.141
+          "sha256": "b59cebbf4b61f8ef9de4cb5622217656c492df10a34927d4b9d467298f732304",
+          "start_s": 50.125,
+          "end_s": 55.706
         }
       ]
     },
     {
       "id": "shot-10-empty-cups",
-      "start_s": 54.708,
+      "start_s": 55.958,
       "duration_s": 6.0,
       "narration_s": 2.079,
       "motion": "kenburns",
@@ -194,43 +204,45 @@
         {
           "speaker": "NARRATOR",
           "text": "The coffee was never really the point.",
+          "spoken": "The coffee was never really the point.",
           "subtitle": "The coffee was never really the point.",
           "wav": "narration/shot-10-empty-cups_1.wav",
           "sha256": "c0655b10a8a5ab8b82ea0e0c1be08c796fef45aa5cb3d5b6cfa790ed4a642d5d",
-          "start_s": 54.958,
-          "end_s": 57.037
+          "start_s": 56.208,
+          "end_s": 58.287
         }
       ]
     },
     {
       "id": "shot-11-house-exterior",
-      "start_s": 60.708,
-      "duration_s": 8.0,
-      "narration_s": 7.27,
+      "start_s": 61.958,
+      "duration_s": 8.5417,
+      "narration_s": 8.019,
       "motion": "kenburns",
       "music_cue": "ethiopian-acoustic",
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "It's the one hour every week we're all in the same room. Next Sunday, she'll call again, and we'll come down.",
-          "subtitle": "It's the one hour every week we're all in the same room. Next Sunday, she'll call again, and we'll come down.",
+          "text": "It's the few hours every week we're all in the same room. Next Sunday, she'll call again, and we'll come down.",
+          "spoken": "It's the few hours every week we're all in the same room. Next Sunday, she'll call again, and we'll come down.",
+          "subtitle": "It's the few hours every week we're all in the same room. Next Sunday, she'll call again, and we'll come down.",
           "wav": "narration/shot-11-house-exterior_1.wav",
-          "sha256": "29bc626cdcab3e2634e04e2a0cb8ce02ea40519d455ee0767f94a29197bb4289",
-          "start_s": 60.958,
-          "end_s": 68.228
+          "sha256": "a61d3d1dcbaac70330e6a2d81b96c08a3fe09107e05d97c61d715d73d579c78d",
+          "start_s": 62.208,
+          "end_s": 70.227
         }
       ]
     }
   ],
   "end_card": {
-    "start_s": 68.7083,
+    "start_s": 70.5,
     "duration_s": 2.5
   },
   "music_spans": [
     {
       "cue": "ethiopian-acoustic",
       "start_s": 0.0,
-      "end_s": 71.2083
+      "end_s": 73.0
     }
   ]
 }
