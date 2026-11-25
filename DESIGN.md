@@ -34,6 +34,13 @@ At the end they feel seen and grateful: this ordinary Sunday ritual is what keep
   Ge'ez script inside the English sentence (`tts_text`), subtitles keep the Latin spelling, "baraka" became "bereka"
   (EXPERIMENTS.md, Latin vs Ge'ez).
 - **2026-11-25 - Narrator voice.** Achird over Charon (EXPERIMENTS.md).
+- **2026-11-25 - Music: candidate 2.** "c2 is calmer; c1 might clash with the narration, c2 sits under the voice."
+  Pinned as `music_cues[0].selected = 2` (MusicGen, tizita caption, seed 43), so assembly always uses it. Mix check:
+  ducking pulls the music down 7-13 dB under speech and keeps the voice 8-20 dB on top for lines 2-12, but MOM's opening
+  call (short, filtered for the "downstairs" effect, at 0.25 s before the compressor engages) measured 2 dB *below*
+  the music; a fix is proposed to the author.
+- **2026-11-25 - "Etan" stays in Latin spelling.** After the single-word Ge'ez test the author kept the original Latin
+  take (no TTS request; EXPERIMENTS.md).
 
 ## User tests
 

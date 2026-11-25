@@ -1,4 +1,14 @@
 {
+ "01285c973996887d6e6554243761e82baca9801528f5cf60762395f6935fa2e7": {
+  "bytes": 1116534,
+  "created": "2026-11-25T22:48:50.454+00:00",
+  "file": "01285c973996887d6e6554243761e82baca9801528f5cf60762395f6935fa2e7.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "f8c4147d7069430e6f31280dbe9e24cb9674e0af9eeda50a4028c42a4d417672",
+  "stage": "keyframes",
+  "status": "ok"
+ },
  "02b0086e12a44c1016d80261c5211ce2ad0898aa883787ed9efb05a961b4b42e": {
   "batch_key": "37f977722eff6c85",
   "bytes": 224834,
@@ -35,6 +45,26 @@
   "run_id": "20261125T211356Z-narration-geez",
   "sha256": "b46384eed265f4320cab11c486c5d9c7ce6156b1a7b72b20c9321db5e62e59d5",
   "stage": "narration_join",
+  "status": "ok"
+ },
+ "077f9f171bfb6e288b76b4d5fc73903764b4e46cb1678246b8abf7a22832214b": {
+  "bytes": 1397615,
+  "created": "2026-11-25T22:50:12.694+00:00",
+  "file": "077f9f171bfb6e288b76b4d5fc73903764b4e46cb1678246b8abf7a22832214b.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "a264d103d5aa29d607c81b354bd08f8dae82305b07aaf48986441056cbad58a7",
+  "stage": "keyframes",
+  "status": "ok"
+ },
+ "09418741b31858d2ac3e8f7e6e682eb0b51a7d2868d126d86d01358533eceabb": {
+  "bytes": 1223469,
+  "created": "2026-11-25T22:50:26.849+00:00",
+  "file": "09418741b31858d2ac3e8f7e6e682eb0b51a7d2868d126d86d01358533eceabb.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "c921de8eaec6457536e17d621bdf7a8a062bbc40e8fd43220d3b3eff2e1a9532",
+  "stage": "keyframes",
   "status": "ok"
  },
  "0c2a321751285d703a9b21134b10cecae142f5d0c8bf20084e4fcf921fdd5305": {
@@ -108,6 +138,16 @@
   "run_id": "20261125T211356Z-narration-geez",
   "sha256": "7de97d79313eb9ed070ebf19f215d6727213dd61cdad52eb7beafd4db98c9086",
   "stage": "narration_join",
+  "status": "ok"
+ },
+ "20ef86f0b14985830415245b3c79b03afb9635c993f6e75bdaeff5781613f862": {
+  "bytes": 1048895,
+  "created": "2026-11-25T22:47:14.681+00:00",
+  "file": "20ef86f0b14985830415245b3c79b03afb9635c993f6e75bdaeff5781613f862.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "bd741919c6031a5efbe0637cff1cd3e77cf795377990e92ec70243ecf94626a7",
+  "stage": "keyframes",
   "status": "ok"
  },
  "212e08fe4fcbcabf6ff8150126c519204e07e57153df48c03aacd73bc36e325a": {
@@ -222,6 +262,16 @@
    "Achird"
   ]
  },
+ "36eaaeade05bbac26d2d7f556eb9ab8e64433cd17a72fb0a6514482acbdcb6fc": {
+  "bytes": 866308,
+  "created": "2026-11-25T22:46:48.262+00:00",
+  "file": "36eaaeade05bbac26d2d7f556eb9ab8e64433cd17a72fb0a6514482acbdcb6fc.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "e3bd372a26e78eee6eb7f93406ddb97935cf2b21abf202bbaa7b7599660c96e8",
+  "stage": "keyframes",
+  "status": "ok"
+ },
  "37f977722eff6c858b1fcead0b16ae5c1a5fcf9aa102c0b1477008fd2736a8c0": {
   "bytes": 3233324,
   "created": "2026-11-25T20:21:22.696+00:00",
@@ -255,6 +305,16 @@
   "run_id": "20261125T203110Z-narration",
   "sha256": "a452360d2eebc145016f2432fe5e77aba23592a4dd7658421a602d45e1a8db17",
   "stage": "narration_join",
+  "status": "ok"
+ },
+ "3a8d4f5b16a43d3c7d280e2912ce90543c26150c23287c3a9c9cd2bfd95c5071": {
+  "bytes": 1011404,
+  "created": "2026-11-25T22:47:37.638+00:00",
+  "file": "3a8d4f5b16a43d3c7d280e2912ce90543c26150c23287c3a9c9cd2bfd95c5071.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "91a36402979cd5f85f6fd884a8f9e6999556db9e1262a07181511f665686bcb7",
+  "stage": "keyframes",
   "status": "ok"
  },
  "408bdbe36969f58634d9e593e85ff6bf74b88ed9f91855f0a921387043155931": {
@@ -315,7 +375,7 @@
   "created": "2026-11-25T21:46:03.571+00:00",
   "duration_s": 34.94,
   "file": "4d1d8e63048284d0430a0a1b64b605df217decd6ebaa497ee637c0243c29f303.wav",
-  "kept": false,
+  "kept": true,
   "run_id": "20261125T213619Z-music-musicgen",
   "sha256": "2bab09c9b1b51eb22b394d68d2d81105d5164da67c6d569571a8e70f4e642b2d",
   "stage": "music",
@@ -329,6 +389,16 @@
   "run_id": "recovered",
   "sha256": "2db2f471fe453f05e220f14142c941b20ad64006dafeca8c750a2cf9ba37089a",
   "stage": "voice_test",
+  "status": "ok"
+ },
+ "59af28d6b30f84f72b875f3e19c7866122d445984a863c984407d86651dfaf0f": {
+  "bytes": 1161951,
+  "created": "2026-11-25T22:48:03.575+00:00",
+  "file": "59af28d6b30f84f72b875f3e19c7866122d445984a863c984407d86651dfaf0f.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "50000c838e62de492d308b51da039577c964bbce61ee011fdbcfc7961bbe7d0a",
+  "stage": "keyframes",
   "status": "ok"
  },
  "5cca03e209389df3d069c0bb876c35958bf8729cb6d346dd965723f22658df1f": {
@@ -361,6 +431,26 @@
   "stage": "voice_test",
   "status": "ok"
  },
+ "6bb5a88ab36cdb5bc2518186ef32c02cfe55bf9b4c4da9809826c93179d52bab": {
+  "bytes": 952381,
+  "created": "2026-11-25T22:46:38.170+00:00",
+  "file": "6bb5a88ab36cdb5bc2518186ef32c02cfe55bf9b4c4da9809826c93179d52bab.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "e77dffd9bd3fb4176bea9e4e592a06f37465d3c548d2e478c8af9a1b9a87c33d",
+  "stage": "keyframes",
+  "status": "ok"
+ },
+ "6d8efe94a195954fc6f03fa176bddec158cc10fee17c37faab57298fca7ce1f5": {
+  "bytes": 956278,
+  "created": "2026-11-25T22:49:20.638+00:00",
+  "file": "6d8efe94a195954fc6f03fa176bddec158cc10fee17c37faab57298fca7ce1f5.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "e3b2fde196a444e62a700ed774f3da11f876adc0ea00a09c65c7a74ba6973212",
+  "stage": "keyframes",
+  "status": "ok"
+ },
  "6e32415f0b758d7143b78e3fa1080a79732d27d6492c3ab418e22cba81a8f352": {
   "batch_key": "37f977722eff6c85",
   "bytes": 196346,
@@ -373,6 +463,16 @@
   "run_id": "20261125T203110Z-narration",
   "sha256": "486003561abf8d730d42c170b2cd39006c66e5a71858454046af56e2e5f0ec9b",
   "stage": "narration",
+  "status": "ok"
+ },
+ "71c3bdfc2204c33f5099beedf8ab6a87e0e8ee42a4995c1f45f5471f2623e47e": {
+  "bytes": 1240869,
+  "created": "2026-11-25T22:48:35.549+00:00",
+  "file": "71c3bdfc2204c33f5099beedf8ab6a87e0e8ee42a4995c1f45f5471f2623e47e.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "aa1d1178ce069c7ee51bf69f45ba7fb7f138270a14a90f8d286fc743045549d4",
+  "stage": "keyframes",
   "status": "ok"
  },
  "74d899ee9bbb119b14afd1094c893627de0662fda1c086abb10e3ca3a80855ca": {
@@ -494,6 +594,16 @@
   "stage": "narration",
   "status": "ok"
  },
+ "8a7228a50ffeb08a7f7ae224ad39251385fdf3500d79520ea12718157447c256": {
+  "bytes": 1182336,
+  "created": "2026-11-25T22:49:07.608+00:00",
+  "file": "8a7228a50ffeb08a7f7ae224ad39251385fdf3500d79520ea12718157447c256.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "4549315e702e2aa9b5373017272123a6bc9abcbd4a36cf6f6a24b0313f3077db",
+  "stage": "keyframes",
+  "status": "ok"
+ },
  "8fd68e8dca7c80dbbecf3ab5d12130db76c320f1120682b46f067f392c2eec7e": {
   "bytes": 525308,
   "created": "2026-11-25T20:17:42.446+00:00",
@@ -596,6 +706,36 @@
   "stage": "keyframes",
   "status": "ok"
  },
+ "a7448e9c6c66e7ef3f9e3f932efc5359cf9b30e5ac89347bf6fd4387b905289a": {
+  "bytes": 638713,
+  "created": "2026-11-25T22:46:54.211+00:00",
+  "file": "a7448e9c6c66e7ef3f9e3f932efc5359cf9b30e5ac89347bf6fd4387b905289a.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "4f5c8396447a8b7912b64f2cc1402955ef86a065eb36bda6eeb66803a502c9c2",
+  "stage": "keyframes",
+  "status": "ok"
+ },
+ "af7e3f5497ef3f27a03082fa25bc89bd7ab261ad42b4918f2a2e3acd9c8ea2af": {
+  "bytes": 927892,
+  "created": "2026-11-25T22:46:30.568+00:00",
+  "file": "af7e3f5497ef3f27a03082fa25bc89bd7ab261ad42b4918f2a2e3acd9c8ea2af.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "f7c9c1c2f66f80ac69d46b69bc5bc5fe7187eb0c68e58e3ec4619c4a2b4a0ebb",
+  "stage": "keyframes",
+  "status": "ok"
+ },
+ "b2accacdebd4f4129fb423a11ffeb9b18615f39a8d92ba7d7301e35408539b9c": {
+  "bytes": 912280,
+  "created": "2026-11-25T22:49:44.421+00:00",
+  "file": "b2accacdebd4f4129fb423a11ffeb9b18615f39a8d92ba7d7301e35408539b9c.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "6c03c2033a5c63f5a9a6a94caf665980fc4622b0de0f65b228875024fb2a0c34",
+  "stage": "keyframes",
+  "status": "ok"
+ },
  "b87b6a52cede4da989dc5dd02cc52c904f0e37fdf22b874637a1f9951f04af3c": {
   "bytes": 1227752,
   "created": "2026-11-25T21:17:53.250+00:00",
@@ -605,6 +745,16 @@
   "run_id": "20261125T211749Z-radio-nonames",
   "sha256": "abe949f141aa930036d894d32dbcdfcde8cdaa2747a81c274f6ce990c7f6d9c6",
   "stage": "radio",
+  "status": "ok"
+ },
+ "bbda46a89705cdcaee85a161fe5755865cc419ee96c7f4515f37af7e7a2fed18": {
+  "bytes": 1254664,
+  "created": "2026-11-25T22:47:06.022+00:00",
+  "file": "bbda46a89705cdcaee85a161fe5755865cc419ee96c7f4515f37af7e7a2fed18.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "445014cea63a7cd283405c9d5378303bd0a31a13616aad452725033222a07095",
+  "stage": "keyframes",
   "status": "ok"
  },
  "bd8c59400be8bbda733346e9d977a47a4b954d75f2f280d8b6af38a46b2c21ad": {
@@ -652,6 +802,16 @@
   "stage": "music",
   "status": "ok"
  },
+ "c4b67afc7f2c212cebabe7c0f0488d72ecd1097e2e8f997bcbbb89d3c4ba2f74": {
+  "bytes": 977972,
+  "created": "2026-11-25T22:47:25.845+00:00",
+  "file": "c4b67afc7f2c212cebabe7c0f0488d72ecd1097e2e8f997bcbbb89d3c4ba2f74.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "b9976fb2dcf68b58e3482c0307020a41736c444371f3f6155750fc01b113f270",
+  "stage": "keyframes",
+  "status": "ok"
+ },
  "c55c894e44239d724672409bc09da8d601cf1aaf4139c5947cbc480e86de2b2c": {
   "bytes": 84524,
   "created": "2026-11-25T20:32:16.632+00:00",
@@ -662,6 +822,16 @@
   "run_id": "20261125T203213Z-nonames",
   "sha256": "df8c0e8a92fd0094d8d6624e3afc51f47dab567ed5efbd21cebae32a90d707dc",
   "stage": "narration",
+  "status": "ok"
+ },
+ "caf280f9b3d3a6ed4c036416dbf6d884ab6fda22969c6f488232a2d29a480d22": {
+  "bytes": 941977,
+  "created": "2026-11-25T22:49:56.717+00:00",
+  "file": "caf280f9b3d3a6ed4c036416dbf6d884ab6fda22969c6f488232a2d29a480d22.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "b7500d21bc85886a714d1ca5f9a450f21e38593a6aacde09b561697933cab281",
+  "stage": "keyframes",
   "status": "ok"
  },
  "d0c14c0a0adc8856b8b9c6e4f1b4f361dc7f7ec6b6f7df33ae310dc9a19deebc": {
@@ -728,6 +898,16 @@
   "stage": "narration_join",
   "status": "ok"
  },
+ "daa4aceb5bc6b36230baae0518594b537173b101cad18a6aa704a2c35ce03484": {
+  "bytes": 861406,
+  "created": "2026-11-25T22:46:19.091+00:00",
+  "file": "daa4aceb5bc6b36230baae0518594b537173b101cad18a6aa704a2c35ce03484.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "a4f589545650805e4c997664902ab4b72433b265ab91c013fd4103eab4de907c",
+  "stage": "keyframes",
+  "status": "ok"
+ },
  "db7984c8607bac1846d4686f4c910ba4b71f67fb0c332a5db5ae66c3814815aa": {
   "bytes": 399700,
   "created": "2026-11-25T21:13:35.963+00:00",
@@ -767,6 +947,16 @@
   "run_id": "20261125T203213Z-nonames",
   "sha256": "ca00297ad376e78d28a240724edc97982778a589e6f22e1eb967599901490182",
   "stage": "radio",
+  "status": "ok"
+ },
+ "e34063d18f6d6ea5e0165ab70718f677c17ad88d21173afb91f3cd92f009b1af": {
+  "bytes": 968687,
+  "created": "2026-11-25T22:49:30.259+00:00",
+  "file": "e34063d18f6d6ea5e0165ab70718f677c17ad88d21173afb91f3cd92f009b1af.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "7fc0003c69b6ff882090e0fd1ddb83ae00adb780797bb57ee9d2866f059878eb",
+  "stage": "keyframes",
   "status": "ok"
  },
  "e4e390b5aa4a84837b09f190639e83a76a3332d535db9ad3107ccb708837cdd9": {
@@ -853,6 +1043,21 @@
   "stage": "narration",
   "status": "ok"
  },
+ "f47c4a0dcce61e4f6aa633501b4c3a4c53d1801ae24408c89889729edaaf4e80": {
+  "bytes": 98349,
+  "created": "2026-11-25T22:44:53.841+00:00",
+  "file": "f47c4a0dcce61e4f6aa633501b4c3a4c53d1801ae24408c89889729edaaf4e80.jpg",
+  "h": 1008,
+  "kept": true,
+  "run_id": "20261125T224453Z-6e6b",
+  "sha256": "00993ace0507aff9e8105f0a518b02d9b4caff9ce4ecdc1b741e57aab6153f54",
+  "source": "780c01ba748870ba988f0e7d908626cfad3b306cfd4eada68d7226b395b6931d.jpg",
+  "stage": "reference_crop",
+  "status": "ok",
+  "w": 600,
+  "x": 0,
+  "y": 0
+ },
  "f8dfc89e819f0df4169402320ef275cd8764263648d19f87ec8e3d88af76eb4d": {
   "bytes": 338362,
   "created": "2026-11-25T20:18:26.333+00:00",
@@ -881,6 +1086,16 @@
   "run_id": "20261125T211356Z-narration-geez",
   "sha256": "be9822bacf310e5c22850e87446e32a2feb0805e4eda0732c416020d8e736dab",
   "stage": "narration_join",
+  "status": "ok"
+ },
+ "f97589c2f7176468fb49cff86042b3ff36ad798409cff7cbd5633180dd17eefd": {
+  "bytes": 619313,
+  "created": "2026-11-25T22:46:59.642+00:00",
+  "file": "f97589c2f7176468fb49cff86042b3ff36ad798409cff7cbd5633180dd17eefd.jpg",
+  "kept": false,
+  "run_id": "20261125T224605Z-kf-candidates",
+  "sha256": "03306e86d4e92d9c421e00db320e21f69318c729aea12a336cc1828d06412d75",
+  "stage": "keyframes",
   "status": "ok"
  },
  "f97c17722ab778877e939fa5b072ec1f321049a69b36649c036af43e6a9192ed": {

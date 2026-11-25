@@ -15,6 +15,7 @@ import argparse
 import base64
 import math
 import os
+import re
 from pathlib import Path
 
 import requests
@@ -81,10 +82,21 @@ def size(cfg: dict) -> tuple[int, int]:
     return cfg.get("width", 1792), cfg.get("height", 1008)
 
 
+def with_cast(sb: dict, shot: dict, text: str) -> str:
+    """Replace each cast NAME listed in shot.people with "(description)"; shots without people are untouched."""
+    for name in shot.get("people", []):
+        desc = f"({sb['cast'][name]})"
+        text, n = re.subn(rf"\b{name}\b", desc, text)
+        if not n:
+            text = f"{text.rstrip('.')}. {desc[1:-1][0].upper()}{desc[2:-1]}."
+    return text
+
+
 def shot_prompt(sb: dict, shot: dict) -> str:
     chars = {ch["id"]: ch["description"] for ch in sb["characters"]}
     who = " ".join(f"{chars[i]}." for i in shot.get("characters", []))
-    return " ".join(p for p in (shot["image_prompt"].rstrip(".") + ".", who, sb["style_block"], COMPOSITION) if p)
+    image = with_cast(sb, shot, shot["image_prompt"].rstrip(".") + ".")
+    return " ".join(p for p in (image, who, sb["style_block"], COMPOSITION) if p)
 
 
 def ref_prompt(sb: dict, ch: dict) -> str:
@@ -99,11 +111,19 @@ def ref_key(ctx: c.Ctx, ch: dict, n: int) -> str:
     return c.Cache.key("reference", cfg["id"], {"width": w, "height": h}, ref_prompt(ctx.sb, ch), REF_SEED + n)
 
 
-def keyframe_key(ctx: c.Ctx, shot: dict) -> tuple[str, list[Path]]:
+def keyframe_seed(shot: dict) -> int:
+    return shot.get("keyframe_seed", shot["seed"])
+
+
+def keyframe_key(ctx: c.Ctx, shot: dict, seed: int | None = None) -> tuple[str, list[Path]]:
     cfg = c.model_cfg(ctx, "flux")
     w, h = size(cfg)
     refs, upstream = [], {}
     if cfg.get("accepts_reference_images"):
+        for r in shot.get("reference_images", []):  # e.g. an earlier keyframe whose composition to keep
+            p = c.repo_path(r)
+            refs.append(p)
+            upstream[f"img:{p.name}"] = c.sha256_file(p)
         chars = {ch["id"]: ch for ch in ctx.sb["characters"]}
         with_ref = [cid for cid in shot.get("characters", []) if chars[cid].get("reference") is not False]
         for cid in with_ref[: cfg.get("max_reference_images", 4)]:
@@ -111,7 +131,8 @@ def keyframe_key(ctx: c.Ctx, shot: dict) -> tuple[str, list[Path]]:
             refs.append(p)
             upstream[f"ref:{cid}"] = c.sha256_file(p)
     params = {"width": w, "height": h, "n_refs": len(refs)}
-    return c.Cache.key("keyframes", cfg["id"], params, shot_prompt(ctx.sb, shot), shot["seed"], upstream), refs
+    seed = keyframe_seed(shot) if seed is None else seed
+    return c.Cache.key("keyframes", cfg["id"], params, shot_prompt(ctx.sb, shot), seed, upstream), refs
 
 
 def _generate(ctx: c.Ctx, key: str, prompt: str, seed: int, refs: list[Path], shot_id: str, keep: bool, stage: str) -> Path:
@@ -170,14 +191,53 @@ def run(ctx: c.Ctx) -> None:
         key, refs = keyframe_key(ctx, shot)
         obj = ctx.cache.lookup(key)
         if obj:
-            c.log_hit("keyframes", "cloudflare", cfg["id"], key, shot_id=shot["id"], seed=shot["seed"])
+            c.log_hit("keyframes", "cloudflare", cfg["id"], key, shot_id=shot["id"], seed=keyframe_seed(shot))
         else:
-            obj = _generate(ctx, key, shot_prompt(ctx.sb, shot), shot["seed"], refs, shot["id"], True, "keyframes")
+            obj = _generate(ctx, key, shot_prompt(ctx.sb, shot), keyframe_seed(shot), refs, shot["id"], True, "keyframes")
         name = f"{shot['id']}{obj.suffix}"
         c.link(obj, ctx.out / "keyframes" / name)
         keep.add(name)
     c.prune_links(ctx.out / "keyframes", keep)
     print(f"keyframes: {len(keep)} shots ({'conditioned on approved references' if cfg.get('accepts_reference_images') else 'style_block + description + seed'})")
+
+
+CAND_SEED_STEP = 1000  # candidate k of a shot uses seed + k * 1000 (the shot's own seed stays untouched)
+
+
+def candidates(ctx: c.Ctx, shot_ids: list[str], n: int) -> None:
+    """n keyframe candidates for each listed shot -> out/keyframes/candidates/<shot>_c<k>.* (not committed)."""
+    cfg = c.model_cfg(ctx, "flux")
+    shots = {s["id"]: s for s in ctx.sb["shots"]}
+    missing = [i for i in shot_ids if i not in shots]
+    if missing:
+        raise c.PipelineStop(f"unknown shot id(s): {', '.join(missing)}")
+    for sid in shot_ids:
+        shot = shots[sid]
+        for k in range(1, n + 1):
+            seed = shot["seed"] + k * CAND_SEED_STEP
+            key, refs = keyframe_key(ctx, shot, seed)
+            obj = ctx.cache.lookup(key)
+            if obj:
+                c.log_hit("keyframes", "cloudflare", cfg["id"], key, shot_id=sid, seed=seed)
+            else:
+                obj = _generate(ctx, key, shot_prompt(ctx.sb, shot), seed, refs, sid, False, "keyframes")
+            c.link(obj, ctx.out / "keyframes" / "candidates" / f"{sid}_c{k}{obj.suffix}")
+            print(f"  {os.path.relpath(ctx.out / 'keyframes' / 'candidates' / f'{sid}_c{k}{obj.suffix}', c.ROOT)}")
+
+
+def pick(ctx: c.Ctx, choice: str) -> None:
+    """--pick <shot>=<k>: keyframe_seed = candidate k's seed; the candidate moves into the committed cache."""
+    sid, _, k = choice.partition("=")
+    shot = next((s for s in ctx.sb["shots"] if s["id"] == sid), None)
+    if shot is None or not k.isdigit():
+        raise c.PipelineStop(f"--pick expects <shot>=<k>, got '{choice}'")
+    seed = shot["seed"] + int(k) * CAND_SEED_STEP
+    key, _ = keyframe_key(ctx, shot, seed)
+    obj = ctx.cache.promote(key)
+    shot["keyframe_seed"] = seed
+    c.save_storyboard(ctx)
+    c.link(obj, ctx.out / "keyframes" / f"{sid}{obj.suffix}")
+    print(f"picked {sid} candidate {k} (keyframe_seed {seed}) -> written to {ctx.path.name}")
 
 
 def keyframe_path(ctx: c.Ctx, shot: dict) -> Path:
@@ -192,9 +252,20 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     c.storyboard_arg(ap)
     ap.add_argument("--approve", metavar="CHAR=N", help="approve reference candidate N for a character")
+    ap.add_argument("--candidates", type=int, metavar="N", help="with --shots: N keyframe candidates per shot")
+    ap.add_argument("--shots", help="comma-separated shot ids for --candidates")
+    ap.add_argument("--pick", action="append", metavar="SHOT=K", help="use keyframe candidate K for a shot (repeatable)")
     a = ap.parse_args()
     ctx = c.load_storyboard(a.storyboard)
-    approve(ctx, a.approve) if a.approve else run(ctx)
+    if a.approve:
+        approve(ctx, a.approve)
+    elif a.candidates:
+        candidates(ctx, [x.strip() for x in (a.shots or "").split(",") if x.strip()], a.candidates)
+    elif a.pick:
+        for choice in a.pick:
+            pick(ctx, choice)
+    else:
+        run(ctx)
 
 
 if __name__ == "__main__":

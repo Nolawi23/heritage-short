@@ -70,8 +70,10 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   per-line `style_note` "keep the same voice and natural English accent throughout" (other NARRATOR lines untouched).
   One single-line TTS request. Compare `outputs/experiments/etan_single_geez.wav` with
   `outputs/experiments/latin_vs_geez/latin/shot-05-jebena-etan_1.wav`.
-- **Result:** _author's verdict_. If the voice still changes character, shot 5 goes back to the Latin take (remove
-  `tts_text` and `style_note` from the line: a cache hit, no TTS request).
+- **Result:** the single Ge'ez word plus the accent note was the closest yet, but the author **kept the Latin
+  spelling** for "etan" too: shot 5 reverted to its original Latin take (a cache hit, 0 TTS requests; the timeline
+  went back to 71.8 s, and the subtitles were re-checked: 14 cues, all inside their line spans, none overlapping).
+  Conclusion for this voice: Latin spelling everywhere; the Ge'ez takes stay in `outputs/experiments/` for reference.
 - **run_id:** `20261125T214913Z-etan-single`
 
 ### 2026-11-25 - Reference sheet: housekeeper
@@ -111,7 +113,9 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   instruments the model surely knows (acoustic guitar, plucked lyre, light hand percussion) gives a more fitting score.
 - **Change:** candidates 1 and 2 use the tizita-inspired caption (seeds 42, 43); candidate 3 uses the original
   masenqo caption (`music_cues[].ab_caption`, seed 44). Same bpm (75), key (D minor) and duration.
-- **Result:** _pending (needs a working music route, see FAILURES.md #16-19)_.
+- **Result:** MusicGen candidates (ACE-Step could not run, FAILURES.md #19): **candidate 2 (tizita caption, seed 43)
+  chosen**: "c2 is calmer; c1 might clash with the narration, c2 sits under the voice." The masenqo caption
+  (candidate 3) was not chosen.
 - **run_id:**
 
 ### 2026-11-25 - Which shots get Wan video
@@ -130,3 +134,9 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   identical except for Wan shots 3, 4, 5 and 9; Ken Burns shots are cropped from the 1792x1008 keyframe in both.
 - **Result:** _pending (author compares the two on a phone)_.
 - **run_id:**
+
+### 2026-11-26 - music cue `ethiopian-acoustic`: chose candidate 2
+- **Hypothesis:** one of 3 seeds (42..44) fits the narration best
+- **Change:** generated 3 candidates (caption: "gentle acoustic guitar and soft plucked lyre, light hand percussion, Ethiopian tizita-inspired nostalgic pentatonic feel, warm, reflective, homely, no strong lead melody, instrumental"; candidate 3 used the A/B caption "Warm acoustic guitar paired with soft traditional masenqo and gentle percussive rhythm, warm, reflective, homely.", 75 bpm, D minor)
+- **Result:** candidate 2 chosen. Reason: c2 is calmer; c1 might clash with the narration, c2 sits under the voice.
+- **run_id:** 20261125T213619Z-music-musicgen

@@ -144,6 +144,9 @@ def validate(sb: dict) -> list[str]:
         errors += [f"shots/{s['id']}: unknown character '{c}'" for c in s.get("characters", []) if c not in chars]
         errors += [f"shots/{s['id']}: speaker '{ln['speaker']}' has no entry in narration.voices"
                    for ln in s["lines"] if ln["speaker"] not in voices]
+        errors += [f"shots/{s['id']}: person '{n}' is not in cast" for n in s.get("people", []) if n not in sb.get("cast", {})]
+        errors += [f"shots/{s['id']}: reference image {r} does not exist" for r in s.get("reference_images", [])
+                   if not repo_path(r).exists()]
     for c in sb["characters"]:
         if c["reference_image"] and not repo_path(c["reference_image"]).exists():
             errors.append(f"characters/{c['id']}: reference_image {c['reference_image']} does not exist")

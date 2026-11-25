@@ -1,7 +1,7 @@
 {
   "storyboard": "storyboard.json",
   "fps": 24,
-  "total_s": 72.0,
+  "total_s": 71.75,
   "shots": [
     {
       "id": "shot-01-bedroom",
@@ -96,26 +96,26 @@
     {
       "id": "shot-05-jebena-etan",
       "start_s": 25.208,
-      "duration_s": 5.75,
-      "narration_s": 5.25,
+      "duration_s": 5.5,
+      "narration_s": 3.557,
       "motion": "wan",
       "music_cue": "ethiopian-acoustic",
       "lines": [
         {
           "speaker": "NARRATOR",
           "text": "Etan smoke curls through the room. Nobody is in a hurry.",
-          "spoken": "ዕጣን smoke curls through the room. Nobody is in a hurry.",
+          "spoken": "Etan smoke curls through the room. Nobody is in a hurry.",
           "subtitle": "Etan smoke curls through the room. Nobody is in a hurry.",
           "wav": "narration/shot-05-jebena-etan_1.wav",
-          "sha256": "7ad608e65e3945d2f88edb07ede0536dbf4ebfb19afd5e3011e92bdeea3d4cc9",
+          "sha256": "0a6a899cd7810bd0a404b4cc037cd9fef4554190282e8470322b6abe3847a785",
           "start_s": 25.458,
-          "end_s": 30.708
+          "end_s": 29.015
         }
       ]
     },
     {
       "id": "shot-06-popcorn-table",
-      "start_s": 30.958,
+      "start_s": 30.708,
       "duration_s": 5.0,
       "narration_s": 4.114,
       "motion": "kenburns",
@@ -128,14 +128,14 @@
           "subtitle": "There's popcorn, sometimes kolo, and a lot of noise.",
           "wav": "narration/shot-06-popcorn-table_1.wav",
           "sha256": "92a90e4701421fca0b5b6c9e02a2632da84afe38dd195678819a3330ed4a2649",
-          "start_s": 31.208,
-          "end_s": 35.322
+          "start_s": 30.958,
+          "end_s": 35.072
         }
       ]
     },
     {
       "id": "shot-07-abol-first-pour",
-      "start_s": 35.958,
+      "start_s": 35.708,
       "duration_s": 6.9583,
       "narration_s": 6.454,
       "motion": "kenburns",
@@ -148,14 +148,14 @@
           "subtitle": "With the first cup, abol, we catch up on the week: school, tests, work.",
           "wav": "narration/shot-07-abol-first-pour_1.wav",
           "sha256": "ff51a38c586bd153ccd47a98ad17ef9361bf9f481e348f28ebdd78b9cf390897",
-          "start_s": 36.208,
-          "end_s": 42.662
+          "start_s": 35.958,
+          "end_s": 42.412
         }
       ]
     },
     {
       "id": "shot-08-tona-discussion",
-      "start_s": 42.917,
+      "start_s": 42.667,
       "duration_s": 6.5417,
       "narration_s": 6.013,
       "motion": "kenburns",
@@ -168,14 +168,14 @@
           "subtitle": "With the second, tona, it's university applications, and everyone has an opinion.",
           "wav": "narration/shot-08-tona-discussion_1.wav",
           "sha256": "fe911e42a58c2b7654d4f713dccad951a9cb1040f59bd33f6e2f2cbfab0813bb",
-          "start_s": 43.167,
-          "end_s": 49.18
+          "start_s": 42.917,
+          "end_s": 48.93
         }
       ]
     },
     {
       "id": "shot-09-baraka-pour",
-      "start_s": 49.458,
+      "start_s": 49.208,
       "duration_s": 5.5,
       "narration_s": 4.683,
       "motion": "wan",
@@ -188,14 +188,14 @@
           "subtitle": "The third cup is bereka, the blessing. The room gets quieter.",
           "wav": "narration/shot-09-baraka-pour_1.wav",
           "sha256": "a452360d2eebc145016f2432fe5e77aba23592a4dd7658421a602d45e1a8db17",
-          "start_s": 49.708,
-          "end_s": 54.391
+          "start_s": 49.458,
+          "end_s": 54.141
         }
       ]
     },
     {
       "id": "shot-10-empty-cups",
-      "start_s": 54.958,
+      "start_s": 54.708,
       "duration_s": 6.0,
       "narration_s": 2.079,
       "motion": "kenburns",
@@ -208,14 +208,14 @@
           "subtitle": "The coffee was never really the point.",
           "wav": "narration/shot-10-empty-cups_1.wav",
           "sha256": "c0655b10a8a5ab8b82ea0e0c1be08c796fef45aa5cb3d5b6cfa790ed4a642d5d",
-          "start_s": 55.208,
-          "end_s": 57.287
+          "start_s": 54.958,
+          "end_s": 57.037
         }
       ]
     },
     {
       "id": "shot-11-house-exterior",
-      "start_s": 60.958,
+      "start_s": 60.708,
       "duration_s": 8.5417,
       "narration_s": 8.019,
       "motion": "kenburns",
@@ -228,21 +228,21 @@
           "subtitle": "It's the few hours every week we're all in the same room. Next Sunday, she'll call again, and we'll come down.",
           "wav": "narration/shot-11-house-exterior_1.wav",
           "sha256": "a61d3d1dcbaac70330e6a2d81b96c08a3fe09107e05d97c61d715d73d579c78d",
-          "start_s": 61.208,
-          "end_s": 69.227
+          "start_s": 60.958,
+          "end_s": 68.977
         }
       ]
     }
   ],
   "end_card": {
-    "start_s": 69.5,
+    "start_s": 69.25,
     "duration_s": 2.5
   },
   "music_spans": [
     {
       "cue": "ethiopian-acoustic",
       "start_s": 0.0,
-      "end_s": 72.0
+      "end_s": 71.75
     }
   ]
 }

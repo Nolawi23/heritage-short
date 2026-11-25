@@ -5,17 +5,18 @@
   "intent": "at the end they feel seen and grateful: this ordinary Sunday ritual is what keeps us close, whatever the week brought.",
   "language": "en",
   "style_block": "Warm painterly illustration style, rich golden morning light, soft textures, cozy atmosphere, subject centred, 9:16 safe, no text in images.",
+  "cast": {
+    "NOLAWI": "an Ethiopian young man about 21, brown skin, short black hair",
+    "DELINA": "an Ethiopian young woman about 19, brown skin, dark hair",
+    "BROTHER": "an Ethiopian teenage boy about 15, brown skin",
+    "MOM": "an Ethiopian middle-aged mother, brown skin",
+    "DAD": "an Ethiopian middle-aged father, brown skin"
+  },
   "characters": [
     {
       "id": "housekeeper",
-      "description": "an Ethiopian woman's hands and forearms, warm brown skin, wearing simple everyday clothes, sitting on a low wooden stool beside a small charcoal brazier with glowing charcoal, fresh green grass on the floor around her; face never shown",
-      "reference_image": "outputs/reference/housekeeper.jpg"
-    },
-    {
-      "id": "family",
-      "description": "an Ethiopian family of five (father, mother, son 21, daughter 19, son 15), teenagers and young adults, not small children, warm brown skin, seen only from behind or as dark silhouettes, no faces, sitting together on sofas",
-      "reference_image": null,
-      "reference": false
+      "description": "an Ethiopian woman with brown skin in simple everyday clothes, sitting on a low wooden stool beside a small charcoal brazier",
+      "reference_image": "outputs/reference/housekeeper_single.jpg"
     }
   ],
   "narration": {
@@ -40,7 +41,8 @@
       "duration_s": 60.0,
       "instrumental": true,
       "seed": 42,
-      "ab_caption": "Warm acoustic guitar paired with soft traditional masenqo and gentle percussive rhythm, warm, reflective, homely."
+      "ab_caption": "Warm acoustic guitar paired with soft traditional masenqo and gentle percussive rhythm, warm, reflective, homely.",
+      "selected": 2
     }
   ],
   "shots": [
@@ -49,7 +51,7 @@
       "duration_s": 6.0,
       "reason": "Establishes the weekly morning call from downstairs that initiates the ritual.",
       "shot_size": "medium",
-      "image_prompt": "An upstairs bedroom bathed in warm golden morning light pouring through an open wooden doorway, cosy atmosphere, no visible face.",
+      "image_prompt": "NOLAWI asleep in bed in an upstairs bedroom in the morning, warm light through a door left ajar, plain painted walls, a rug on the floor, in a family home in Addis Ababa, Ethiopia.",
       "motion_prompt": "Slow camera zoom toward the open bedroom door frame in soft morning light.",
       "lines": [
         {
@@ -64,14 +66,17 @@
       "music_cue": "ethiopian-acoustic",
       "seed": 101,
       "motion": "kenburns",
-      "max_attempts": 1
+      "max_attempts": 1,
+      "people": [
+        "NOLAWI"
+      ]
     },
     {
       "id": "shot-02-staircase",
       "duration_s": 5.0,
       "reason": "Shows the movement of stepping away from the busy week and heading toward family.",
       "shot_size": "medium_close",
-      "image_prompt": "Feet in house slippers coming down a staircase, lit by soft side morning sunlight.",
+      "image_prompt": "Brown-skinned feet and ankles in white house slippers and pyjama trousers coming down a wooden staircase, soft side morning light, in a family home in Addis Ababa, Ethiopia.",
       "motion_prompt": "Slow downward pan following the slippered feet down the stairs.",
       "lines": [
         {
@@ -82,14 +87,17 @@
       "music_cue": "ethiopian-acoustic",
       "seed": 102,
       "motion": "kenburns",
-      "max_attempts": 1
+      "max_attempts": 1,
+      "reference_images": [
+        "outputs/reference/composition/shot-02-staircase.jpg"
+      ]
     },
     {
       "id": "shot-03-washing-beans",
       "duration_s": 5.0,
       "reason": "Introduces the careful preparation of the coffee ritual already underway.",
       "shot_size": "close_up",
-      "image_prompt": "The woman sitting on a low wooden stool, her brown hands washing raw green coffee beans in a small bowl, fresh green grass around her.",
+      "image_prompt": "A single full-frame scene of one woman: she sits on a low wooden stool, rinsing raw green coffee beans in a bowl of water with both hands, water droplets, each hand with five fingers; a small charcoal brazier stands on the floor beside her stool, indoors in the living room, fresh cut grass scattered on the wooden floor around the coffee area, in a family home in Addis Ababa, Ethiopia.",
       "characters": [
         "housekeeper"
       ],
@@ -110,7 +118,7 @@
       "duration_s": 6.0,
       "reason": "Focuses on the sensory aroma of roasting beans wafting up through the house.",
       "shot_size": "close_up",
-      "image_prompt": "Green coffee beans roasting in a flat long-handled iron pan over a small charcoal brazier, stirred with a thin metal rod, smoke rising, fresh green grass around.",
+      "image_prompt": "Green coffee beans roasting in a flat long-handled iron pan over a small charcoal brazier, stirred with a thin metal rod, smoke rising, indoors in the living room, fresh cut grass scattered on the wooden floor around the coffee area, in a family home in Addis Ababa, Ethiopia.",
       "motion_prompt": "Thin smoke rises slowly from the pan; the camera holds steady with a very slow push in.",
       "lines": [
         {
@@ -121,21 +129,22 @@
       "music_cue": "ethiopian-acoustic",
       "seed": 104,
       "motion": "wan",
-      "max_attempts": 2
+      "max_attempts": 2,
+      "reference_images": [
+        "outputs/reference/composition/shot-04-roasting-beans.jpg"
+      ]
     },
     {
       "id": "shot-05-jebena-etan",
       "duration_s": 5.5,
       "reason": "Captures the unhurried atmosphere enhanced by fragrant frankincense smoke.",
       "shot_size": "insert",
-      "image_prompt": "A round-bodied black clay coffee pot with a long neck, spout and handle, sitting on glowing charcoal in a small brazier, beside a small clay incense burner with white smoke curling up, fresh green grass around.",
+      "image_prompt": "A black clay coffee pot with a round body, long thin neck, small spout and handle, sitting directly on a small metal charcoal brazier; beside it a small clay incense burner with white smoke curling up, indoors in the living room, fresh cut grass scattered on the wooden floor around the coffee area, in a family home in Addis Ababa, Ethiopia.",
       "motion_prompt": "White smoke curls gently upward; the camera slowly pushes in.",
       "lines": [
         {
           "speaker": "NARRATOR",
-          "text": "Etan smoke curls through the room. Nobody is in a hurry.",
-          "tts_text": "ዕጣን smoke curls through the room. Nobody is in a hurry.",
-          "style_note": "keep the same voice and natural English accent throughout"
+          "text": "Etan smoke curls through the room. Nobody is in a hurry."
         }
       ],
       "music_cue": "ethiopian-acoustic",
@@ -166,11 +175,7 @@
       "duration_s": 6.0,
       "reason": "Shows the initial round of coffee, abol, as conversation about the week begins.",
       "shot_size": "medium_wide",
-      "image_prompt": "The family seen from behind, sitting on the sofas around the carpet and the big table, small handleless white porcelain coffee cups in their hands, in a living room with a wooden floor and sofas arranged in a U shape around a carpet and a big table in the middle: one sofa at the back, and two sofas on the left and right turned sideways to face each other, set slightly forward; in the foreground, the woman on a low wooden stool beside the charcoal brazier and the low wooden stand of cups, on fresh green grass.",
-      "characters": [
-        "family",
-        "housekeeper"
-      ],
+      "image_prompt": "MOM, DAD, NOLAWI, DELINA and BROTHER sitting on the three sofas arranged in a U around the big wooden table, small handleless white porcelain coffee cups being passed around, seen from slightly behind, in a living room with a wooden floor and sofas arranged in a U shape around a carpet and a big table in the middle: one sofa at the back, and two sofas on the left and right turned sideways to face each other, set slightly forward, indoors in the living room, fresh cut grass scattered on the wooden floor around the coffee area, in a family home in Addis Ababa, Ethiopia.",
       "motion_prompt": "Slow pan left across the family seen from behind on the sofas.",
       "lines": [
         {
@@ -181,17 +186,21 @@
       "music_cue": "ethiopian-acoustic",
       "seed": 107,
       "motion": "kenburns",
-      "max_attempts": 1
+      "max_attempts": 1,
+      "people": [
+        "MOM",
+        "DAD",
+        "NOLAWI",
+        "DELINA",
+        "BROTHER"
+      ]
     },
     {
       "id": "shot-08-tona-discussion",
       "duration_s": 6.0,
       "reason": "Illustrates lively family animated discussions during the second cup, tona.",
       "shot_size": "medium",
-      "image_prompt": "Silhouettes of two siblings sitting together on one of the side sofas, back to camera, gesturing lively in laughter against a warm backlit window, in a living room with a wooden floor and sofas arranged in a U shape around a carpet and a big table in the middle: one sofa at the back, and two sofas on the left and right turned sideways to face each other, set slightly forward.",
-      "characters": [
-        "family"
-      ],
+      "image_prompt": "NOLAWI, DELINA and BROTHER sitting on the sofas around the big wooden table, talking animatedly and gesturing, a bowl of popcorn and small handleless white porcelain cups on the table, indoors in a living room with a wooden floor and sofas arranged in a U shape around a carpet and a big table in the middle: one sofa at the back, and two sofas on the left and right turned sideways to face each other, set slightly forward, in a family home in Addis Ababa, Ethiopia.",
       "motion_prompt": "Slow zoom in toward laughing sibling silhouettes framed by sunlight.",
       "lines": [
         {
@@ -202,14 +211,19 @@
       "music_cue": "ethiopian-acoustic",
       "seed": 108,
       "motion": "kenburns",
-      "max_attempts": 1
+      "max_attempts": 1,
+      "people": [
+        "NOLAWI",
+        "DELINA",
+        "BROTHER"
+      ]
     },
     {
       "id": "shot-09-baraka-pour",
       "duration_s": 5.5,
       "reason": "Focuses on the calmer third round, bereka, bringing peaceful blessing.",
       "shot_size": "close_up",
-      "image_prompt": "The woman's brown hand pouring coffee from a height in one thin continuous stream from the black clay pot into small handleless white cups on a low wooden stand, fresh green grass around.",
+      "image_prompt": "A single full-frame scene of one woman: she pours coffee from a height in one thin continuous stream from a black clay coffee pot with a round body and long thin neck into small handleless white porcelain cups on a low wooden tray, indoors in the living room, fresh cut grass scattered on the wooden floor around the coffee area, in a family home in Addis Ababa, Ethiopia.",
       "motion_prompt": "A thin steady stream of coffee pours into the cup; the camera holds still.",
       "lines": [
         {
@@ -231,7 +245,7 @@
       "duration_s": 6.0,
       "reason": "Signals that the real value of the ritual is togetherness rather than the drink itself.",
       "shot_size": "medium_close",
-      "image_prompt": "Small empty handleless white porcelain coffee cups on a low wooden coffee stand, wisps of white frankincense smoke fading into warm soft air, fresh green grass scattered around the coffee-making area.",
+      "image_prompt": "Five small empty handleless white porcelain coffee cups on a low wooden tray on the living-room floor, wisps of white incense smoke fading in the warm air, indoors in the living room, fresh cut grass scattered on the wooden floor around the coffee area, in a family home in Addis Ababa, Ethiopia.",
       "motion_prompt": "Slow camera pull back from the empty cups on the low wooden coffee stand.",
       "lines": [
         {
@@ -249,7 +263,7 @@
       "duration_s": 8.0,
       "reason": "Concludes on the warm family home exterior, grounding the recurring weekly bond.",
       "shot_size": "wide",
-      "image_prompt": "A two-storey white house behind a white gate with a small garden, late-morning sun.",
+      "image_prompt": "A two-storey house in Addis Ababa, Ethiopia, behind a white metal gate in a compound wall, small garden inside, morning light.",
       "motion_prompt": "Slow pull back from the brightly lit family house exterior.",
       "lines": [
         {

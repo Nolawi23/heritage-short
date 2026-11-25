@@ -13,5 +13,6 @@ outputs/.kaggle/
 outputs/smoke/
 outputs/**/reference/*_c[0-9]*
 outputs/**/music/*_c[0-9]*
+outputs/**/keyframes/candidates/
 outputs/cache_manifest.tmp
 outputs/cache_manifest.lock
