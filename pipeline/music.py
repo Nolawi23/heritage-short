@@ -23,15 +23,19 @@ NOTEBOOK = "ace_step.ipynb"
 
 
 def cue_params(ctx: c.Ctx, cue: dict) -> dict:
+    """Generation settings. section_s (models.json) overrides the cue length, e.g. ~35 s sections for MusicGen."""
     m = c.model_cfg(ctx, "music")
     return {"bpm": cue["bpm"], "keyscale": cue["key"], "timesignature": m["timesignature"],
-            "duration_s": cue["duration_s"], "instrumental": cue["instrumental"], "steps": m["steps"],
+            "duration_s": m.get("section_s", cue["duration_s"]), "instrumental": cue["instrumental"], "steps": m["steps"],
             "shift": m["shift"], "dtype": m["dtype"], "mode": m.get("mode", "gpu-mixed")}
 
 
 def caption(ctx: c.Ctx, cue: dict, n: int) -> str:
-    """Candidate n's caption: the last candidate uses ab_caption when the cue defines one (A/B experiment)."""
-    return cue["ab_caption"] if cue.get("ab_caption") and n == c.model_cfg(ctx, "music")["candidates"] else cue["caption"]
+    """Candidate n's caption: the last candidate uses ab_caption when the cue defines one (A/B experiment).
+    Models without metadata inputs (MusicGen) get tempo and key appended to the text."""
+    m = c.model_cfg(ctx, "music")
+    text = cue["ab_caption"] if cue.get("ab_caption") and n == m["candidates"] else cue["caption"]
+    return f"{text.rstrip('. ')}, {cue['bpm']} bpm, {cue['key']}" if m.get("metadata_in_caption") else text
 
 
 def cand_key(ctx: c.Ctx, cue: dict, n: int) -> str:
@@ -66,12 +70,13 @@ def run(ctx: c.Ctx) -> None:
         jobs = [{"id": f"{cue['id']}_c{n}", "key": key, "caption": caption(ctx, cue, n), "seed": cue.get("seed", 7) + n - 1,
                  **cue_params(ctx, cue)} for cue, n, key in pending]
         gpu = m.get("mode", "gpu-mixed") != "cpu"
-        res = kaggle_job.run("music", NOTEBOOK, jobs, {"model": m["id"], "mode": m.get("mode", "gpu-mixed")}, ctx.models,
+        res = kaggle_job.run("music", NOTEBOOK, jobs, {"model": m["id"], "mode": m.get("mode", "gpu-split"),
+                                                       "test_first_s": m.get("test_first_s")}, ctx.models,
                             gpu=gpu, machine_shape=m.get("machine_shape"))
         kaggle_job.log_session("music", m["id"], res, gpu=gpu)
         for ln in res["lines"]:
             if ln.get("id"):
-                job = next(j for j in jobs if j["id"] == ln["id"])
+                job = next((j for j in jobs if j["id"] == ln["id"]), jobs[0] | {"caption": jobs[0]["caption"] + " (test)"})
                 c.log_call("music", "kaggle", m["id"], shot_id=ln["id"], seed=ln.get("seed"),
                            params={"prompt": job["caption"], **{k: job[k] for k in ("bpm", "keyscale", "duration_s", "instrumental", "steps")}},
                            gpu_seconds=ln.get("gpu_seconds", 0),

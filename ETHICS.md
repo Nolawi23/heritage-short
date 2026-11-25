@@ -49,6 +49,9 @@ FLUX reference images: **accepted, keyframes are conditioned on the approved she
 - note: gemini-3.8-flash (newest Flash) was overloaded (503) and then hit its 20/day free quota on 2026-11-25, gemini-3.7-flash likewise; gemini-3.6-flash pinned for the script stage. `python -m pipeline.smoke_test --repin` re-picks.
 <!-- models:end -->
 
-Generated outputs: FLUX.2 klein 4B, Wan 2.2 and ACE-Step 1.5 are open-weight models under permissive licences
-(Apache-2.0 / Apache-2.0 / MIT) that place no restriction on the use of outputs; Gemini API outputs are usable under
+Generated outputs: FLUX.2 klein 4B and Wan 2.2 are open-weight models under Apache-2.0, which places no restriction on
+the use of outputs. **The score is made with MusicGen-medium (Meta), whose weights are licensed CC-BY-NC 4.0
+(non-commercial)**: acceptable for this private family film and the course submission, but the film must not be used
+commercially without replacing the music. Credit: "Music generated with MusicGen (Meta), CC-BY-NC 4.0". (ACE-Step 1.5,
+MIT, was the first choice but cannot run on the free T4, see FAILURES.md #19.) Gemini API outputs are usable under
 Google's Gemini API terms. The FLUX.2 klein **9B** model is non-commercial and is deliberately not used.

@@ -49,15 +49,17 @@
     "measured": "2026-11-25 shots-test: 49 frames, 30 steps, 1280x704 = 1330.8 GPU s (652 GPU s per video s), peak 15.22 GB"
   },
   "music": {
-    "id": "ACE-Step/acestep-v15-xl-turbo-diffusers",
-    "licence": "MIT",
-    "steps": 8,
-    "shift": 3.0,
+    "id": "facebook/musicgen-medium",
+    "licence": "CC-BY-NC-4.0 (MusicGen weights, non-commercial); MIT (audiocraft/transformers code)",
+    "mode": "musicgen",
+    "dtype": "float32",
+    "section_s": 35,
+    "metadata_in_caption": true,
+    "steps": 0,
+    "shift": 0,
     "timesignature": "4",
     "candidates": 3,
-    "dtype": "bfloat16",
-    "mode": "gpu-bf16",
-    "machine_shape": "NvidiaL4"
+    "replaces": "ACE-Step/acestep-v15-xl-turbo-diffusers (fp16 overflow on the T4, see FAILURES.md #19)"
   },
   "kaggle": {
     "machine_shape": "NvidiaTeslaT4",

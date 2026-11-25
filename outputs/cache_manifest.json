@@ -51,6 +51,17 @@
   "stage": "narration",
   "status": "ok"
  },
+ "1171bf8c21367e5dc52d107ab40f445e88631e28b8303b3e2c8a0085701842e7": {
+  "bytes": 2236204,
+  "created": "2026-11-25T21:46:03.577+00:00",
+  "duration_s": 34.94,
+  "file": "1171bf8c21367e5dc52d107ab40f445e88631e28b8303b3e2c8a0085701842e7.wav",
+  "kept": false,
+  "run_id": "20261125T213619Z-music-musicgen",
+  "sha256": "f33e4bc49db34bb292d5cc7b53274fb659e5dd666757ac19938b80e9f91a1dc3",
+  "stage": "music",
+  "status": "ok"
+ },
  "1c09fd9d137b6f83087b929491312594d7a6f2c968120d94e37adcf5b5c02297": {
   "bytes": 2024684,
   "created": "2026-11-25T21:14:13.603+00:00",
@@ -257,6 +268,17 @@
   "run_id": "20261125T203110Z-narration",
   "sha256": "bf28e1b7edef5a3024a3b5d028aafc4630d61d8f7c529091e3108f77a89c609e",
   "stage": "narration_join",
+  "status": "ok"
+ },
+ "4d1d8e63048284d0430a0a1b64b605df217decd6ebaa497ee637c0243c29f303": {
+  "bytes": 2236204,
+  "created": "2026-11-25T21:46:03.571+00:00",
+  "duration_s": 34.94,
+  "file": "4d1d8e63048284d0430a0a1b64b605df217decd6ebaa497ee637c0243c29f303.wav",
+  "kept": false,
+  "run_id": "20261125T213619Z-music-musicgen",
+  "sha256": "2bab09c9b1b51eb22b394d68d2d81105d5164da67c6d569571a8e70f4e642b2d",
+  "stage": "music",
   "status": "ok"
  },
  "55ce298fcb258cd5e0e4aa06332e6ca6a09ae584a9edf92a6d52da4e8a0e700a": {
@@ -535,6 +557,17 @@
   "run_id": "20261125T203110Z-narration",
   "sha256": "29bc626cdcab3e2634e04e2a0cb8ce02ea40519d455ee0767f94a29197bb4289",
   "stage": "narration",
+  "status": "ok"
+ },
+ "c256ff6a212ce993c41e0942bfa9bfb75e2473400a648a73fa5beaedce81b864": {
+  "bytes": 2236204,
+  "created": "2026-11-25T21:46:03.562+00:00",
+  "duration_s": 34.94,
+  "file": "c256ff6a212ce993c41e0942bfa9bfb75e2473400a648a73fa5beaedce81b864.wav",
+  "kept": false,
+  "run_id": "20261125T213619Z-music-musicgen",
+  "sha256": "c0427e8dc0f7da377b91ffc7a0d85c09d9caf061f36a95262393be0edfe10e62",
+  "stage": "music",
   "status": "ok"
  },
  "c55c894e44239d724672409bc09da8d601cf1aaf4139c5947cbc480e86de2b2c": {
