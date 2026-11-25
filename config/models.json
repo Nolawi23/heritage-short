@@ -1,0 +1,62 @@
+{
+  "_note": "Pinned model choices. gemini_text, gemini_tts and flux are filled in by `make smoke` (and only re-pinned with `python -m pipeline.smoke_test --repin`). Changing an id changes every cache key of that stage.",
+  "gemini_text": {
+    "id": "gemini-3.6-flash",
+    "licence": "Proprietary API (Gemini API Additional Terms). Free tier: content may be used to improve Google products.",
+    "pinned": "2026-11-25"
+  },
+  "gemini_tts": {
+    "id": "gemini-3.8-flash-tts",
+    "licence": "Proprietary API (Gemini API Additional Terms). Free tier: content may be used to improve Google products.",
+    "pinned": "2026-11-25",
+    "accepts_seed": true,
+    "sample_rate": 24000
+  },
+  "flux": {
+    "id": "@cf/black-forest-labs/flux-2-klein-4b",
+    "licence": "Apache-2.0 (FLUX.2 [klein] 4B weights); served under Cloudflare Workers AI terms",
+    "pinned": "2026-11-25",
+    "api": "multipart",
+    "accepts_reference_images": true,
+    "max_reference_images": 4,
+    "reference_field": "input_image_{n}",
+    "reference_index_base": 0,
+    "width": 1792,
+    "height": 1008,
+    "schema_width_max": 1792,
+    "schema_height_max": 1008,
+    "price_kind": "cloudflare_flux2_klein_4b",
+    "reference_check": "2026-11-25: same prompt+seed with input_image_0 -> accepted, output changed (conditioning works)"
+  },
+  "wan": {
+    "id": "Wan-AI/Wan2.2-TI2V-5B-Diffusers",
+    "licence": "Apache-2.0",
+    "width": 1280,
+    "height": 704,
+    "frames": 121,
+    "steps": 30,
+    "guidance": 5.0,
+    "fps": 24,
+    "dtype": "float16",
+    "negative_prompt": "blurry, low quality, distorted faces, deformed hands, extra fingers, text, subtitles, watermark, logo, flicker, jitter, overexposed, static frame"
+  },
+  "music": {
+    "id": "ACE-Step/acestep-v15-xl-turbo-diffusers",
+    "licence": "MIT",
+    "steps": 8,
+    "shift": 3.0,
+    "timesignature": "4",
+    "candidates": 3,
+    "dtype": "float16"
+  },
+  "kaggle": {
+    "machine_shape": "NvidiaTeslaT4",
+    "poll_s": 60,
+    "timeout_s": 10800
+  },
+  "min_interval_s": {
+    "gemini_text": 4,
+    "gemini_tts": 21,
+    "cloudflare": 1
+  }
+}

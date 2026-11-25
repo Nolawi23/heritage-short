@@ -1,0 +1,14 @@
+{
+  "_note": "List prices used only to compute list_price_usd (what the same call would cost on a paid tier). We run on free tiers, so est_cost_usd is 0 unless billing is 'paid'. Checked 2026-11-25.",
+  "billing": {"gemini": "free", "cloudflare": "free", "kaggle": "free"},
+  "gemini_text": {"input_per_mtok": 0.75, "output_per_mtok": 3.75,
+                  "source": "https://ai.google.dev/gemini-api/docs/pricing (Gemini 3.8 Flash, Standard, through 2026-12-31)", "verified": true},
+  "gemini_tts": {"input_per_mtok": 0.50, "output_per_mtok": 9.00,
+                 "source": "https://ai.google.dev/gemini-api/docs/pricing (Gemini 3.8 Flash TTS, Standard, through 2026-12-31)", "verified": false},
+  "cloudflare_flux2_klein_4b": {"usd_per_input_tile": 0.000059, "usd_per_output_tile": 0.000287, "neurons_per_output_tile": 26.05, "neurons_per_input_tile": 5.37,
+                                "source": "https://developers.cloudflare.com/workers-ai/platform/pricing/ (512x512 tiles)", "verified": true},
+  "cloudflare_flux1_schnell": {"usd_per_output_tile": 0.0000528, "usd_per_step": 0.0001056,
+                               "source": "https://developers.cloudflare.com/workers-ai/platform/pricing/", "verified": false},
+  "kaggle_t4": {"usd_per_gpu_hour": 0.35,
+                "source": "Equivalent only: Google Cloud on-demand NVIDIA T4 GPU list price (GPU only, us-central1). Kaggle itself is free (weekly GPU quota).", "verified": false}
+}

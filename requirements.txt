@@ -1,0 +1,8 @@
+# Pinned top-level dependencies (Python >= 3.10). kaggle >= 1.8 reads the new KAGGLE_API_TOKEN / ~/.kaggle/access_token.
+google-genai==3.6.1
+requests==2.34.2
+jsonschema==4.26.0
+python-dotenv==1.2.4
+kaggle==2.2.5
+six==1.17.0  # imported by kaggle 2.2.5 but not declared as its dependency
+pytest==9.2.0

@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/heritage-short/storyboard.schema.json",
+  "title": "Heritage Short storyboard",
+  "description": "Single source of truth for the film. Every pipeline stage validates against this schema before it runs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "logline", "audience", "intent", "language", "style_block", "characters",
+               "narration", "music_cues", "shots", "end_card", "outputs"],
+  "properties": {
+    "title": {"type": "string", "minLength": 1},
+    "logline": {"type": "string", "minLength": 1},
+    "audience": {"type": "string", "minLength": 1},
+    "intent": {"type": "string", "minLength": 1},
+    "language": {"type": "string", "pattern": "^en(-[A-Z]{2})?$", "description": "Narration and subtitle language (English)."},
+    "style_block": {
+      "type": "string", "minLength": 1,
+      "description": "Appended to every image prompt. The code also appends fixed composition rules: subject centred (9:16 safe), no text in images."
+    },
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description", "reference_image"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "description": {"type": "string", "minLength": 1},
+          "reference_image": {
+            "type": ["string", "null"],
+            "description": "Approved reference sheet (repo-relative path), set by `python -m pipeline.keyframes --approve <id>=N`. null = not approved yet."
+          }
+        }
+      }
+    },
+    "narration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["voices"],
+      "properties": {
+        "voices": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {"pattern": "^[A-Z][A-Z0-9_]*$"},
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["voice", "style_instruction"],
+            "properties": {
+              "voice": {"type": "string", "minLength": 1, "description": "A preset Gemini TTS voice name. Never a cloned voice."},
+              "style_instruction": {"type": "string", "minLength": 1},
+              "effect": {"enum": ["none", "downstairs"], "default": "none",
+                         "description": "Applied in assembly: 'downstairs' = low-pass + light reverb."}
+            }
+          }
+        }
+      }
+    },
+    "music_cues": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "caption", "bpm", "key", "duration_s", "instrumental", "start_s", "end_s"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "caption": {"type": "string", "minLength": 1, "description": "Instruments, mood, texture. Tempo and key go in bpm/key, not here."},
+          "bpm": {"type": "integer", "minimum": 30, "maximum": 300},
+          "key": {"type": "string", "pattern": "^[A-G](#|b)? (major|minor)$", "description": "e.g. 'D minor'"},
+          "duration_s": {"type": "number", "minimum": 30, "maximum": 60, "description": "Length of one generated section; assembly joins sections to fit the timeline."},
+          "instrumental": {"type": "boolean"},
+          "start_s": {"type": "number", "minimum": 0, "description": "Planned start. The real span comes from the timeline (shots[].music_cue)."},
+          "end_s": {"type": "number", "minimum": 0},
+          "seed": {"type": "integer", "minimum": 0, "default": 7, "description": "Candidate n uses seed + n - 1."},
+          "selected": {"type": "integer", "minimum": 1, "maximum": 3, "description": "Chosen candidate, set by `python -m pipeline.music --select <cue>=N`."}
+        }
+      }
+    },
+    "shots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "duration_s", "reason", "shot_size", "image_prompt", "motion_prompt", "lines",
+                     "music_cue", "seed", "motion", "max_attempts"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "duration_s": {"type": "number", "minimum": 1, "maximum": 15, "description": "Minimum length; the timeline extends it to fit narration + 0.5 s."},
+          "reason": {"type": "string", "minLength": 1, "description": "Why this shot exists in the story."},
+          "shot_size": {"enum": ["extreme_wide", "wide", "medium_wide", "medium", "medium_close", "close_up", "extreme_close_up", "insert"]},
+          "image_prompt": {"type": "string", "minLength": 1},
+          "motion_prompt": {"type": "string", "minLength": 1, "description": "Motion and camera movement only."},
+          "characters": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true,
+                         "description": "Characters visible in the shot (their descriptions are added to the image prompt)."},
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["speaker", "text"],
+              "properties": {
+                "speaker": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+                "text": {"type": "string", "minLength": 1},
+                "subtitle_en": {"type": "string", "minLength": 1, "description": "Optional subtitle override; default is the line text."}
+              }
+            }
+          },
+          "music_cue": {"type": "string"},
+          "seed": {"type": "integer", "minimum": 0},
+          "motion": {"enum": ["wan", "kenburns"]},
+          "max_attempts": {"type": "integer", "minimum": 1, "maximum": 5}
+        }
+      }
+    },
+    "end_card": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "duration_s"],
+      "properties": {
+        "text": {"type": "string", "minLength": 1},
+        "duration_s": {"type": "number", "minimum": 2, "maximum": 3}
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fps", "resolutions"],
+      "properties": {
+        "fps": {"const": 24},
+        "resolutions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["16:9", "9:16"],
+          "properties": {
+            "16:9": {"$ref": "#/$defs/size"},
+            "9:16": {"$ref": "#/$defs/size"}
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+    "size": {"type": "array", "prefixItems": [{"type": "integer", "minimum": 64, "multipleOf": 2}, {"type": "integer", "minimum": 64, "multipleOf": 2}], "minItems": 2, "maxItems": 2}
+  }
+}

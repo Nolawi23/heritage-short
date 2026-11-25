@@ -1,0 +1,16 @@
+# secrets
+.env
+# local tooling
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+# pipeline scratch: unselected candidates, temp renders, Kaggle build/download dirs, smoke samples
+outputs/.scratch/
+outputs/.tmp/
+outputs/.kaggle/
+outputs/smoke/
+outputs/**/reference/*_c[0-9]*
+outputs/**/music/*_c[0-9]*
+outputs/cache_manifest.tmp

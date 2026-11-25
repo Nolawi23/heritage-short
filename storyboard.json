@@ -1,0 +1,86 @@
+{
+  "title": "PLACEHOLDER: Heritage Short",
+  "logline": "Placeholder storyboard with three dummy shots. Replace it with `make script FORCE=1` once story/notes.md is written.",
+  "audience": "PLACEHOLDER: who the film is for",
+  "intent": "PLACEHOLDER: what the audience should feel or understand",
+  "language": "en",
+  "style_block": "Warm natural light, soft film grain, muted earthy palette, shallow depth of field, photographic realism.",
+  "characters": [
+    {
+      "id": "mom",
+      "description": "PLACEHOLDER: a woman in her fifties, short grey hair, cardigan",
+      "reference_image": null
+    }
+  ],
+  "narration": {
+    "voices": {
+      "MOM": {"voice": "Sulafat", "style_instruction": "Call out warmly, as if from another room", "effect": "downstairs"},
+      "NARRATOR": {"voice": "Charon", "style_instruction": "Read slowly and gently, like a quiet memory"}
+    }
+  },
+  "music_cues": [
+    {
+      "id": "theme",
+      "caption": "Gentle solo piano with soft strings, nostalgic, intimate, sparse",
+      "bpm": 72,
+      "key": "D major",
+      "duration_s": 30,
+      "instrumental": true,
+      "start_s": 0,
+      "end_s": 20,
+      "seed": 7
+    }
+  ],
+  "shots": [
+    {
+      "id": "s01",
+      "duration_s": 6,
+      "reason": "PLACEHOLDER: opens on the house and introduces both voices",
+      "shot_size": "wide",
+      "image_prompt": "A quiet kitchen at dawn, a ceramic teapot on a wooden table by a window",
+      "motion_prompt": "Steam rises slowly from the teapot; the camera pushes in very slowly",
+      "lines": [
+        {"speaker": "MOM", "text": "Breakfast is ready!"},
+        {"speaker": "NARRATOR", "text": "This is a placeholder line for the first shot."}
+      ],
+      "music_cue": "theme",
+      "seed": 1001,
+      "motion": "wan",
+      "max_attempts": 2
+    },
+    {
+      "id": "s02",
+      "duration_s": 5,
+      "reason": "PLACEHOLDER: shows a character close up",
+      "shot_size": "close_up",
+      "characters": ["mom"],
+      "image_prompt": "Close-up of the woman's hands pouring tea into a small cup",
+      "motion_prompt": "Static camera; tea pours steadily into the cup",
+      "lines": [
+        {"speaker": "NARRATOR", "text": "A second placeholder line, a little longer than the first one."}
+      ],
+      "music_cue": "theme",
+      "seed": 1002,
+      "motion": "kenburns",
+      "max_attempts": 1
+    },
+    {
+      "id": "s03",
+      "duration_s": 5,
+      "reason": "PLACEHOLDER: closes on a still image",
+      "shot_size": "medium",
+      "characters": ["mom"],
+      "image_prompt": "The woman sits by the window holding the cup, looking outside",
+      "motion_prompt": "Slow lateral dolly to the left",
+      "lines": [
+        {"speaker": "NARRATOR", "text": "The third and final placeholder line."}
+      ],
+      "music_cue": "theme",
+      "seed": 1003,
+      "motion": "kenburns",
+      "max_attempts": 1
+    }
+  ],
+  "end_card": {"text": "Heritage Short", "duration_s": 3},
+  "outputs": {"fps": 24, "resolutions": {"16:9": [1280, 720], "9:16": [720, 1280]}}
+}
