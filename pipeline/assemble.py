@@ -9,7 +9,9 @@ Audio: narration stem (per-speaker effect) and music bed brought to -20 LUFS, mu
   (sidechaincompress threshold 0.02, ratio 6, attack 300 ms, release 1500 ms), mixed, then two-pass loudnorm
   to -14 LUFS / -1 dBTP. Subtitles: SRT from the line timings (<= 2 lines x ~40 chars), burned in from an ASS
   file styled per aspect (9:16 kept inside the safe area). End card ("Made with AI") drawn in code.
-Export: H.264 + AAC, constant 24 fps. Each film is cached by the hashes of everything it is made from.
+9:16 Wan clips: centre crop (film_9x16.mp4) or sharp fit on a blurred fill (film_9x16_blur.mp4); Ken Burns shots
+  are always cropped from the original keyframe. Export: H.264 + AAC, constant 24 fps. Each film is cached by
+  the hashes of everything it is made from.
 PREVIEW=1 assembles before Kaggle has run: missing Wan clips -> Ken Burns, missing score -> placeholder pad.
 """
 from __future__ import annotations
@@ -50,7 +52,7 @@ def preview() -> bool:
 
 
 def films_wanted() -> list[tuple[str, str]]:
-    v = os.environ.get("VERTICAL", "crop")
+    v = os.environ.get("VERTICAL", "both")
     if v not in ("crop", "blur", "both"):
         raise c.PipelineStop("VERTICAL must be crop, blur or both")
     return [("16:9", "fill")] + [("9:16", m) for m in (("crop", "blur") if v == "both" else (v,))]
@@ -154,7 +156,7 @@ def ass(cues, w: int, h: int, aspect: str) -> str:
 # -------------------------------------------------------------- end card ----
 def end_card(text: str, w: int, h: int, fps: int, seconds: float, out: Path, tmp: Path) -> None:
     width = 22 if w < h else 40
-    (tmp / "end1.txt").write_text("\n".join(textwrap.wrap(text, width)))
+    (tmp / "end1.txt").write_text("\n".join(r for part in text.split("\n") for r in textwrap.wrap(part, width)))
     (tmp / "end2.txt").write_text("Made with AI")
     s = min(w, h)
     f1, f2 = round(s * 0.075), round(s * 0.045)
@@ -260,7 +262,6 @@ def render(ctx: c.Ctx, tl: dict, srcs: dict, aspect: str, mode: str, audio: Path
     w, h = ctx.sb["outputs"]["resolutions"][aspect]
     fps = ctx.sb["outputs"]["fps"]
     tag = aspect.replace(":", "x") + mode
-    sw, sh = ctx.sb["outputs"]["resolutions"]["16:9"]
     segs = []
     for i, s in enumerate(tl["shots"]):
         src, n = srcs[s["id"]], av.frames(s["duration_s"], fps)
@@ -274,13 +275,9 @@ def render(ctx: c.Ctx, tl: dict, srcs: dict, aspect: str, mode: str, audio: Path
         else:
             direction = av.KB_DIRECTIONS[i % len(av.KB_DIRECTIONS)]
             plans.setdefault(s["id"], (None, {"source": src["source"], "direction": direction}))
-            if mode == "blur":  # same treatment as the clips: 16:9 move on a blurred fill
-                kb = tmp / f"kb_{i:02d}_16x9.mp4"
-                if not kb.exists():
-                    av.kenburns(src["keyframe"], kb, s["duration_s"], sw, sh, fps, direction)
-                av.ffmpeg("-i", kb, "-vf", av.reframe_filter(w, h, "blur"), "-frames:v", n, *av.X264_INTERMEDIATE, "-an", seg)
-            else:  # crop this aspect ratio straight from the original keyframe
-                av.kenburns(src["keyframe"], seg, s["duration_s"], w, h, fps, direction, crop_aspect=w / h)
+            # every aspect ratio is cropped straight from the original keyframe (blur-fill is only for Wan clips,
+            # which exist in 16:9 only)
+            av.kenburns(src["keyframe"], seg, s["duration_s"], w, h, fps, direction, crop_aspect=w / h)
         segs.append(seg)
     card = tmp / f"seg_{tag}_end.mp4"
     end_card(ctx.sb["end_card"]["text"], w, h, fps, ctx.sb["end_card"]["duration_s"], card, tmp)

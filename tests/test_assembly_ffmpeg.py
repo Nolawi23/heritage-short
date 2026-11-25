@@ -5,7 +5,6 @@ Checks: both aspect ratios + blur variant render, constant 24 fps, exact timelin
 """
 import json
 import subprocess
-import wave
 
 import pytest
 
@@ -21,13 +20,6 @@ def media(env, tmp_path, monkeypatch):
     sb["outputs"]["resolutions"] = {"16:9": [320, 180], "9:16": [180, 320]}
     sb["music_cues"][0]["duration_s"] = 30
     env.sb_path.write_text(json.dumps(sb))
-
-    def tone_tts(model, text, style, voice, seed):
-        rate, secs = 24000, 0.4 + 0.25 * len(text.split())
-        out = tmp_path / "tone.wav"
-        av.ffmpeg("-f", "lavfi", "-i", f"sine=f=330:d={secs}:r={rate}", "-ac", 1, "-c:a", "pcm_s16le", out)
-        with wave.open(str(out)) as w:
-            return (w.readframes(w.getnframes()), rate), {}
 
     def still(cfg, prompt, seed, w, h, refs=()):
         out = tmp_path / f"kf_{seed}.png"
@@ -50,7 +42,6 @@ def media(env, tmp_path, monkeypatch):
         return {"results": {x["id"]: x for x in lines}, "lines": lines, "dir": out, "status": "complete",
                 "failure": "", "wall_s": 1, "kernel": "u/k", "job_id": "t"}
 
-    monkeypatch.setattr(narration, "tts", tone_tts)
     monkeypatch.setattr(keyframes, "flux_generate", still)
     monkeypatch.setattr(shots.kaggle_job, "run", kaggle)
     monkeypatch.setenv("VERTICAL", "both")

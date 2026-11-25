@@ -28,9 +28,47 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   Re-pin with `python -m pipeline.smoke_test --repin` once 3.8 is available.
 - **run_id:** `20261125T185943Z-smoke`
 
-### Planned - Wan 2.2 TI2V-5B on a Kaggle T4
-- **Hypothesis:** float16 + model CPU offload + VAE tiling runs Wan 2.2 TI2V-5B at 1280x704 on one T4 (16 GB) without
-  NaNs, at a cost that fits a 6 h/week GPU quota.
-- **Change:** `make shots-test` (one 49-frame, ~2 s clip of the first wan shot).
-- **Result:** _pending (needs approval to run)_. Decide frames, steps and resolution from the measured GPU seconds and peak VRAM.
+### 2026-11-25 - NARRATOR voice: Charon vs Achird
+- **Hypothesis:** one of two preset voices fits the calm, warm, unhurried first-person narrator better; one two-speaker
+  request can produce both takes and also proves the batch split on real TTS audio.
+- **Change:** `python -m pipeline.narration --voice-test NARRATOR=Charon,Achird --line shot-01-bedroom_2`. One
+  multi-speaker request where speaker 1 = Charon and speaker 2 = Achird both read "Every Sunday morning, it starts the
+  same way: my mom's voice, from downstairs." with NARRATOR's style, separated by a `<long pause>`.
+- **Result:** the split worked (one gap of 1.63 s; Charon 5.04 s, Achird 5.49 s for 13 words) ->
+  `outputs/voice_test/NARRATOR_Charon.wav`, `outputs/voice_test/NARRATOR_Achird.wav`. A `<long pause>` is about 1.6 s.
+  **Chosen: Achird.** Reasons: (1) Charon mispronounced "Sunday" at the start of the line; (2) Achird sounds
+  smoother and more natural, like a young man telling his family a story, while Charon sounds more like a documentary
+  narrator. Fair comparison: same line, same style instruction, one batch request.
+- **run_id:** `20261125T195544Z-voicetest`
+
+### 2026-11-25 - Splitting one batch narration recording into lines
+- **Hypothesis:** a 12-line multi-speaker request can be cut into lines reliably, saving 11 of the 10/day TTS requests.
+- **Change:** (a) silence only with one `<long pause>` between lines, (b) two tags, (c) local forced alignment
+  with faster-whisper word timestamps + cut at the nearest silence + per-piece re-transcription check (≥ 0.80).
+- **Result:** (a) and (b) were refused as ambiguous: line gaps 0.95–2.3 s overlapped sentence pauses of up to
+  1.03 s. (c) passed all 12 lines from the already-paid recording (b) with scores 0.94–1.00 (lowest: "Etan" heard as
+  "It's on", 0.937; "Nolawi" as "Nolawe", 0.964), for 0 extra requests. The timeline is 71.2 s; the no-names variant
+  cost exactly 1 request (70.1 s).
+- **run_id:** (a) `20261125T200511Z-narration`, (b) `20261125T200634Z-narration`, (c) the last `-narration` run in `runs.jsonl`
+
+### 2026-11-25 - Wan 2.2 TI2V-5B on a Kaggle T4: does it fit, and what does it cost?
+- **Hypothesis:** float16 + model CPU offload + VAE tiling runs Wan 2.2 TI2V-5B at 1280x704 on one T4 without NaNs,
+  at a cost that fits a 6 h/week GPU quota.
+- **Change:** `make shots-test IMAGE=outputs/smoke/flux.jpg` (one 49-frame, 2.04 s clip, 30 steps, guidance 5.0, seed 42).
+  Run 1: plain `enable_model_cpu_offload()`. Run 2: prompts encoded first with only the text encoder on the GPU,
+  encoder freed, then the transformer with offload (FAILURES.md #11).
+- **Result:** run 1 ran out of GPU memory after 14.7 s. Run 2 succeeded: the text encoder took 8 s at 11.5 GB peak
+  (fp16 gave no NaN), and generation took **1,330.8 GPU s for 2.04 s of video = 652 GPU s per second of video**, peak
+  15.22 GB (the T4 limit is about 15.6 GB). Valid clip: 1280x704, 49 frames, 24 fps, mean luma 132 (no black/NaN
+  frames). Session overhead: 327 s of setup (pip, ~24 GB download, load), 28 min session in total.
+  Projection: a 121-frame (5 s) clip at these settings is about 1 h of GPU time, so the weekly quota fits about 4-5 clips.
+  Cheaper settings (fewer frames, 20 steps, 832x480) to be chosen with the author.
+- **run_id:** `20261125T194102Z-make` (run 2; run 1 is the earlier `-make` run with the OutOfMemoryError line)
+
+### Planned - 9:16 treatment of the Wan shots: centre crop vs blurred fill
+- **Hypothesis:** the 1280x704 Wan clips lose too much when centre-cropped to 9:16 (about 1.8x upscale of a
+  396x704 slice); a sharp fit on a blurred fill keeps the whole frame but leaves the subject small.
+- **Change:** `make assemble` (VERTICAL=both) exports `film_9x16.mp4` (crop) and `film_9x16_blur.mp4` (blur fill),
+  identical except for Wan shots 3, 4, 5 and 9; Ken Burns shots are cropped from the 1792x1008 keyframe in both.
+- **Result:** _pending (author compares the two on a phone)_.
 - **run_id:**

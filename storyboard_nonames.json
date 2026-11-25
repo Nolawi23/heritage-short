@@ -1,0 +1,278 @@
+{
+  "title": "Come Down Here",
+  "logline": "Every Sunday morning my mom calls us downstairs for coffee, the one hour a week our whole family is in the same room.",
+  "audience": "my family (mom, dad, my sister, my brother), watching on their phones (vertical) in our family chat.",
+  "intent": "at the end they feel seen and grateful: this ordinary Sunday ritual is what keeps us close, whatever the week brought.",
+  "language": "en",
+  "style_block": "Warm painterly illustration style, rich golden morning light, soft textures, cozy atmosphere, subject centred, 9:16 safe, no text in images.",
+  "characters": [
+    {
+      "id": "housekeeper",
+      "description": "Housekeeper preparing coffee, seen only as gentle, adept hands.",
+      "reference_image": null
+    },
+    {
+      "id": "family",
+      "description": "Parents and three teenage/young-adult siblings, only from behind or as dark silhouettes.",
+      "reference_image": null
+    }
+  ],
+  "narration": {
+    "voices": {
+      "MOM": {
+        "voice": "Sulafat",
+        "style_instruction": "calling loudly from downstairs, warm but insistent",
+        "effect": "downstairs"
+      },
+      "NARRATOR": {
+        "voice": "Achird",
+        "style_instruction": "Warm, reflective, calm, first-person narration with gentle pacing."
+      }
+    }
+  },
+  "music_cues": [
+    {
+      "id": "ethiopian-acoustic",
+      "caption": "gentle acoustic guitar and soft plucked lyre, light hand percussion, Ethiopian tizita-inspired nostalgic pentatonic feel, warm, reflective, homely, no strong lead melody, instrumental",
+      "bpm": 75,
+      "key": "D minor",
+      "duration_s": 60.0,
+      "instrumental": true,
+      "seed": 42,
+      "ab_caption": "Warm acoustic guitar paired with soft traditional masenqo and gentle percussive rhythm, warm, reflective, homely."
+    }
+  ],
+  "shots": [
+    {
+      "id": "shot-01-bedroom",
+      "duration_s": 6.0,
+      "reason": "Establishes the weekly morning call from downstairs that initiates the ritual.",
+      "shot_size": "medium",
+      "image_prompt": "An upstairs bedroom bathed in warm golden morning light pouring through an open wooden doorway, cosy atmosphere, no visible face.",
+      "motion_prompt": "Slow camera zoom toward the open bedroom door frame in soft morning light.",
+      "lines": [
+        {
+          "speaker": "MOM",
+          "text": "Come down here!"
+        },
+        {
+          "speaker": "NARRATOR",
+          "text": "Every Sunday morning, it starts the same way: my mom's voice, from downstairs."
+        }
+      ],
+      "music_cue": "ethiopian-acoustic",
+      "seed": 101,
+      "motion": "kenburns",
+      "max_attempts": 1
+    },
+    {
+      "id": "shot-02-staircase",
+      "duration_s": 5.0,
+      "reason": "Shows the movement of stepping away from the busy week and heading toward family.",
+      "shot_size": "medium_close",
+      "image_prompt": "Feet in house slippers coming down a staircase, lit by soft side morning sunlight.",
+      "motion_prompt": "Slow downward pan following the slippered feet down the stairs.",
+      "lines": [
+        {
+          "speaker": "NARRATOR",
+          "text": "Whatever the week was, we come down."
+        }
+      ],
+      "music_cue": "ethiopian-acoustic",
+      "seed": 102,
+      "motion": "kenburns",
+      "max_attempts": 1
+    },
+    {
+      "id": "shot-03-washing-beans",
+      "duration_s": 5.0,
+      "reason": "Introduces the careful preparation of the coffee ritual already underway.",
+      "shot_size": "close_up",
+      "image_prompt": "Adept hands washing raw green coffee beans in a clay bowl of clear water, water drops glistening in warm morning light, fresh green grass scattered around the coffee-making area.",
+      "characters": [
+        "housekeeper"
+      ],
+      "motion_prompt": "The hands gently swirl the beans in the water; the camera slowly pushes in.",
+      "lines": [
+        {
+          "speaker": "NARRATOR",
+          "text": "Downstairs, the coffee has already begun."
+        }
+      ],
+      "music_cue": "ethiopian-acoustic",
+      "seed": 103,
+      "motion": "wan",
+      "max_attempts": 2
+    },
+    {
+      "id": "shot-04-roasting-beans",
+      "duration_s": 6.0,
+      "reason": "Focuses on the sensory aroma of roasting beans wafting up through the house.",
+      "shot_size": "close_up",
+      "image_prompt": "Darkening coffee beans roasting over glowing embers in a flat pan, gentle smoke rising upward toward a background staircase, fresh green grass scattered around the coffee-making area.",
+      "motion_prompt": "Thin smoke rises slowly from the pan; the camera holds steady with a very slow push in.",
+      "lines": [
+        {
+          "speaker": "NARRATOR",
+          "text": "The beans crackle in the pan, and the smell climbs the stairs before we do."
+        }
+      ],
+      "music_cue": "ethiopian-acoustic",
+      "seed": 104,
+      "motion": "wan",
+      "max_attempts": 2
+    },
+    {
+      "id": "shot-05-jebena-etan",
+      "duration_s": 5.5,
+      "reason": "Captures the unhurried atmosphere enhanced by fragrant frankincense smoke.",
+      "shot_size": "insert",
+      "image_prompt": "A round-bodied black clay coffee pot with a long narrow neck and spout, on glowing coals, beside a small clay incense burner with white frankincense smoke curling upward, fresh green grass scattered around the coffee-making area.",
+      "motion_prompt": "White smoke curls gently upward; the camera slowly pushes in.",
+      "lines": [
+        {
+          "speaker": "NARRATOR",
+          "text": "Etan smoke curls through the room. Nobody is in a hurry."
+        }
+      ],
+      "music_cue": "ethiopian-acoustic",
+      "seed": 105,
+      "motion": "wan",
+      "max_attempts": 2
+    },
+    {
+      "id": "shot-06-popcorn-table",
+      "duration_s": 5.0,
+      "reason": "Highlights the homely snacks, popcorn and sometimes kolo, set out on the big living-room table.",
+      "shot_size": "medium_close",
+      "image_prompt": "A bowl of popcorn and some roasted barley grains on the big table in the middle of the living room; wooden floor, four sofas arranged around the carpeted area.",
+      "motion_prompt": "Gentle pull back from the bowl of popcorn and roasted barley grains to reveal the big table and the sofas around it.",
+      "lines": [
+        {
+          "speaker": "NARRATOR",
+          "text": "There's popcorn, sometimes kolo, and a lot of noise."
+        }
+      ],
+      "music_cue": "ethiopian-acoustic",
+      "seed": 106,
+      "motion": "kenburns",
+      "max_attempts": 1
+    },
+    {
+      "id": "shot-07-abol-first-pour",
+      "duration_s": 6.0,
+      "reason": "Shows the initial round of coffee, abol, as conversation about the week begins.",
+      "shot_size": "medium_wide",
+      "image_prompt": "The family seen from behind, sitting on sofas around a carpet and a big table, small handleless white porcelain coffee cups in their hands, in a living room with a wooden floor and four sofas arranged around a carpeted area with a big table in the middle; in the foreground, the coffee-making area with a round-bodied black clay coffee pot with a long narrow neck and spout and a low wooden coffee stand holding more small handleless white porcelain coffee cups, fresh green grass scattered around the coffee-making area.",
+      "characters": [
+        "family"
+      ],
+      "motion_prompt": "Slow pan left across the family seen from behind on the sofas.",
+      "lines": [
+        {
+          "speaker": "NARRATOR",
+          "text": "With the first cup, abol, we catch up on the week: school, tests, work."
+        }
+      ],
+      "music_cue": "ethiopian-acoustic",
+      "seed": 107,
+      "motion": "kenburns",
+      "max_attempts": 1
+    },
+    {
+      "id": "shot-08-tona-discussion",
+      "duration_s": 6.0,
+      "reason": "Illustrates lively family animated discussions during the second cup, tona.",
+      "shot_size": "medium",
+      "image_prompt": "Silhouettes of two siblings sitting together on one of the living-room sofas, back to camera, gesturing lively in laughter against a warm backlit window, in a living room with a wooden floor and four sofas arranged around a carpeted area with a big table in the middle.",
+      "characters": [
+        "family"
+      ],
+      "motion_prompt": "Slow zoom in toward laughing sibling silhouettes framed by sunlight.",
+      "lines": [
+        {
+          "speaker": "NARRATOR",
+          "text": "With the second, tona, it's university applications, and everyone has an opinion."
+        }
+      ],
+      "music_cue": "ethiopian-acoustic",
+      "seed": 108,
+      "motion": "kenburns",
+      "max_attempts": 1
+    },
+    {
+      "id": "shot-09-baraka-pour",
+      "duration_s": 5.5,
+      "reason": "Focuses on the calmer third round, baraka, bringing peaceful blessing.",
+      "shot_size": "close_up",
+      "image_prompt": "The housekeeper's hand pouring coffee from the round-bodied black clay pot into a small handleless white cup, soft warm late-morning light, fresh green grass scattered around the coffee-making area.",
+      "motion_prompt": "A thin steady stream of coffee pours into the cup; the camera holds still.",
+      "lines": [
+        {
+          "speaker": "NARRATOR",
+          "text": "The third cup is baraka, the blessing. The room gets quieter."
+        }
+      ],
+      "music_cue": "ethiopian-acoustic",
+      "seed": 109,
+      "motion": "wan",
+      "max_attempts": 2,
+      "characters": [
+        "housekeeper"
+      ]
+    },
+    {
+      "id": "shot-10-empty-cups",
+      "duration_s": 6.0,
+      "reason": "Signals that the real value of the ritual is togetherness rather than the drink itself.",
+      "shot_size": "medium_close",
+      "image_prompt": "Small empty handleless white porcelain coffee cups on a low wooden coffee stand, wisps of white frankincense smoke fading into warm soft air, fresh green grass scattered around the coffee-making area.",
+      "motion_prompt": "Slow camera pull back from the empty cups on the low wooden coffee stand.",
+      "lines": [
+        {
+          "speaker": "NARRATOR",
+          "text": "The coffee was never really the point."
+        }
+      ],
+      "music_cue": "ethiopian-acoustic",
+      "seed": 110,
+      "motion": "kenburns",
+      "max_attempts": 1
+    },
+    {
+      "id": "shot-11-house-exterior",
+      "duration_s": 8.0,
+      "reason": "Concludes on the warm family home exterior, grounding the recurring weekly bond.",
+      "shot_size": "wide",
+      "image_prompt": "A two-storey white house behind a white gate with a small garden, late-morning sun.",
+      "motion_prompt": "Slow pull back from the brightly lit family house exterior.",
+      "lines": [
+        {
+          "speaker": "NARRATOR",
+          "text": "It's the one hour every week we're all in the same room. Next Sunday, she'll call again, and we'll come down."
+        }
+      ],
+      "music_cue": "ethiopian-acoustic",
+      "seed": 111,
+      "motion": "kenburns",
+      "max_attempts": 1
+    }
+  ],
+  "end_card": {
+    "text": "Come Down Here\nfor my family",
+    "duration_s": 2.5
+  },
+  "outputs": {
+    "fps": 24,
+    "resolutions": {
+      "16:9": [
+        1280,
+        720
+      ],
+      "9:16": [
+        720,
+        1280
+      ]
+    }
+  }
+}

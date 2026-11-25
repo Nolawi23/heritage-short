@@ -1,6 +1,9 @@
 """Test harness: an isolated outputs/ + runs.jsonl in tmp, and fake providers that count their calls."""
 import json
+import math
 import types
+import wave
+from array import array
 from pathlib import Path
 
 import pytest
@@ -14,7 +17,7 @@ PNG = bytes.fromhex("89504e470d0a1a0a0000000d49484452000000010000000108060000001
 
 @pytest.fixture
 def env(tmp_path, monkeypatch):
-    sb = json.loads((ROOT / "storyboard.json").read_text())
+    sb = json.loads((ROOT / "tests" / "fixtures" / "storyboard.json").read_text())
     ref = tmp_path / "ref.png"
     ref.write_bytes(PNG)
     for ch in sb["characters"]:
@@ -37,10 +40,40 @@ def env(tmp_path, monkeypatch):
     monkeypatch.delenv("STORYBOARD", raising=False)
     calls = {"tts": [], "flux": [], "kaggle": []}
 
-    def fake_tts(model, prompt, style, voice, seed):
-        calls["tts"].append(prompt)
-        n = int(24000 * (0.5 + 0.3 * len(prompt.split())))
-        return (b"\x00\x00" * n, 24000), {"input_tokens": 10, "output_tokens": 50}
+    recordings = {}  # pcm bytes -> [(text, start_s, end_s)]: what the fake "said" and when
+
+    def fake_tts(model, turns, seed):
+        """Speech-like audio: a tone per turn (0.3 s/word), 1.2 s of silence between turns, one request each."""
+        calls["tts"].append([t["text"] for t in turns])
+        rate, pcm, layout = 24000, bytearray(), []
+        for i, t in enumerate(turns):
+            if i:
+                pcm += b"\x00\x00" * int(1.2 * rate)
+            n = int(rate * (0.2 + 0.3 * len(t["text"].split())))
+            layout.append((t["text"], len(pcm) / 2 / rate, (len(pcm) / 2 + n) / rate))
+            f = 180 + 37 * (sum(map(ord, t["text"])) % 20)  # a distinct tone per line, so pieces are unambiguous
+            pcm += array("h", (int(8000 * math.sin(2 * math.pi * f * k / rate)) for k in range(n))).tobytes()
+        recordings[bytes(pcm)] = layout
+        return (bytes(pcm), rate), {"input_tokens": 10, "output_tokens": 50}
+
+    def fake_transcribe(ctx, wav):
+        """Stand-in for faster-whisper: word timestamps from the known layout, also for a cut piece of a recording."""
+        with wave.open(str(wav)) as w:
+            rate, pcm = w.getframerate(), w.readframes(w.getnframes())
+        for full, layout in recordings.items():
+            at = full.find(pcm)
+            if at < 0 or at % 2:
+                continue
+            off, dur = at / 2 / rate, len(pcm) / 2 / rate
+            out = []
+            for text, a, b in layout:
+                ws = text.split()
+                for k, word in enumerate(ws):
+                    s0, e0 = a + (b - a) * k / len(ws), a + (b - a) * (k + 1) / len(ws)
+                    if off <= (s0 + e0) / 2 <= off + dur:
+                        out.append((word, s0 - off, e0 - off))
+            return out
+        return []  # audio the fake never produced: nothing intelligible
 
     def fake_flux(cfg, prompt, seed, w, h, refs=()):
         calls["flux"].append(prompt)
@@ -61,6 +94,7 @@ def env(tmp_path, monkeypatch):
                 "status": "complete", "failure": "", "wall_s": 61, "kernel": f"u/heritage-short-{stage}", "job_id": "t"}
 
     monkeypatch.setattr(narration, "tts", fake_tts)
+    monkeypatch.setattr(narration, "transcribe", fake_transcribe)
     monkeypatch.setattr(keyframes, "flux_generate", fake_flux)
     monkeypatch.setattr(kaggle_job, "run", fake_kaggle)
     return types.SimpleNamespace(tmp=tmp_path, sb_path=sb_path, runs=tmp_path / "runs.jsonl", calls=calls)

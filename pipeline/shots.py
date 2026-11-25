@@ -20,6 +20,14 @@ from .keyframes import keyframe_path
 
 NOTEBOOK = "wan_i2v.ipynb"
 TEST_FRAMES = 49
+TEST_SHOT = {"id": "test", "motion_prompt": "Steam rises slowly; the camera pushes in very slowly.", "seed": 42,
+             "max_attempts": 1}
+
+
+def _per_video_s(gpu_s, n_frames, fps) -> str:
+    if not gpu_s or not n_frames:
+        return "no timing"
+    return f"{gpu_s / (n_frames / fps):.0f} GPU s per second of video"
 
 
 def wan_settings(ctx: c.Ctx) -> dict:
@@ -43,32 +51,38 @@ def clip_status(ctx: c.Ctx, shot: dict) -> tuple[str, str]:
     return "pending", key
 
 
-def run(ctx: c.Ctx, test: bool = False) -> None:
+def run(ctx: c.Ctx, test: bool = False, image: str | None = None) -> None:
     model = c.model_cfg(ctx, "wan")["id"]
     settings = wan_settings(ctx)
-    wan_shots = [s for s in ctx.sb["shots"] if s["motion"] == "wan"]
-    if test:
-        wan_shots = wan_shots[:1] or ctx.sb["shots"][:1]
-        settings = settings | {"frames": TEST_FRAMES}
     pending, keep = [], set()
-    for shot in wan_shots:
+    if test:  # one short clip, cached under its own key; --image measures the T4 before keyframes exist
+        settings = settings | {"frames": TEST_FRAMES}
+        shot = TEST_SHOT if image else ([s for s in ctx.sb["shots"] if s["motion"] == "wan"] or ctx.sb["shots"])[0]
+        kf = c.repo_path(image) if image else keyframe_path(ctx, shot)
+        key = c.Cache.key("shots-test", model, settings, shot["motion_prompt"], shot["seed"], {"keyframe": c.sha256_file(kf)})
+        done = ctx.cache.entry(key)
+        if ctx.cache.lookup(key) and done:
+            print(f"shots-test: cached, {done.get('frames')} frames took {done.get('gpu_seconds')} GPU s "
+                  f"({_per_video_s(done.get('gpu_seconds'), done.get('frames'), settings['fps'])})")
+            return
+        pending.append((shot, key, kf))
+    for shot in ([] if test else [s for s in ctx.sb["shots"] if s["motion"] == "wan"]):
         key = clip_key(ctx, shot, settings)
         obj = ctx.cache.lookup(key)
-        if obj and not test:
+        if obj:
             c.log_hit("shots", "kaggle", model, key, shot_id=shot["id"], seed=shot["seed"])
             c.link(obj, ctx.out / "clips" / f"{shot['id']}.mp4")
             keep.add(f"{shot['id']}.mp4")
-        elif ctx.cache.is_fallback(key) and not test:
+        elif ctx.cache.is_fallback(key):
             print(f"  {shot['id']}: Wan failed earlier -> Ken Burns fallback (FORCE=1 retries)")
-        elif obj is None or test:
-            pending.append((shot, key))
+        else:
+            pending.append((shot, key, keyframe_path(ctx, shot)))
     if not pending:
         c.prune_links(ctx.out / "clips", keep)
         print(f"shots: nothing to render ({len(keep)} clips cached)")
         return
     files, jobs = {}, []
-    for shot, key in pending:
-        kf = keyframe_path(ctx, shot)
+    for shot, key, kf in pending:
         sha = c.sha256_file(kf)
         files[f"{sha}{kf.suffix}"] = kf
         jobs.append({"id": shot["id"], "key": key, "image": f"{sha}{kf.suffix}", "image_sha256": sha,
@@ -85,19 +99,21 @@ def run(ctx: c.Ctx, test: bool = False) -> None:
                        gpu_seconds=ln.get("gpu_seconds", 0), latency_ms=ln.get("gpu_seconds", 0) * 1000,
                        list_price_usd=c.list_price("kaggle_t4", gpu_seconds=ln.get("gpu_seconds", 0)),
                        status=ln.get("status", "error"), attempt=ln.get("attempt", 1), error=ln.get("error"))
-    for shot, key in pending:
+    for shot, key, _ in pending:
         r = res["results"].get(shot["id"], {})
         f = res["dir"] / r.get("file", "missing")
         if r.get("status") == "ok" and f.exists():
             obj = ctx.cache.put(key, f, ".mp4", "shots", keep=not test, frames=r.get("frames"),
                                 gpu_seconds=r.get("gpu_seconds"), seed_used=r.get("seed"))
             if test:
-                print(f"  TEST clip {shot['id']}: {r.get('frames')} frames in {r.get('gpu_seconds')} GPU s "
-                      f"(peak {r.get('peak_vram_gb')} GB) -> {obj}")
+                print(f"  TEST clip: {r.get('frames')} frames in {r.get('gpu_seconds')} GPU s, peak "
+                      f"{r.get('peak_vram_gb')} GB ({_per_video_s(r.get('gpu_seconds'), r.get('frames'), settings['fps'])})")
                 continue
             c.link(obj, ctx.out / "clips" / f"{shot['id']}.mp4")
             keep.add(f"{shot['id']}.mp4")
-        elif not test:
+        elif test:
+            print(f"  TEST clip failed: {r.get('error') or res['failure'] or res['status']}")
+        else:
             reason = r.get("error") or res["failure"] or f"kernel {res['status']}, no clip"
             ctx.cache.mark(key, "fallback", "shots", reason=reason[:300])
             c.log_call("shots", "ffmpeg", "kenburns", shot_id=shot["id"], seed=shot["seed"], status="fallback",
@@ -112,8 +128,9 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     c.storyboard_arg(ap)
     ap.add_argument("--test", action="store_true", help="render one short clip to measure the T4")
+    ap.add_argument("--image", help="with --test: use this still instead of a keyframe")
     a = ap.parse_args()
-    run(c.load_storyboard(a.storyboard), test=a.test)
+    run(c.load_storyboard(a.storyboard), test=a.test, image=a.image)
 
 
 if __name__ == "__main__":

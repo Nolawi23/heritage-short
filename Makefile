@@ -2,7 +2,7 @@
 #
 #   STORYBOARD=path   storyboard to use (default storyboard.json; others write to outputs/variants/<stem>/)
 #   FORCE=1           ignore the cache and regenerate everything (costs quota!)
-#   VERTICAL=crop|blur|both   9:16 treatment (default crop)
+#   VERTICAL=crop|blur|both   9:16 treatment of Wan clips (default both: film_9x16.mp4 + film_9x16_blur.mp4)
 #   PREVIEW=1         assemble before Kaggle ran (Ken Burns for missing clips, placeholder score)
 #   FFMPEG=/FFPROBE=  override the ffmpeg binaries (default: Homebrew ffmpeg-full if installed)
 
@@ -12,7 +12,7 @@ VENV       := .venv
 PY         := $(if $(wildcard $(VENV)/bin/python),$(VENV)/bin/python,$(PYTHON))
 STORYBOARD ?= storyboard.json
 FORCE      ?= 0
-VERTICAL   ?= crop
+VERTICAL   ?= both
 PREVIEW    ?= 0
 RUN_ID     := $(or $(RUN_ID),$(shell date -u +%Y%m%dT%H%M%SZ)-make)
 export STORYBOARD FORCE VERTICAL PREVIEW RUN_ID FFMPEG FFPROBE
@@ -20,7 +20,7 @@ export STORYBOARD FORCE VERTICAL PREVIEW RUN_ID FFMPEG FFPROBE
 STAGE := $(PY) -m pipeline
 
 .PHONY: help setup smoke validate test check-secrets script narration radio keyframes shots shots-test music \
-        assemble costs film gc
+        assemble budget costs film gc
 
 help:
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | sed -E 's/:.*## /\t/' | expand -t 16
@@ -61,14 +61,17 @@ keyframes: ## FLUX reference sheet (approval) + one keyframe per shot
 shots: ## Wan 2.2 clips on a Kaggle T4 for changed "wan" shots
 	$(STAGE).shots $(STORYBOARD)
 
-shots-test: ## render ONE short Wan clip on Kaggle to measure the T4
-	$(STAGE).shots $(STORYBOARD) --test
+shots-test: ## render ONE short Wan clip on Kaggle to measure the T4 (IMAGE=still.jpg before keyframes exist)
+	$(STAGE).shots $(STORYBOARD) --test $(if $(IMAGE),--image $(IMAGE))
 
 music: ## ACE-Step 1.5 candidates on a Kaggle T4 (choose one with --select)
 	$(STAGE).music $(STORYBOARD)
 
 assemble: ## ffmpeg: cut, subtitles, end card, ducking, loudnorm, 16:9 + 9:16
 	$(STAGE).assemble $(STORYBOARD)
+
+budget: ## today's Gemini requests used / left per model (from runs.jsonl; resets midnight Pacific)
+	@$(STAGE).common budget
 
 costs: ## per-stage calls / latency / GPU minutes / list price -> COSTS.md
 	$(STAGE).report_costs

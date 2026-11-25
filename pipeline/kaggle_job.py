@@ -54,7 +54,7 @@ def publish_dataset(k, user: str, stage: str, files: dict[str, Path], build: Pat
     for name, src in files.items():
         shutil.copyfile(src, d / name)
     (d / "dataset-metadata.json").write_text(json.dumps(
-        {"title": slug, "id": ref, "licenses": [{"name": "copyright-authors"}]}, indent=2))
+        {"title": slug, "id": ref, "licenses": [{"name": "CC0-1.0"}]}, indent=2))
     try:
         exists = bool(k.dataset_status(ref))
     except Exception:  # noqa: BLE001 - 404 means first run
@@ -114,7 +114,8 @@ def run(stage: str, notebook: str, jobs: list[dict], config: dict, models: dict,
     "status": kernel status, "failure": message, "wall_s": seconds}."""
     kcfg = models["kaggle"]
     payload = {"config": config, "jobs": jobs}
-    job_id = c.sha256_bytes(c.canonical(payload).encode())[:12]
+    # unique per push (run id + time), so output left over from an earlier kernel version is detected as stale
+    job_id = c.sha256_bytes((c.canonical(payload) + c.RUN_ID + str(time.time())).encode())[:12]
     payload["job_id"] = job_id
     build = c.outputs_root() / ".kaggle" / stage / job_id
     k = api()

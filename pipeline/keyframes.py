@@ -88,9 +88,9 @@ def shot_prompt(sb: dict, shot: dict) -> str:
 
 
 def ref_prompt(sb: dict, ch: dict) -> str:
-    return (f"Character reference sheet: {ch['description']}. A full-body front view and a head-and-shoulders "
-            f"portrait side by side on a plain neutral background, even soft light. {sb['style_block']} "
-            "No text, letters, numbers, labels or watermarks.")
+    return (f"Character reference sheet: {ch['description']}. The same character shown three times side by side, "
+            f"exactly as they appear in the film, with consistent clothing, proportions and colours, on a plain "
+            f"neutral background, even soft light. {sb['style_block']} No text, letters, numbers, labels or watermarks.")
 
 
 def ref_key(ctx: c.Ctx, ch: dict, n: int) -> str:

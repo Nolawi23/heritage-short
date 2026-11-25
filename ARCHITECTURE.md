@@ -24,6 +24,27 @@ cross-references (unique ids, known speakers, cues and characters, existing refe
 | `music` | `music_cues` | `out/music/<cue>_c<n>.wav` (candidates), `out/music/<cue>.wav` (selected) |
 | `assemble` | everything above | `out/film_16x9.mp4`, `out/film_9x16.mp4` (`_blur` variant), `out/subtitles.srt` (file) |
 
+**Narration batch mode** (`narration.py`). The free tier allows only 10 TTS requests/day, so one request per line
+does not fit a 12-line film. All uncached lines go out in **one multi-speaker request** (at most 2 speakers per
+request, here MOM + NARRATOR; more speakers are split into consecutive groups). Each line is its own turn with its own
+`speaker` and `style`, separated by `<long pause>` tags. The recording is cached in `.scratch/`, so it can be
+re-analysed without a new request. The model does not keep the pauses consistent: line gaps of 1.0–2.3 s against
+pauses inside lines of up to 1.0 s (FAILURES.md #13). So the split is a **local forced alignment**:
+
+1. faster-whisper `small.en` (CPU, int8, no API, MIT) transcribes the recording with word timestamps.
+2. The heard words are aligned to the expected lines (`difflib` on word tokens). At every line boundary the cut goes
+   into the longest ffmpeg `silencedetect` silence between the last word of one line and the first word of the next.
+3. Every piece is **re-transcribed on its own** (no prompt, so the check is not biased toward the script) and must
+   reach a fuzzy match score of ≥ 0.80 with its line. The score is character-level, so "Ethan" for *Etan* still counts.
+   The piece must also be plausible for its word count.
+
+The scores, and what was heard, are logged per line (`provider: local`, `params.scores`). Pieces that pass are stored under
+their **own per-line key**, the same key a single-line request would use, so a later edit of one line costs exactly
+one single-line request (the no-names variant: 1 request). Lines that fail are logged (`status: batch_split_failed`)
+and re-requested in batches of at most 4 lines, then one request per line, and only if today's budget covers all of
+them; otherwise the stage stops before sending anything. The batch is one `runs.jsonl` line whose `params.lines` lists the line ids it
+covered. `python -m pipeline.narration --voice-test NARRATOR=Charon,Achird` compares two voices in one request.
+
 **Timeline** (`narration.py`): shot duration = max(`duration_s`, narration + 0.5 s), rounded up to whole frames at
 24 fps. Narration starts 0.25 s after the cut. Every line gets absolute start and end times, which drive subtitles
 and audio placement. Music spans come from consecutive shots that share a `music_cue`; the last span also covers the end card.
@@ -45,6 +66,7 @@ support, `accepts_reference_images` becomes false and the pipeline falls back to
 ```
 key      = sha256(canonical JSON {stage, model, params, prompt, seed, upstream: {name: sha256 of input file}})
 object   = outputs/cache/<key>.<ext>        committed (≤ 100 MB per file)
+lock     = outputs/cache_manifest.lock      saves re-read and merge under a file lock (stages may run concurrently)
            outputs/.scratch/<key>.<ext>     unselected candidates, gitignored
 manifest = outputs/cache_manifest.json      key → {stage, file, sha256, bytes, run_id, status, …}
 ```
@@ -102,8 +124,9 @@ Only called when at least one key is missing. One batch, one kernel run:
   to each shot is logged (`provider: ffmpeg, model: fit`).
 - **Ken Burns shots and fallbacks:** each aspect ratio is cropped from the original keyframe, and the direction
   cycles (in, right, out, left, up, down).
-- **9:16:** centre crop by default; `VERTICAL=blur` puts a sharp fit over a blurred fill, and `both` renders the two
-  for comparison.
+- **9:16:** Wan clips exist only in 16:9, so `film_9x16.mp4` centre-crops them and `film_9x16_blur.mp4` puts a sharp
+  fit on a blurred fill (`VERTICAL=both`, the default; `crop` or `blur` render one). Ken Burns shots are always cropped
+  from the original keyframe at full quality.
 - **Audio:** the narration stem (a per-speaker effect, e.g. MOM "downstairs" = band-pass + short echo) and the music
   bed are gain-matched to −20 LUFS. The music is ducked with `sidechaincompress=threshold=0.02:ratio=6:attack=300:release=1500`,
   the two are mixed, then two-pass `loudnorm` brings the mix to −14 LUFS / −1 dBTP (the measured result is logged).

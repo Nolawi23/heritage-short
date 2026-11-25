@@ -148,7 +148,7 @@ def validate(sb: dict) -> list[str]:
         if c["reference_image"] and not repo_path(c["reference_image"]).exists():
             errors.append(f"characters/{c['id']}: reference_image {c['reference_image']} does not exist")
     for c in sb["music_cues"]:
-        if c["end_s"] <= c["start_s"]:
+        if "start_s" in c and "end_s" in c and c["end_s"] <= c["start_s"]:
             errors.append(f"music_cues/{c['id']}: end_s must be after start_s")
     return errors
 
@@ -206,6 +206,7 @@ class Cache:
         self.scratch = self.root / ".scratch"
         self.manifest_path = self.root / "cache_manifest.json"
         self.manifest = json.loads(self.manifest_path.read_text()) if self.manifest_path.exists() else {}
+        self._dirty: dict[str, dict | None] = {}  # this process's changes, merged into the file on save()
 
     @staticmethod
     def key(stage: str, model: str, params: dict, prompt: str | None = None, seed: int | None = None,
@@ -248,10 +249,8 @@ class Cache:
         else:
             shutil.copyfile(src, tmp)
         os.replace(tmp, dest)
-        self.manifest[key] = {"stage": stage, "file": dest.name, "sha256": sha256_file(dest),
-                              "bytes": dest.stat().st_size, "kept": keep, "run_id": RUN_ID,
-                              "created": now_iso(), "status": "ok", **meta}
-        self.save()
+        self._set(key, {"stage": stage, "file": dest.name, "sha256": sha256_file(dest), "bytes": dest.stat().st_size,
+                        "kept": keep, "run_id": RUN_ID, "created": now_iso(), "status": "ok", **meta})
         return dest
 
     def promote(self, key: str) -> Path:
@@ -262,19 +261,40 @@ class Cache:
         if src.parent != self.dir:
             self.dir.mkdir(parents=True, exist_ok=True)
             shutil.move(src, self.dir / src.name)
-            self.manifest[key]["kept"] = True
-            self.save()
+            self._set(key, self.manifest[key] | {"kept": True})
         return self.dir / src.name
 
     def mark(self, key: str, status: str, stage: str, **meta) -> None:
-        self.manifest[key] = {"stage": stage, "status": status, "run_id": RUN_ID, "created": now_iso(), **meta}
+        self._set(key, {"stage": stage, "status": status, "run_id": RUN_ID, "created": now_iso(), **meta})
+
+    def drop(self, key: str) -> None:
+        self.manifest.pop(key, None)
+        self._dirty[key] = None
+
+    def _set(self, key: str, entry: dict) -> None:
+        self.manifest[key] = entry
+        self._dirty[key] = entry
         self.save()
 
     def save(self) -> None:
+        """Merge this process's changes into the manifest on disk under a lock.
+
+        Stages can run concurrently (e.g. a Kaggle job for 30 min while narration runs); writing the whole
+        in-memory copy would silently drop entries other processes added in the meantime."""
+        import fcntl
         self.manifest_path.parent.mkdir(parents=True, exist_ok=True)
-        tmp = self.manifest_path.with_suffix(".tmp")
-        tmp.write_text(json.dumps(self.manifest, indent=1, sort_keys=True) + "\n")
-        os.replace(tmp, self.manifest_path)
+        with open(self.manifest_path.with_suffix(".lock"), "w") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            disk = json.loads(self.manifest_path.read_text()) if self.manifest_path.exists() else {}
+            for k, v in self._dirty.items():
+                if v is None:
+                    disk.pop(k, None)
+                else:
+                    disk[k] = v
+            tmp = self.manifest_path.with_suffix(".tmp")
+            tmp.write_text(json.dumps(disk, indent=1, sort_keys=True) + "\n")
+            os.replace(tmp, self.manifest_path)
+        self.manifest, self._dirty = disk, {}
 
 
 def link(target: Path, link_path: Path) -> Path:
@@ -342,6 +362,40 @@ def log_call(stage: str, provider: str, model: str, *, shot_id: str | None = Non
     with open(path, "a") as f:
         f.write(redact(json.dumps(rec, ensure_ascii=False, default=str)) + "\n")
     return rec
+
+
+def quota_day_start() -> datetime:
+    """Gemini free-tier daily quotas reset at midnight Pacific time."""
+    from zoneinfo import ZoneInfo
+    pt = datetime.now(ZoneInfo("America/Los_Angeles"))
+    return pt.replace(hour=0, minute=0, second=0, microsecond=0).astimezone(timezone.utc)
+
+
+def quota_reset_text() -> str:
+    from datetime import timedelta
+    nxt = (quota_day_start() + timedelta(days=1))
+    return f"{nxt:%H:%M} UTC = {nxt.astimezone():%H:%M} local, midnight Pacific"
+
+
+def requests_today(model: str) -> tuple[int, bool]:
+    """(requests sent to `model` since the quota reset, whether a daily-quota 429 was seen).
+
+    Counted from runs.jsonl: every non-cached attempt (failed ones count on the free tier), except
+    404s (unknown model, nothing served) and quota refusals."""
+    start, used, exhausted = quota_day_start(), 0, False
+    path = runs_path()
+    if not path.exists():
+        return 0, False
+    for line in path.read_text().splitlines():
+        r = json.loads(line)
+        if r["model"] != model or r.get("cache_hit") or datetime.fromisoformat(r["ts"]) < start:
+            continue
+        err = r.get("error") or ""
+        if r["status"] == "quota_exhausted":
+            exhausted |= bool(re.search(r"per day|PerDay|daily", err, re.I))
+        elif not err.startswith(("Error code: 404", "404")):
+            used += 1
+    return used, exhausted
 
 
 def log_hit(stage: str, provider: str, model: str, key: str, **kw) -> None:
@@ -436,6 +490,7 @@ def call_model(fn, *, stage: str, provider: str, model: str, throttle_key: str, 
             # before retrying instead of burning requests on a demand spike.
             base = 15 * 2 ** (attempt - 1) if err.status == 503 else 2 ** attempt
             delay = err.retry_after if err.retry_after else min(120.0, base + random.random())
+            delay = max(delay, models.get("min_retry_s", {}).get(throttle_key, 0))  # e.g. TTS: never within a minute
             print(f"  {provider}: {err.status or 'network'} error, retry {attempt + 1}/{max_attempts} in {delay:.0f}s",
                   file=sys.stderr)
             time.sleep(delay)
@@ -504,7 +559,7 @@ def gc(delete: bool) -> None:
         print(f"{'deleting' if delete else 'unreferenced'}: {p.name} ({p.stat().st_size / 1e6:.1f} MB)")
         if delete:
             p.unlink()
-            cache.manifest.pop(p.stem, None)
+            cache.drop(p.stem)
     if delete:
         cache.save()
     print(f"{len(stale)} unreferenced object(s), {sum(p.stat().st_size for p in stale if p.exists()) / 1e6:.1f} MB"
@@ -518,8 +573,19 @@ def main() -> None:
     storyboard_arg(v)
     g = sub.add_parser("gc")
     g.add_argument("--delete", action="store_true")
+    sub.add_parser("budget")
     a = ap.parse_args()
-    if a.cmd == "validate":
+    if a.cmd == "budget":
+        models = json.loads(models_path().read_text())
+        for slot in ("gemini_tts", "gemini_text"):
+            m = models.get(slot) or {}
+            used, exhausted = requests_today(m.get("id", ""))
+            limit = m.get("rpd")
+            left = 0 if exhausted else (limit - used if limit else None)
+            print(f"{slot:12} {m.get('id', '?'):24} used {used}/{limit or '?'} today, "
+                  f"{'unknown' if left is None else max(0, left)} left")
+        print(f"quotas reset at {quota_reset_text()}")
+    elif a.cmd == "validate":
         ctx = load_storyboard(a.storyboard)
         n_words = sum(len(ln["text"].split()) for s in ctx.sb["shots"] for ln in s["lines"])
         print(f"{ctx.path.name}: valid ({len(ctx.sb['shots'])} shots, {n_words} narration words) -> outputs in "

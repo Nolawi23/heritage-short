@@ -24,7 +24,9 @@ Gemini 3.8 Flash TTS also offers voice design, replication and remixing, and the
   `story/notes.md`, narration text and the script prompt go there, so they must not contain full names, addresses,
   dates of birth, health or financial details. `pipeline/script.py` and `story/notes.md` repeat this warning.
 - **Cloudflare Workers AI:** image prompts and the approved reference sheet are sent to Workers AI.
-- **Kaggle:** keyframes are uploaded as a **private** dataset and the notebooks are **private** kernels.
+- **Kaggle:** keyframes are uploaded as a **private** dataset and the notebooks are **private** kernels. The dataset
+  has to declare a licence; it is `CC0-1.0` (Kaggle rejected `copyright-authors`), which is acceptable only because it
+  holds nothing but AI-generated keyframes and stays private.
 - Secrets live only in `.env` (gitignored); `make check-secrets` and the pre-commit hook block keys in tracked files, and
   the Kaggle username is redacted from logs.
 

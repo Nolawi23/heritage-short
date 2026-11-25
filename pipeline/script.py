@@ -1,8 +1,9 @@
 """Draft a storyboard from story/notes.md with Gemini (NOT part of `make film`).
 
 Never overwrites an existing storyboard without --force: the draft is written to <stem>.draft.json instead.
-The draft must validate against the schema and pass the brief's checks (8-12 shots, 130-220 narration
-words, a reason per shot, at least 4 different shot sizes, shot 1 = a MOM line then a NARRATOR line);
+The draft must validate against the schema and pass the checks (8-12 shots, a reason per shot, at least 4
+different shot sizes, shot 1 = a MOM line then a NARRATOR line, every line verbatim from the quoted lines in
+the notes, motion "kenburns" for now; 130-220 narration words is reported, not enforced);
 if it does not, Gemini gets one repair round with the list of problems.
 
 Privacy: notes.md is sent to the Gemini API. On the free tier Google may use it to improve its
@@ -13,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 
 from . import common as c
@@ -25,16 +27,26 @@ Draft a storyboard as ONE JSON object that validates against this JSON Schema:
 {schema}
 
 Hard rules:
-- 8 to 12 shots. Total narration across all lines: 130 to 220 words, in English.
-- Shot 1 has exactly two lines: first a MOM line, then a NARRATOR line. Speakers must be keys of narration.voices
-  (at least MOM and NARRATOR); voices are preset Gemini TTS voice names (e.g. Sulafat, Charon, Kore, Aoede, Gacrux).
-- Every shot has a one-sentence "reason" stating why the shot exists in the story.
-- Vary shot_size (use at least 4 different values). Use "wan" motion for at most half of the shots
-  (the ones that need real movement) and "kenburns" for the others.
-- image_prompt: only what is visible; no text, signs or lettering in the image; subject centred.
+- 8 to 12 shots. Total narration across all lines: about 130 to 220 words, in English.
+- If the notes list numbered shots with quoted lines, follow them exactly: same order, one shot per numbered item,
+  every quoted line copied VERBATIM (same words, same punctuation) as the text of one line. A line labelled MOM has
+  speaker "MOM"; every other line has speaker "NARRATOR".
+- Shot 1 has exactly two lines: first a MOM line, then a NARRATOR line.
+- narration.voices: MOM = {{"voice": "Sulafat", "effect": "downstairs"}}, NARRATOR = {{"voice": "Charon"}}; write a short
+  style_instruction for each from the notes (how it is said, not what is said).
+- Every shot has a one-sentence "reason" stating why the shot exists in the story (expand the notes' reason).
+- Vary shot_size (use at least 4 different values) to suit each shot.
+- Set motion to "kenburns" for every shot (the author picks the "wan" shots after a GPU test), max_attempts 1.
+- image_prompt and motion_prompt are read by image/video models that do not know non-English words: describe
+  culture-specific objects visually (e.g. "a round-bodied black clay coffee pot with a long narrow neck and spout",
+  not its local name). Keep local words in reasons and narration only.
+- image_prompt: only what is visible; no text, signs or lettering in the image; subject centred. Respect the notes'
+  rules on people (e.g. no faces: seen from behind, in silhouette, or only hands).
+- characters: only recurring people who are actually visible; describe them as they appear (never a face).
 - motion_prompt: only motion and camera movement.
 - style_block: one consistent visual style for every image.
-- music_cues: instrumental; caption = instruments and mood only (tempo and key go in bpm and key).
+- music_cues: instrumental; caption = instruments and mood only (tempo and key go in bpm and key); omit start_s and
+  end_s (the span is derived from the timeline).
 - end_card.duration_s between 2 and 3. outputs = {{"fps": 24, "resolutions": {{"16:9": [1280, 720], "9:16": [720, 1280]}}}}.
 - characters[].reference_image = null. Seeds: distinct integers.
 Return only the JSON.
@@ -44,7 +56,13 @@ Story notes:
 """
 
 
-def checks(sb: dict) -> list[str]:
+def _norm(t: str) -> str:
+    return " ".join(t.replace("\u2019", "'").replace("\u2018", "'").replace("\u201c", '"').replace("\u201d", '"').split())
+
+
+def checks(sb: dict, notes: str = "") -> list[str]:
+    for meta in ("$schema", "$id"):  # models like to echo schema metadata; it carries no content
+        sb.pop(meta, None)
     errs = c.validate(sb)
     if errs:
         return errs
@@ -54,7 +72,12 @@ def checks(sb: dict) -> list[str]:
     if not 8 <= len(shots) <= 12:
         errs.append(f"need 8-12 shots, got {len(shots)}")
     if not 130 <= words <= 220:
-        errs.append(f"need 130-220 narration words, got {words}")
+        print(f"  note: {words} narration words (target 130-220)")
+    quoted = {_norm(q) for q in re.findall(r'"([^"]+)"', _norm(notes))}
+    if quoted:
+        errs += [f"shot {s['id']}: line not verbatim from the notes: {ln['text']!r}"
+                 for s in shots for ln in s["lines"] if _norm(ln["text"]) not in quoted]
+    errs += [f"shot {s['id']}: motion must be kenburns for now" for s in shots if s["motion"] != "kenburns"]
     if len(sizes) < 4:
         errs.append(f"need at least 4 different shot sizes, got {sorted(sizes)}")
     if [ln["speaker"] for ln in shots[0]["lines"]] != ["MOM", "NARRATOR"]:
@@ -90,13 +113,13 @@ def run(target: Path, force_write: bool) -> None:
         call = dict(stage="script", provider="gemini", model=cfg["id"], throttle_key="gemini_text", models=ctx_models,
                     price_kind="gemini_text", seed=SEED)
         text = c.call_model(lambda: generate(cfg["id"], prompt), params={"prompt": prompt[-2000:]}, **call)
-        sb, errs = _parse(text)
+        sb, errs = _parse(text, notes)
         if errs:
             print("draft has problems, asking for one repair:\n  " + "\n  ".join(errs[:10]))
             fix = (prompt + "\n\nYour previous draft:\n" + text + "\n\nFix these problems and return the full JSON:\n- "
                    + "\n- ".join(errs[:20]))
             text = c.call_model(lambda: generate(cfg["id"], fix), params={"prompt": fix[-2000:], "repair": True}, **call)
-            sb, errs = _parse(text)
+            sb, errs = _parse(text, notes)
             if errs:
                 raise c.PipelineStop("draft still invalid after one repair:\n  " + "\n  ".join(errs[:20]))
         cache.put(key, (json.dumps(sb, indent=2, ensure_ascii=False) + "\n").encode(), ".json", "script")
@@ -107,12 +130,12 @@ def run(target: Path, force_write: bool) -> None:
           + ("" if dest == target else f"  ({target.name} exists; use FORCE=1 / --force to overwrite)"))
 
 
-def _parse(text: str) -> tuple[dict, list[str]]:
+def _parse(text: str, notes: str) -> tuple[dict, list[str]]:
     try:
         sb = json.loads(text)
     except json.JSONDecodeError as e:
         return {}, [f"not valid JSON: {e}"]
-    return sb, checks(sb)
+    return sb, checks(sb, notes)
 
 
 def main() -> None:

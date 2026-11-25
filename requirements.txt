@@ -6,3 +6,4 @@ python-dotenv==1.2.4
 kaggle==2.2.5
 six==1.17.0  # imported by kaggle 2.2.5 but not declared as its dependency
 pytest==9.2.0
+faster-whisper==1.2.1  # local word timestamps to split batch narration (no API)

@@ -3,14 +3,21 @@
   "gemini_text": {
     "id": "gemini-3.6-flash",
     "licence": "Proprietary API (Gemini API Additional Terms). Free tier: content may be used to improve Google products.",
-    "pinned": "2026-11-25"
+    "pinned": "2026-11-25",
+    "rpd": 20,
+    "rpm": 5,
+    "limits_measured": "2026-11-25, AI Studio rate-limit page (gemini-3.6-flash)"
   },
   "gemini_tts": {
     "id": "gemini-3.8-flash-tts",
     "licence": "Proprietary API (Gemini API Additional Terms). Free tier: content may be used to improve Google products.",
     "pinned": "2026-11-25",
     "accepts_seed": true,
-    "sample_rate": 24000
+    "sample_rate": 24000,
+    "rpd": 10,
+    "rpm": 3,
+    "max_attempts": 2,
+    "limits_measured": "2026-11-25, AI Studio rate-limit page"
   },
   "flux": {
     "id": "@cf/black-forest-labs/flux-2-klein-4b",
@@ -33,12 +40,13 @@
     "licence": "Apache-2.0",
     "width": 1280,
     "height": 704,
-    "frames": 121,
-    "steps": 30,
+    "frames": 81,
+    "steps": 20,
     "guidance": 5.0,
     "fps": 24,
     "dtype": "float16",
-    "negative_prompt": "blurry, low quality, distorted faces, deformed hands, extra fingers, text, subtitles, watermark, logo, flicker, jitter, overexposed, static frame"
+    "negative_prompt": "blurry, low quality, distorted faces, deformed hands, extra fingers, text, subtitles, watermark, logo, flicker, jitter, overexposed, static frame",
+    "measured": "2026-11-25 shots-test: 49 frames, 30 steps, 1280x704 = 1330.8 GPU s (652 GPU s per video s), peak 15.22 GB"
   },
   "music": {
     "id": "ACE-Step/acestep-v15-xl-turbo-diffusers",
@@ -55,8 +63,18 @@
     "timeout_s": 10800
   },
   "min_interval_s": {
-    "gemini_text": 4,
+    "gemini_text": 13,
     "gemini_tts": 21,
     "cloudflare": 1
+  },
+  "min_retry_s": {
+    "gemini_tts": 60
+  },
+  "aligner": {
+    "id": "faster-whisper/small.en",
+    "size": "small.en",
+    "compute_type": "int8",
+    "licence": "MIT (faster-whisper and OpenAI Whisper weights)",
+    "runs": "locally on CPU, no API"
   }
 }

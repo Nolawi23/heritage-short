@@ -1,6 +1,7 @@
 """Stage 4: original score with ACE-Step 1.5 on a Kaggle T4 (same pattern as shots.py).
 
-For every cue: 3 instrumental candidates (seed, seed+1, seed+2). The caption carries mood and
+For every cue: 3 instrumental candidates (seed, seed+1, seed+2); with ab_caption set, the last candidate uses
+that caption instead (A/B experiment). The caption carries mood and
 instrumentation only; bpm, key and time signature go in as metadata. Each candidate is
 duration_s long (30-60 s); assembly joins/trims the chosen one to the cue's span in the timeline.
 
@@ -28,8 +29,13 @@ def cue_params(ctx: c.Ctx, cue: dict) -> dict:
             "shift": m["shift"], "dtype": m["dtype"]}
 
 
+def caption(ctx: c.Ctx, cue: dict, n: int) -> str:
+    """Candidate n's caption: the last candidate uses ab_caption when the cue defines one (A/B experiment)."""
+    return cue["ab_caption"] if cue.get("ab_caption") and n == c.model_cfg(ctx, "music")["candidates"] else cue["caption"]
+
+
 def cand_key(ctx: c.Ctx, cue: dict, n: int) -> str:
-    return c.Cache.key("music", c.model_cfg(ctx, "music")["id"], cue_params(ctx, cue), cue["caption"],
+    return c.Cache.key("music", c.model_cfg(ctx, "music")["id"], cue_params(ctx, cue), caption(ctx, cue, n),
                        cue.get("seed", 7) + n - 1)
 
 
@@ -57,7 +63,7 @@ def run(ctx: c.Ctx) -> None:
         if not cue.get("selected"):
             waiting.append(cue["id"])
     if pending:
-        jobs = [{"id": f"{cue['id']}_c{n}", "key": key, "caption": cue["caption"], "seed": cue.get("seed", 7) + n - 1,
+        jobs = [{"id": f"{cue['id']}_c{n}", "key": key, "caption": caption(ctx, cue, n), "seed": cue.get("seed", 7) + n - 1,
                  **cue_params(ctx, cue)} for cue, n, key in pending]
         res = kaggle_job.run("music", NOTEBOOK, jobs, {"model": m["id"]}, ctx.models)
         kaggle_job.log_session("music", m["id"], res)
@@ -108,7 +114,9 @@ def select(ctx: c.Ctx, choice: str, reason: str) -> None:
     c.link(obj, ctx.out / "music" / f"{cid}.wav")
     entry = (f"\n### {date.today()} - music cue `{cid}`: chose candidate {n}\n"
              f"- **Hypothesis:** one of 3 seeds ({cue.get('seed', 7)}..{cue.get('seed', 7) + 2}) fits the narration best\n"
-             f"- **Change:** generated 3 candidates (caption: \"{cue['caption']}\", {cue['bpm']} bpm, {cue['key']})\n"
+             f"- **Change:** generated 3 candidates (caption: \"{cue['caption']}\""
+             + (f"; candidate 3 used the A/B caption \"{cue['ab_caption']}\"" if cue.get("ab_caption") else "")
+             + f", {cue['bpm']} bpm, {cue['key']})\n"
              f"- **Result:** candidate {n} chosen. Reason: {reason}\n"
              f"- **run_id:** {ctx.cache.entry(key).get('run_id')}\n")
     with open(c.ROOT / "EXPERIMENTS.md", "a") as f:

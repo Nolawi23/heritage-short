@@ -38,7 +38,10 @@ def edit_line(sb_path: Path, dest: Path, shot: str, text: str) -> Path:
 
 def test_first_run_generates_everything(env):
     run_all(env.sb_path)
-    assert total_calls(env) == {"tts": 4, "flux": 3, "kaggle": 2}  # 4 lines, 3 keyframes, 1 wan batch + 1 music batch
+    # 4 lines in ONE batch TTS request, 3 keyframes, 1 wan batch + 1 music batch
+    assert total_calls(env) == {"tts": 1, "flux": 3, "kaggle": 2}
+    batch = [json.loads(x) for x in env.runs.read_text().splitlines() if '"mode": "batch"' in x and '"gemini"' in x]
+    assert len(batch) == 1 and batch[0]["params"]["lines"] == ["s01_1", "s01_2", "s02_1", "s03_1"]
     out = env.tmp / "outputs"
     assert (out / "timeline.json").exists()
     assert os.path.islink(out / "narration" / "s01_1.wav") and os.path.islink(out / "clips" / "s01.mp4")
@@ -94,3 +97,48 @@ def test_force_regenerates(env, monkeypatch):
     monkeypatch.setenv("FORCE", "1")
     run_all(env.sb_path)
     assert total_calls(env)["tts"] == 2 * before["tts"]
+
+
+def test_batch_pieces_match_their_lines(env):
+    run_all(env.sb_path)
+    tl = json.loads((env.tmp / "outputs" / "timeline.json").read_text())
+    for shot in tl["shots"]:
+        for ln in shot["lines"]:
+            expected = 0.2 + 0.3 * len(ln["text"].split())  # the fake speaks 0.3 s per word
+            got = ln["end_s"] - ln["start_s"]
+            assert abs(got - expected) < 0.15, (ln["text"], got, expected)
+
+
+def test_failed_batch_split_falls_back_to_one_call_per_line(env, monkeypatch):
+    from pipeline import narration as n
+    real = n.tts
+
+    def no_pauses(model, turns, seed):  # batch audio without clear gaps -> must not be split by guessing
+        (pcm, rate), usage = real(model, turns, seed)
+        return (pcm.replace(b"\x00\x00" * int(1.2 * rate), b"\x00\x00" * int(0.1 * rate)), rate), usage
+
+    monkeypatch.setattr(n, "tts", no_pauses)
+    ctx = load_storyboard(env.sb_path)
+    n.run(ctx)
+    # 4 lines: the retry batch (<= 4 lines) is the same request as the first one -> cache hit, no TTS call
+    assert len(env.calls["tts"]) == 1 + 4, "failed batch, (cached) retry batch, then one call per line"
+    log = [json.loads(x) for x in env.runs.read_text().splitlines()]
+    assert [r["status"] for r in log if r["provider"] == "local"] == ["batch_split_failed"] * 2
+
+
+def test_concurrent_processes_do_not_lose_manifest_entries(env):
+    """A long-running stage (e.g. a 30 min Kaggle job) must not overwrite entries another stage added meanwhile."""
+    from pipeline.common import Cache
+    slow, fast = Cache(), Cache()          # both loaded the (empty) manifest at start
+    fast.put("a" * 64, b"narration", ".wav", "narration")
+    slow.put("b" * 64, b"clip", ".mp4", "shots")   # saved later from a stale in-memory copy
+    fresh = Cache()
+    assert fresh.path("a" * 64) and fresh.path("b" * 64)
+
+
+def test_alignment_scores_are_logged_per_line(env):
+    run_all(env.sb_path)
+    align = [json.loads(x) for x in env.runs.read_text().splitlines() if '"mode": "align"' in x]
+    assert len(align) == 1 and align[0]["status"] == "ok"
+    assert set(align[0]["params"]["scores"]) == {"s01_1", "s01_2", "s02_1", "s03_1"}
+    assert min(align[0]["params"]["scores"].values()) >= 0.8

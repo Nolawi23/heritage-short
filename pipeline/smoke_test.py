@@ -118,14 +118,15 @@ def _gemini_call(kind: str, model: str, cfg: dict) -> dict:
     text, style = "This is a short test of the narration voice.", "calm and clear"
     accepts_seed = True
     params = {"prompt": text, "style": style, "voice": "Kore"}
+    turn = {"text": text, "style": style, "speaker": "NARRATOR", "voice": "Kore"}
     try:
-        pcm, rate = c.call_model(lambda: tts(model, text, style, "Kore", 1), throttle_key="gemini_tts",
+        pcm, rate = c.call_model(lambda: tts(model, [turn], 1), throttle_key="gemini_tts",
                                  params=params, price_kind="gemini_tts", seed=1, **common)
     except c.PipelineStop as e:
         if "seed" not in str(e).lower():
             raise
         accepts_seed = False
-        pcm, rate = c.call_model(lambda: tts(model, text, style, "Kore", None), throttle_key="gemini_tts",
+        pcm, rate = c.call_model(lambda: tts(model, [turn], None), throttle_key="gemini_tts",
                                  params=params | {"seed": None}, price_kind="gemini_tts", **common)
     SMOKE.mkdir(parents=True, exist_ok=True)
     (SMOKE / "tts.wav").write_bytes(pcm_to_wav(pcm, rate))

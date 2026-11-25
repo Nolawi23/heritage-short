@@ -35,6 +35,8 @@ Keys go in `.env` (copy [`.env.example`](.env.example)): `GEMINI_API_KEY`, `CLOU
 - **ffmpeg with libass and freetype**, needed only to re-assemble. On macOS run `brew install ffmpeg-full`; the pipeline
   finds it automatically, or you can set `FFMPEG=` and `FFPROBE=`. `make setup` warns if the `subtitles` or `drawtext`
   filters are missing.
+- Splitting a new narration batch runs faster-whisper locally on the CPU (installed by `make setup`; downloads the
+  `small.en` model, ~0.5 GB, on first use). It is not needed to rebuild from the cache.
 - To regenerate: a Google AI Studio key, a Cloudflare account (Workers AI) and a Kaggle account with phone
   verification (GPU + internet notebooks).
 
@@ -43,7 +45,7 @@ Keys go in `.env` (copy [`.env.example`](.env.example)): `GEMINI_API_KEY`, `CLOU
 | Stage (`make …`) | What it does | Provider / model | Cost per film (free tiers) |
 |---|---|---|---|
 | `script` (not in `film`) | drafts `storyboard.json` from `story/notes.md`; never overwrites without `FORCE=1` | Gemini Flash (text) | 1–2 requests of 20/day |
-| `narration` | one TTS call per line (cached per line), lines of a shot joined with 0.4 s of silence, `timeline.json` | Gemini 3.8 Flash TTS | 1 request per line; stops cleanly on the daily quota |
+| `narration` | all uncached lines in **one** multi-speaker request, split locally into lines by faster-whisper word timestamps and verified per line (cached per line), lines of a shot joined with 0.4 s of silence, `timeline.json` | Gemini 3.8 Flash TTS (+ faster-whisper `small.en` locally) | 1 of 10 requests/day (+1 per later edited line); stops cleanly on quota |
 | `radio` (not in `film`) | narration over a quiet drone on black, to test the story by ear | ffmpeg | none |
 | `keyframes` | reference-sheet candidates per character (you approve one), then one keyframe per shot conditioned on the approved sheets | FLUX.2 klein 4B on Workers AI | ~208 Neurons per keyframe of 10,000/day |
 | `shots` | image-to-video for `"wan"` shots whose key changed, in one Kaggle T4 run (`make shots-test` measures one short clip first) | Wan 2.2 TI2V-5B | GPU minutes of a 6 h/week quota |
@@ -57,7 +59,7 @@ Human decisions are recorded in the storyboard so a fresh clone runs straight th
 
 Other targets: `make validate`, `make test` (no network), `make check-secrets` (also runs as the pre-commit hook),
 `make smoke` (lists models, pins them in `config/models.json`, one call per provider), `make gc` (unreferenced cache objects).
-Options: `VERTICAL=crop|blur|both` (9:16 centre crop or blurred-background fill), `PREVIEW=1` (assemble with Ken Burns
+Options: `VERTICAL=crop|blur|both` (9:16 treatment of Wan clips: centre crop and/or blurred-background fill; default both), `PREVIEW=1` (assemble with Ken Burns
 and a placeholder score before Kaggle has run).
 
 ## Docs

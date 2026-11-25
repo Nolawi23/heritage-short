@@ -21,7 +21,7 @@ def summarise(records: list[dict]) -> list[dict]:
         if r.get("cache_hit"):
             s["hits"] += 1
             continue
-        if r["provider"] == "ffmpeg":
+        if r["provider"] in ("ffmpeg", "local"):
             s["local"] += 1
             s["fallbacks"] += r["status"] == "fallback"
             continue
