@@ -154,7 +154,12 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   out-of-memory error a worker retries that shot at the proven 49 frames (81 frames was never measured on the T4;
   the 49-frame test peaked at 15.22 of about 15.6 GB). Plan B, if the parallel session fails in its first minutes:
   the proven single-GPU notebook, `python -m pipeline.shots --order 9,5,4,3`.
-- **Result:** _running_ (kernel job `3be9dde3fc3e`).
+- **Result:** the plumbing worked (prompts encoded once in 296 s at 11.5 GB; both workers loaded without the text
+  encoder in 68-74 s; the crashed worker's shot was rerun on one GPU), but the settings did not fit: 81 frames ran out
+  of GPU memory on every shot in the first step, the 49-frame retries succeeded only for shot 3 (1,089 GPU s, peak
+  15.22 GB), and the GPU 0 worker was killed for CPU RAM (about 10 GB free with two pipelines). Session 43 min of
+  GPU quota for 1 clip (FAILURES.md #32). Quota: per session hour, confirmed; two pipelines at once need more than
+  the session's ~29 GB of CPU RAM with model CPU offload.
 - **run_id:** `20261126T002226Z-wan-2gpu`
 
 ### Planned - 9:16 treatment of the Wan shots: centre crop vs blurred fill

@@ -223,6 +223,19 @@
   "stage": "keyframes",
   "status": "ok"
  },
+ "307891a88f8881856b698906fb61b9ffbe025dd3049d6da8e6d1601a7e78ef0e": {
+  "bytes": 389178,
+  "created": "2026-11-26T01:06:51.114+00:00",
+  "file": "307891a88f8881856b698906fb61b9ffbe025dd3049d6da8e6d1601a7e78ef0e.mp4",
+  "frames": 49,
+  "gpu_seconds": 1088.8,
+  "kept": true,
+  "run_id": "20261126T002226Z-wan-2gpu",
+  "seed_used": 104,
+  "sha256": "20245801f0f5cf19da0a47a3a8d7e1a361f2af471b30fe700829f71ffff00670",
+  "stage": "shots",
+  "status": "ok"
+ },
  "32f88c95a4e5f84bf47241d0e73669adc390232779fe5f2d4d4f54449b3719e5": {
   "bytes": 761672,
   "created": "2026-11-25T20:17:30.761+00:00",
@@ -360,6 +373,25 @@
   "stage": "keyframes",
   "status": "ok"
  },
+ "463636ef769e6b6a1d2a0df8ed34ed51ad1112c3a686a85f64cb7c15b1e12ebc": {
+  "bytes": 13491246,
+  "created": "2026-11-26T00:31:09.555+00:00",
+  "duration_s": 71.75,
+  "file": "463636ef769e6b6a1d2a0df8ed34ed51ad1112c3a686a85f64cb7c15b1e12ebc.mp4",
+  "kept": true,
+  "loudness": {
+   "final_I": "-14.28",
+   "final_LRA": "3.90",
+   "final_TP": "-0.98",
+   "music_gain_db": 1.59,
+   "narration_gain_db": -0.28,
+   "pass1_I": "-20.83"
+  },
+  "run_id": "20261126T002915Z-roughcut",
+  "sha256": "971a272adeb198e72bcdcb79dd60c579c651f96529a78fa4405018500f50cd2a",
+  "stage": "assemble",
+  "status": "ok"
+ },
  "499d5f34d83182d0d6bf60636dcc0fd48850a06d92b08bf7d10ec97ac1631f05": {
   "bytes": 99812,
   "created": "2026-11-25T20:31:41.663+00:00",
@@ -441,6 +473,13 @@
   "stage": "voice_test",
   "status": "ok"
  },
+ "66c6cc27e02426ab5c20bb1ff16dc98d42fededde28a0d6fbc419fbfa7e4fddd": {
+  "created": "2026-11-26T01:06:51.109+00:00",
+  "reason": "OutOfMemoryError('CUDA out of memory. Tried to allocate 314.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 308.81 MiB is free. Including non-PyTorch memory, this process has 14.26 GiB memory in use. Of the allocated memory 13.87 GiB is allocated by PyTorch, and 256.08 MiB is reserved by Py",
+  "run_id": "20261126T002226Z-wan-2gpu",
+  "stage": "shots",
+  "status": "fallback"
+ },
  "68aa3c05b82d93767f5d0f754fd080eda3d5a6d39f5685d87444700774e31729": {
   "bytes": 944779,
   "created": "2026-11-26T00:04:41.813+00:00",
@@ -449,6 +488,25 @@
   "run_id": "20261126T000420Z-6fb6",
   "sha256": "ef90ca739fcd8f1570afd0b0c0e1fbb87ac232a1552710cfa38a651a27a3ed5a",
   "stage": "keyframes",
+  "status": "ok"
+ },
+ "6b9b4c20569b1f036b69672052bedcc9390eeec6a088af3fa0897a8c55603543": {
+  "bytes": 18168802,
+  "created": "2026-11-26T00:30:06.475+00:00",
+  "duration_s": 71.75,
+  "file": "6b9b4c20569b1f036b69672052bedcc9390eeec6a088af3fa0897a8c55603543.mp4",
+  "kept": true,
+  "loudness": {
+   "final_I": "-14.28",
+   "final_LRA": "3.90",
+   "final_TP": "-0.98",
+   "music_gain_db": 1.59,
+   "narration_gain_db": -0.28,
+   "pass1_I": "-20.83"
+  },
+  "run_id": "20261126T002915Z-roughcut",
+  "sha256": "0e8b5feadf9bf54ed53b3947f457a6c8a8b770ea6ab05deabfe4467636f6b86f",
+  "stage": "assemble",
   "status": "ok"
  },
  "6bb5a88ab36cdb5bc2518186ef32c02cfe55bf9b4c4da9809826c93179d52bab": {
@@ -688,6 +746,20 @@
   "stage": "narration",
   "status": "ok"
  },
+ "9a0d1aaebaa74ea6aa15108607c3fb1892564e6ca1d7b084d3fd186754b928a5": {
+  "created": "2026-11-26T01:06:51.107+00:00",
+  "reason": "OutOfMemoryError('CUDA out of memory. Tried to allocate 314.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 308.81 MiB is free. Including non-PyTorch memory, this process has 14.26 GiB memory in use. Of the allocated memory 13.87 GiB is allocated by PyTorch, and 256.08 MiB is reserved by Py",
+  "run_id": "20261126T002226Z-wan-2gpu",
+  "stage": "shots",
+  "status": "fallback"
+ },
+ "a387d4f8afa98ba54ab88f4b7bc44e1a6b321de0596ff6661860e4f5959b4dd8": {
+  "created": "2026-11-26T01:06:51.099+00:00",
+  "reason": "OutOfMemoryError('CUDA out of memory. Tried to allocate 314.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 308.81 MiB is free. Including non-PyTorch memory, this process has 14.26 GiB memory in use. Of the allocated memory 13.87 GiB is allocated by PyTorch, and 256.08 MiB is reserved by Py",
+  "run_id": "20261126T002226Z-wan-2gpu",
+  "stage": "shots",
+  "status": "fallback"
+ },
  "a48ade6d54b92e8aa0b32acf273a3c65d0c142fdf7cd26780fb505fa2f6cefd6": {
   "bytes": 934153,
   "created": "2026-11-25T21:50:14.818+00:00",
@@ -744,6 +816,25 @@
   "run_id": "20261125T224605Z-kf-candidates",
   "sha256": "4f5c8396447a8b7912b64f2cc1402955ef86a065eb36bda6eeb66803a502c9c2",
   "stage": "keyframes",
+  "status": "ok"
+ },
+ "aaa3442ed82394da5ee2747bd545e56d810f2b00e7a2abf200393cad12e2229f": {
+  "bytes": 13491246,
+  "created": "2026-11-26T00:30:37.259+00:00",
+  "duration_s": 71.75,
+  "file": "aaa3442ed82394da5ee2747bd545e56d810f2b00e7a2abf200393cad12e2229f.mp4",
+  "kept": true,
+  "loudness": {
+   "final_I": "-14.28",
+   "final_LRA": "3.90",
+   "final_TP": "-0.98",
+   "music_gain_db": 1.59,
+   "narration_gain_db": -0.28,
+   "pass1_I": "-20.83"
+  },
+  "run_id": "20261126T002915Z-roughcut",
+  "sha256": "971a272adeb198e72bcdcb79dd60c579c651f96529a78fa4405018500f50cd2a",
+  "stage": "assemble",
   "status": "ok"
  },
  "af7e3f5497ef3f27a03082fa25bc89bd7ab261ad42b4918f2a2e3acd9c8ea2af": {
