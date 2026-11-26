@@ -63,6 +63,11 @@ At the end they feel seen and grateful: this ordinary Sunday ritual is what keep
   softer read over a louder passage of the score. Author's decisions: the score dips 4 dB under shots 7-9 only
   (`shots[].music_gain_db: -4`, 1 s ramps outside the dip; elsewhere unchanged), and the final loudness pass targets
   -1.5 dBTP (loudness stays -14 LUFS), because the rough cut measured -0.98 dBTP against a -1 dBTP ceiling.
+- **2026-11-26 - Wan settings after the out-of-memory session (FAILURES.md #32).** Shot 3 keeps its 49-frame
+  1280x704 clip. Shots 9, 5 and 4 are rendered at 49 frames and 960x544 (`shots[].wan`), on one T4 with the proven
+  single-GPU notebook, in that order: 42 % fewer video tokens than the 49-frame 1280x704 setting that failed 3 times in
+  4, at the cost of a softer image (1.33x upscale in 16:9). Rejected: 81 frames at 960x544 (94 % of the failing
+  token count), 81 frames at 832x480 (softest), 33 frames at 1280x704 (only 1.4 s of motion).
 
 ## User tests
 

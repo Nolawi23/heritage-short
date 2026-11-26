@@ -138,6 +138,11 @@
           "music_cue": {"type": "string"},
           "seed": {"type": "integer", "minimum": 0},
           "motion": {"enum": ["wan", "kenburns"]},
+          "wan": {"type": "object", "additionalProperties": false,
+                  "properties": {"frames": {"type": "integer", "minimum": 9, "maximum": 121},
+                                 "width": {"type": "integer", "minimum": 256, "maximum": 1280, "multipleOf": 32},
+                                 "height": {"type": "integer", "minimum": 256, "maximum": 1280, "multipleOf": 32}},
+                  "description": "Per-shot Wan settings over config/models.json wan (part of this shot's clip key only), e.g. smaller clips that fit the T4."},
           "max_attempts": {"type": "integer", "minimum": 1, "maximum": 5}
         }
       }

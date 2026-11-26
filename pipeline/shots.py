@@ -36,14 +36,16 @@ def _per_video_s(gpu_s, n_frames, fps) -> str:
     return f"{gpu_s / (n_frames / fps):.0f} GPU s per second of video"
 
 
-def wan_settings(ctx: c.Ctx) -> dict:
+def wan_settings(ctx: c.Ctx, shot: dict | None = None) -> dict:
+    """config/models.json wan settings, with the shot's own `wan` block (frames, width, height) on top."""
     w = c.model_cfg(ctx, "wan")
-    return {k: w[k] for k in ("width", "height", "frames", "steps", "guidance", "fps", "negative_prompt", "dtype")}
+    base = {k: w[k] for k in ("width", "height", "frames", "steps", "guidance", "fps", "negative_prompt", "dtype")}
+    return base | (shot or {}).get("wan", {})
 
 
 def clip_key(ctx: c.Ctx, shot: dict, settings: dict | None = None) -> str:
     kf = keyframe_path(ctx, shot)
-    return c.Cache.key("shots", c.model_cfg(ctx, "wan")["id"], settings or wan_settings(ctx), shot["motion_prompt"],
+    return c.Cache.key("shots", c.model_cfg(ctx, "wan")["id"], settings or wan_settings(ctx, shot), shot["motion_prompt"],
                        shot["seed"], {"keyframe": c.sha256_file(kf)})
 
 
@@ -83,7 +85,7 @@ def run(ctx: c.Ctx, test: bool = False, image: str | None = None, parallel: bool
             return
         pending.append((shot, key, kf))
     for shot in ([] if test else ordered([s for s in ctx.sb["shots"] if s["motion"] == "wan"], order)):
-        key = clip_key(ctx, shot, settings)
+        key = clip_key(ctx, shot)  # the shot's own settings (config + its `wan` block)
         obj = ctx.cache.lookup(key)
         if obj:
             c.log_hit("shots", "kaggle", model, key, shot_id=shot["id"], seed=shot["seed"])
@@ -97,13 +99,18 @@ def run(ctx: c.Ctx, test: bool = False, image: str | None = None, parallel: bool
         c.prune_links(ctx.out / "clips", keep)
         print(f"shots: nothing to render ({len(keep)} clips cached)")
         return
+    per = {shot["id"]: settings if test else wan_settings(ctx, shot) for shot, _, _ in pending}
+    sizes = {(s["width"], s["height"]) for s in per.values()}
+    if len(sizes) > 1:  # the notebooks render one size per session
+        raise c.PipelineStop(f"pending Wan shots need different sizes {sorted(sizes)}: give them the same `wan` block")
     files, jobs = {}, []
     for shot, key, kf in pending:
         sha = c.sha256_file(kf)
         files[f"{sha}{kf.suffix}"] = kf
         jobs.append({"id": shot["id"], "key": key, "image": f"{sha}{kf.suffix}", "image_sha256": sha,
-                     "prompt": shot["motion_prompt"], "seed": shot["seed"], "frames": settings["frames"],
+                     "prompt": shot["motion_prompt"], "seed": shot["seed"], "frames": per[shot["id"]]["frames"],
                      "max_attempts": 1 if test else shot["max_attempts"]})
+    settings = next(iter(per.values()))  # the session's size and sampler settings
     config = {"model": model, **settings, "order": [j["id"] for j in jobs]}  # extra keys never enter cache keys
     notebook = NOTEBOOK
     if parallel and not test:
@@ -118,7 +125,7 @@ def run(ctx: c.Ctx, test: bool = False, image: str | None = None, parallel: bool
     for ln in res["lines"]:  # every attempt the notebook made, with its GPU time
         if ln.get("id"):
             c.log_call("shots", "kaggle", model, shot_id=ln["id"], seed=ln.get("seed"),
-                       params={"prompt": next(j["prompt"] for j in jobs if j["id"] == ln["id"]), **settings,
+                       params={"prompt": next(j["prompt"] for j in jobs if j["id"] == ln["id"]), **per.get(ln["id"], settings),
                                "test": test, "peak_vram_gb": ln.get("peak_vram_gb"), "notebook": notebook,
                                "frames_rendered": ln.get("frames"), "gpu_index": ln.get("gpu_index"),
                                "ram_avail_gb": ln.get("ram_avail_gb")},

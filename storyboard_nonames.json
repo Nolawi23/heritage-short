@@ -120,7 +120,12 @@
       "reference_images": [
         "outputs/reference/composition/shot-04-roasting-beans.jpg"
       ],
-      "keyframe_seed": 1104
+      "keyframe_seed": 1104,
+      "wan": {
+        "frames": 49,
+        "width": 960,
+        "height": 544
+      }
     },
     {
       "id": "shot-05-jebena-etan",
@@ -140,7 +145,12 @@
       "motion": "wan",
       "max_attempts": 2,
       "keyframe_seed": 2105,
-      "vertical_fill": "blur"
+      "vertical_fill": "blur",
+      "wan": {
+        "frames": 49,
+        "width": 960,
+        "height": 544
+      }
     },
     {
       "id": "shot-06-popcorn-table",
@@ -234,7 +244,12 @@
         "housekeeper"
       ],
       "keyframe_seed": 1109,
-      "music_gain_db": -4
+      "music_gain_db": -4,
+      "wan": {
+        "frames": 49,
+        "width": 960,
+        "height": 544
+      }
     },
     {
       "id": "shot-10-empty-cups",

@@ -15,6 +15,17 @@ def test_order_by_shot_number_and_lanes_alternate():
     assert ordered(WAN, None) == WAN
 
 
+def test_per_shot_wan_settings_change_only_that_shot():
+    from types import SimpleNamespace
+
+    from pipeline.shots import wan_settings
+    ctx = SimpleNamespace(models={"wan": {"id": "m", "width": 1280, "height": 704, "frames": 81, "steps": 20,
+                                          "guidance": 5.0, "fps": 24, "negative_prompt": "n", "dtype": "float16"}})
+    assert wan_settings(ctx, {"id": "shot-03"}) == wan_settings(ctx)  # no `wan` block: clip key unchanged
+    small = wan_settings(ctx, {"id": "shot-09", "wan": {"frames": 49, "width": 960, "height": 544}})
+    assert (small["frames"], small["width"], small["height"], small["steps"]) == (49, 960, 544, 20)
+
+
 def test_two_gpu_notebook_renders_with_its_own_code_file(tmp_path):
     ref = kaggle_job.render_kernel("wan", NOTEBOOK_2GPU, {"job_id": "x", "config": {}, "jobs": []}, "someone",
                                    "someone/heritage-short-wan-in", {"machine_shape": "NvidiaTeslaT4"}, tmp_path)
