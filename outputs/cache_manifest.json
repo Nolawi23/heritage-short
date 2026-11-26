@@ -423,6 +423,25 @@
   "stage": "music",
   "status": "ok"
  },
+ "5032b8c11c6f36f2374b03ac0aab6d6de8e09c26de5eb4d70cf285520fc84fd6": {
+  "bytes": 15516707,
+  "created": "2026-11-26T07:23:51.028+00:00",
+  "duration_s": 71.75,
+  "file": "5032b8c11c6f36f2374b03ac0aab6d6de8e09c26de5eb4d70cf285520fc84fd6.mp4",
+  "kept": true,
+  "loudness": {
+   "final_I": "-14.40",
+   "final_LRA": "4.50",
+   "final_TP": "-1.48",
+   "music_gain_db": 1.59,
+   "narration_gain_db": -0.28,
+   "pass1_I": "-20.82"
+  },
+  "run_id": "20261126T071648Z-assemble",
+  "sha256": "bf88ee7e9ac147df8d7b678d96fc9a7d4ae82e8729d359f95d634f5b7bd6aa25",
+  "stage": "assemble",
+  "status": "ok"
+ },
  "55ce298fcb258cd5e0e4aa06332e6ca6a09ae584a9edf92a6d52da4e8a0e700a": {
   "bytes": 242064,
   "created": "2026-11-25T20:21:22.698+00:00",
@@ -632,6 +651,25 @@
   "stage": "narration",
   "status": "ok"
  },
+ "81fa804aa109588b26106a0dbcc99767e9f517939cfcd2e36e6cc419dddfb370": {
+  "bytes": 19861851,
+  "created": "2026-11-26T07:23:19.986+00:00",
+  "duration_s": 71.75,
+  "file": "81fa804aa109588b26106a0dbcc99767e9f517939cfcd2e36e6cc419dddfb370.mp4",
+  "kept": true,
+  "loudness": {
+   "final_I": "-14.40",
+   "final_LRA": "4.50",
+   "final_TP": "-1.48",
+   "music_gain_db": 1.59,
+   "narration_gain_db": -0.28,
+   "pass1_I": "-20.82"
+  },
+  "run_id": "20261126T071648Z-assemble",
+  "sha256": "efe429bd820492cc090e7749df2a0eabe46fa9c1361da0dd557e4ba35d7f5592",
+  "stage": "assemble",
+  "status": "ok"
+ },
  "84cd0679555cfb68cf5207ce3f83d4230c1067207343f301709ca830bdf29169": {
   "batch_key": "1c09fd9d137b6f83",
   "bytes": 267926,
@@ -690,6 +728,19 @@
   "run_id": "20261125T224605Z-kf-candidates",
   "sha256": "4549315e702e2aa9b5373017272123a6bc9abcbd4a36cf6f6a24b0313f3077db",
   "stage": "keyframes",
+  "status": "ok"
+ },
+ "8c2c1b698be3fbf2e89baae57a4302f23c54378deb304ff9343db76597946f42": {
+  "bytes": 633886,
+  "created": "2026-11-26T07:16:21.719+00:00",
+  "file": "8c2c1b698be3fbf2e89baae57a4302f23c54378deb304ff9343db76597946f42.mp4",
+  "frames": 49,
+  "gpu_seconds": 579.6,
+  "kept": true,
+  "run_id": "20261126T062836Z-wan-960",
+  "seed_used": 104,
+  "sha256": "3722689a01a7eae7d0e0634cabb05fdf32cea07af22883cba5ab05dc30394bc7",
+  "stage": "shots",
   "status": "ok"
  },
  "8fd68e8dca7c80dbbecf3ab5d12130db76c320f1120682b46f067f392c2eec7e": {
@@ -868,6 +919,19 @@
   "stage": "radio",
   "status": "ok"
  },
+ "ba2b0cbc60203ffbbe41e89a916743094dee80e566903b214765a31f5e44b04c": {
+  "bytes": 219045,
+  "created": "2026-11-26T07:16:21.713+00:00",
+  "file": "ba2b0cbc60203ffbbe41e89a916743094dee80e566903b214765a31f5e44b04c.mp4",
+  "frames": 49,
+  "gpu_seconds": 579.4,
+  "kept": true,
+  "run_id": "20261126T062836Z-wan-960",
+  "seed_used": 105,
+  "sha256": "59b7a5d88c3490db8d2b08f4588e945b69cc64b00381d3f895c804c11c07e779",
+  "stage": "shots",
+  "status": "ok"
+ },
  "bbda46a89705cdcaee85a161fe5755865cc419ee96c7f4515f37af7e7a2fed18": {
   "bytes": 1254664,
   "created": "2026-11-25T22:47:06.022+00:00",
@@ -999,6 +1063,19 @@
   "stage": "narration",
   "status": "ok"
  },
+ "d4d221136131cae50bc68e733e2427f7896dd781e6d838e2817a96ad289903b4": {
+  "bytes": 172710,
+  "created": "2026-11-26T07:16:18.612+00:00",
+  "file": "d4d221136131cae50bc68e733e2427f7896dd781e6d838e2817a96ad289903b4.mp4",
+  "frames": 49,
+  "gpu_seconds": 583.4,
+  "kept": true,
+  "run_id": "20261126T062836Z-wan-960",
+  "seed_used": 109,
+  "sha256": "7dcbf3c49f439033cbd3a4d7051e585109dfba2a506a73e1207210b76ba1aca2",
+  "stage": "shots",
+  "status": "ok"
+ },
  "d4fd9f4ecd1dce13d6d420046505bd3c6bdb0582f69734e51a9ea4d1639a7271": {
   "bytes": 309096,
   "created": "2026-11-25T20:18:15.974+00:00",
@@ -1128,6 +1205,25 @@
   "run_id": "20261125T193752Z-script",
   "sha256": "0b918044dd08a9d86f6dc5dfd99ef2b064ddef2aa15568e12cb411baec0b9485",
   "stage": "script",
+  "status": "ok"
+ },
+ "ee5f0568215b7be7b2b0c129835b8347198e515ccc665ac9007aa6f1c5b5e4d6": {
+  "bytes": 13923113,
+  "created": "2026-11-26T07:24:30.449+00:00",
+  "duration_s": 71.75,
+  "file": "ee5f0568215b7be7b2b0c129835b8347198e515ccc665ac9007aa6f1c5b5e4d6.mp4",
+  "kept": true,
+  "loudness": {
+   "final_I": "-14.40",
+   "final_LRA": "4.50",
+   "final_TP": "-1.48",
+   "music_gain_db": 1.59,
+   "narration_gain_db": -0.28,
+   "pass1_I": "-20.82"
+  },
+  "run_id": "20261126T071648Z-assemble",
+  "sha256": "c4218317bce234e0d86e28365845970d77fc96a9275f00f7ca333ed412190921",
+  "stage": "assemble",
   "status": "ok"
  },
  "eeef580f86c61831bdcdbe99d8654013a5b215ae650d0147456f2ae636c2018d": {

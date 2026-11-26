@@ -138,8 +138,11 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
 - **Change:** `wan` for shots 3 (washing beans), 4 (roasting smoke), 5 (incense smoke), 9 (pouring); people and limbs
   (shot 2, the feet on the stairs; shot 8, the siblings gesturing) stay Ken Burns. Four clips at 81 frames, 20 steps,
   1280x704 fit the ~5.4 h of weekly GPU left (about 25 min each by extrapolation).
-- **Result:** _pending (after keyframe approval and the Wan session)_.
-- **run_id:**
+- **Result:** all four shots have Wan clips, but shorter and (for 9, 5, 4) smaller than planned: 81 frames at
+  1280x704 did not fit the T4 (FAILURES.md #32). Shot 3: 49 frames at 1280x704 (1,089 GPU s); shots 9, 5, 4: 49
+  frames at 960x544 (about 580 GPU s each, peak 14.23 GB). Each 2.0 s clip plays at up to 1.25x and ends on a slow Ken
+  Burns move (DESIGN.md). Whether the motion reads well (water, smoke, the pouring stream) is the author's verdict.
+- **run_id:** `20261126T002226Z-wan-2gpu` (shot 3), `20261126T062836Z-wan-960` (shots 9, 5, 4)
 
 ### 2026-11-26 - Both T4s in parallel: one full Wan pipeline per GPU
 - **Hypothesis:** the Kaggle "T4 x2" session has two GPUs and its quota is charged per session hour, not per GPU
