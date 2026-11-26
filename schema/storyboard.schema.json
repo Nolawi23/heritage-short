@@ -86,7 +86,29 @@
           "end_s": {"type": "number", "minimum": 0, "description": "Optional and ignored, see start_s."},
           "ab_caption": {"type": "string", "minLength": 1, "description": "A/B experiment: the last candidate uses this caption instead of caption."},
           "seed": {"type": "integer", "minimum": 0, "default": 7, "description": "Candidate n uses seed + n - 1."},
-          "selected": {"type": "integer", "minimum": 1, "maximum": 3, "description": "Chosen candidate, set by `python -m pipeline.music --select <cue>=N`."}
+          "selected": {"type": "integer", "minimum": 1, "maximum": 3, "description": "Chosen candidate, set by `python -m pipeline.music --select <cue>=N`."},
+          "clean_until_s": {"type": "number", "exclusiveMinimum": 2, "description": "Assembly uses the selected section only up to this time (s): a damaged end (MusicGen's end-of-generation whistle) is dropped and each loop crossfades back before it. Not part of the music cache key."}
+        }
+      }
+    },
+    "ambience": {
+      "type": "array",
+      "description": "Background beds (committed recordings) played under shots, inside the music bed so the narration ducks them too. Licences go in ETHICS.md.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "file", "shots", "licence", "source_url"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "file": {"type": "string", "minLength": 1, "description": "Repo-relative path of the recording; it loops if shorter than its window."},
+          "shots": {"type": "array", "minItems": 1, "items": {"type": "string"}, "description": "Shot ids: the bed plays from the first one's start to the last one's end."},
+          "level_db": {"type": "number", "minimum": -30, "maximum": 0, "description": "Loudness relative to the music bed, before ducking (default -4)."},
+          "lowpass_hz": {"type": "number", "minimum": 300, "maximum": 20000, "description": "Low-pass so no word is intelligible (default 2500)."},
+          "fade_s": {"type": "number", "minimum": 0, "maximum": 5, "description": "Fade in and out inside the window (default 1)."},
+          "licence": {"type": "string", "minLength": 1},
+          "source_url": {"type": "string", "minLength": 1},
+          "author": {"type": "string"},
+          "note": {"type": "string"}
         }
       }
     },

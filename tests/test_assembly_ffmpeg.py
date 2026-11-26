@@ -19,6 +19,10 @@ def media(env, tmp_path, monkeypatch):
     sb = json.loads(env.sb_path.read_text())
     sb["outputs"]["resolutions"] = {"16:9": [320, 180], "9:16": [180, 320]}
     sb["music_cues"][0]["duration_s"] = 30
+    murmur = tmp_path / "murmur.wav"  # 1.5 s of noise: shorter than its shot, so it loops
+    av.ffmpeg("-f", "lavfi", "-i", "anoisesrc=d=1.5:c=pink:r=48000:a=0.3", "-ac", 2, murmur)
+    sb["ambience"] = [{"id": "murmur", "file": str(murmur), "shots": [sb["shots"][0]["id"]], "licence": "CC0-1.0",
+                       "source_url": "test"}]
     env.sb_path.write_text(json.dumps(sb))
 
     def still(cfg, prompt, seed, w, h, refs=()):
@@ -74,8 +78,24 @@ def test_full_assembly_on_synthetic_media(media):
     assert float(loud["input_tp"]) <= -1.0  # delivery ceiling (target -1.5 dBTP)
     assert (out / "subtitles.srt").read_text().startswith("1\n")
     assert (out / "radio_cut.mp4").exists()
+    films = [json.loads(x) for x in media.runs.read_text().splitlines() if '"vertical_mode"' in x]
+    assert films and "murmur" in films[0]["params"]["ambience_gain_db"]  # the bed was mixed in
     fits = [json.loads(x) for x in media.runs.read_text().splitlines() if '"fit"' in x]
     assert fits and fits[0]["params"]["speed"] == assemble.MAX_SLOW and fits[0]["params"]["kenburns_tail_s"] > 0
     n = len(media.runs.read_text().splitlines())
     assemble.run(load_storyboard(media.sb_path))  # rerun: all films are cache hits
     assert all(json.loads(x)["cache_hit"] for x in media.runs.read_text().splitlines()[n:])
+
+
+def test_clean_until_cuts_the_damaged_end_of_a_section(tmp_path):
+    """A 10 s section whose last 3 s whistle at 1 kHz: fitted to 20 s with clean_until=7, no whistle remains."""
+    src = tmp_path / "section.wav"
+    av.ffmpeg("-f", "lavfi", "-i", "sine=f=220:d=7:r=48000", "-f", "lavfi", "-i", "sine=f=1000:d=3:r=48000",
+              "-filter_complex", "[0:a][1:a]concat=n=2:v=0:a=1[o]", "-map", "[o]", src)
+    whistle = "bandpass=f=1000:width_type=h:w=60"
+    for clean, expect_whistle in ((None, True), (7.0, False)):
+        out = tmp_path / f"fit_{clean}.wav"
+        assemble.fit_music(src, 20.0, out, clean_until=clean)
+        assert abs(av.duration(out) - 20.0) < 0.05
+        level = float(av.measure_loudness(out, whistle)["input_i"])
+        assert (level > -40) == expect_whistle, (clean, level)

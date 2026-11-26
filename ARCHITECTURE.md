@@ -80,8 +80,8 @@ Dependencies are explicit in the keys:
 | joined shot narration | hashes of its line WAVs + pause |
 | keyframe | FLUX model, size, full prompt, seed, hashes of the reference images used |
 | Wan clip | Wan model + settings, `motion_prompt`, seed, **keyframe hash** (not the timeline: clips have a fixed length and are fitted at assembly) |
-| music candidate | model, caption, bpm, key, time signature, duration, seed (+ n) |
-| film | hashes of every input (timeline, keyframes, clips, music), end card, outputs, voices, VERTICAL mode, source hash of `assemble.py` + `av.py` |
+| music candidate | model, caption, bpm, key, time signature, section duration (`section_s`), seed (+ n); not shot durations, the timeline or `clean_until_s` |
+| film | hashes of every input (timeline, keyframes, clips, music, ambience files), end card, outputs, voices, VERTICAL mode, music/ambience mix settings, source hash of `assemble.py` + `av.py` |
 
 Consequences, tested in `tests/test_cache.py`: a rerun is all cache hits; editing one line costs one TTS call
 plus re-assembly; a variant storyboard that differs in one line costs exactly one TTS call; `FORCE=1` regenerates.
@@ -144,7 +144,10 @@ Only called when at least one key is missing. One batch, one kernel run:
   at 0 s (`music_start_after_line`: here Mom's call, so the hook plays over silence), with a longer fade-in for that
   first entrance (`music_fade_in_s`, here 1.5 s; default 0.5 s), and a shot can lower the score under itself
   (`shots[].music_gain_db`, here −4 dB under shots 7-9; consecutive shots form one dip with 1 s ramps outside it).
-  All three are part of the film's cache key.
+  A damaged section end is dropped before looping (`music_cues[].clean_until_s`, here 29.5 s: MusicGen's
+  end-of-generation whistle, FAILURES.md #33). `ambience[]` beds (a committed CC0 recording, looped if short) play
+  under their shots, low-passed and faded, gain-matched to the music level + `level_db`, and are mixed into the music
+  bed before the sidechain, so the narration ducks them too. All of these are part of the film's cache key.
 - **Subtitles:** cues come from the line timings (at most 2 lines of about 40 characters). The SRT is exported, and
   an ASS file per aspect is burned in (9:16 sits above the bottom 25% UI zone).
 - **End card:** drawn with `drawtext`, and always includes "Made with AI".

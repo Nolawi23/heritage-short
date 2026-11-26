@@ -153,6 +153,11 @@ def validate(sb: dict) -> list[str]:
     for c in sb["music_cues"]:
         if "start_s" in c and "end_s" in c and c["end_s"] <= c["start_s"]:
             errors.append(f"music_cues/{c['id']}: end_s must be after start_s")
+    shot_ids = {s["id"] for s in sb["shots"]}
+    for a in sb.get("ambience", []):
+        errors += [f"ambience/{a['id']}: unknown shot '{i}'" for i in a["shots"] if i not in shot_ids]
+        if not repo_path(a["file"]).exists():
+            errors.append(f"ambience/{a['id']}: file {a['file']} does not exist")
     return errors
 
 

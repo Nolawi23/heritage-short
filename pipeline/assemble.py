@@ -7,7 +7,9 @@ Per shot (lengths from timeline.json, whole frames):
   kenburns shot / wan fallback  : pan-and-zoom of the ORIGINAL keyframe, cropped per aspect ratio, varied direction
 Audio: narration stem (per-speaker effect) and music bed brought to -20 LUFS, music ducked under the narration
   (sidechaincompress threshold 0.02, ratio 6, attack 300 ms, release 1500 ms), mixed, then two-pass loudnorm
-  to -14 LUFS with a -1.5 dBTP target (delivered peak under -1 dBTP). Subtitles: SRT from the line timings (<= 2 lines x ~40 chars), burned in from an ASS
+  to -14 LUFS with a -1.5 dBTP target (delivered peak under -1 dBTP). A score shorter than its span is joined with
+  2 s crossfades, cut at music_cues[].clean_until_s when the section's end is damaged. ambience[] beds (committed
+  recordings, e.g. a family murmur) play under their shots inside the music bed, so they are ducked with it. Subtitles: SRT from the line timings (<= 2 lines x ~40 chars), burned in from an ASS
   file styled per aspect (9:16 kept inside the safe area). End card ("Made with AI") drawn in code.
 9:16 Wan clips: centre crop (film_9x16.mp4) or sharp fit on a blurred fill (film_9x16_blur.mp4); Ken Burns shots
   are always cropped from the original keyframe. Export: H.264 + AAC, constant 24 fps. Each film is cached by
@@ -43,6 +45,7 @@ DUCK = "sidechaincompress=threshold=0.02:ratio=6:attack=300:release=1500"
 MUSIC_XFADE_S = 2.0
 MUSIC_FADE_IN_S = 0.5  # default fade-in of a music span; the first one can be longer (music_fade_in_s)
 MUSIC_DIP_RAMP_S = 1.0  # ramp into and out of a per-shot music dip (shots[].music_gain_db)
+AMB_LEVEL_DB, AMB_LOWPASS_HZ, AMB_FADE_S = -4.0, 2500, 1.0  # ambience[] defaults: dB vs the music level, low-pass, fades
 CHARS_PER_LINE = 40
 SUB_STYLE = {"16:9": {"size": 34, "margin_v": 42, "margin_lr": 90},
              "9:16": {"size": 30, "margin_v": 330, "margin_lr": 50}}  # 9:16: clear of the bottom ~25% UI zone
@@ -177,16 +180,23 @@ def music_tail(length: float, fade_in: float = MUSIC_FADE_IN_S) -> str:
             "aformat=channel_layouts=stereo")
 
 
-def fit_music(src: Path, length: float, out: Path, fade_in: float = MUSIC_FADE_IN_S) -> None:
+def fit_music(src: Path, length: float, out: Path, fade_in: float = MUSIC_FADE_IN_S,
+              clean_until: float | None = None) -> None:
+    """Fit a music section to a span: trim it, or join copies of it with crossfades. clean_until
+    (music_cues[].clean_until_s) drops a damaged end of the section (MusicGen's end-of-generation whistle,
+    FAILURES.md #33), so every join crossfades back to the start before the damage."""
     d = av.duration(src)
+    if clean_until:
+        d = min(d, clean_until)
     tail = music_tail(length, fade_in)
     if d >= length:
         av.ffmpeg("-i", src, "-af", tail, "-ar", 48000, out)
         return
     n = math.ceil((length - MUSIC_XFADE_S) / (d - MUSIC_XFADE_S))  # join sections with crossfades
-    chain, prev = [], "0:a"
+    chain = [f"[{i}:a]atrim=0:{d:.3f},asetpts=PTS-STARTPTS[s{i}]" for i in range(n + 1)]
+    prev = "s0"
     for i in range(1, n + 1):
-        chain.append(f"[{prev}][{i}:a]acrossfade=d={MUSIC_XFADE_S}[x{i}]")
+        chain.append(f"[{prev}][s{i}]acrossfade=d={MUSIC_XFADE_S}[x{i}]")
         prev = f"x{i}"
     args = [a for _ in range(n + 1) for a in ("-i", src)]
     av.ffmpeg(*args, "-filter_complex", ";".join(chain) + f";[{prev}]{tail}[o]", "-map", "[o]", "-ar", 48000, out)
@@ -219,10 +229,47 @@ def music_dips(sb: dict, tl: dict) -> str:
     return f",volume='{'*'.join(terms)}':eval=frame" if terms else ""
 
 
+def ambience_windows(sb: dict, tl: dict) -> list[tuple[dict, float, float]]:
+    """ambience[]: each bed plays from the start of its first shot to the end of its last one."""
+    by_id = {s["id"]: s for s in tl["shots"]}
+    out = []
+    for a in sb.get("ambience", []):
+        spans = [by_id[i] for i in a["shots"]]
+        out.append((a, min(s["start_s"] for s in spans), max(s["start_s"] + s["duration_s"] for s in spans)))
+    return out
+
+
+def ambience_filter(a: dict, length: float) -> str:
+    """Trim (the input loops), low-pass so no word is intelligible, fade in and out inside the window."""
+    f = a.get("fade_s", AMB_FADE_S)
+    return (f"atrim=0:{length:.3f},asetpts=PTS-STARTPTS,lowpass=f={a.get('lowpass_hz', AMB_LOWPASS_HZ)},"
+            f"afade=t=in:d={f:g},afade=t=out:st={max(0.0, length - f):.3f}:d={f:g},aformat=channel_layouts=stereo")
+
+
+def ambience_stem(sb: dict, tl: dict, tmp: Path, out: Path) -> dict | None:
+    """All ambience beds on one track, each gain-matched to MUSIC_LUFS + level_db. None if the storyboard has none."""
+    windows = ambience_windows(sb, tl)
+    if not windows:
+        return None
+    args, parts, gains = [], [], {}
+    for i, (a, start, end) in enumerate(windows):
+        piece = tmp / f"ambience_{i}.wav"
+        av.ffmpeg("-stream_loop", -1, "-i", c.repo_path(a["file"]), "-af", ambience_filter(a, end - start),
+                  "-ar", 48000, "-ac", 2, piece)
+        gains[a["id"]] = _gain(piece, MUSIC_LUFS + a.get("level_db", AMB_LEVEL_DB))
+        args += ["-i", piece]
+        parts.append(f"[{i}:a]volume={gains[a['id']]}dB,adelay={round(start * 1000)}:all=1[a{i}]")
+    mix = "".join(f"[a{i}]" for i in range(len(parts)))
+    av.ffmpeg(*args, "-filter_complex", ";".join(parts) + f";{mix}amix=inputs={len(parts)}:normalize=0,"
+              f"apad=whole_dur={tl['total_s']},atrim=0:{tl['total_s']}[o]", "-map", "[o]", "-ar", 48000, "-ac", 2, out)
+    return gains
+
+
 def build_audio(ctx: c.Ctx, tl: dict, music: dict, tmp: Path) -> tuple[Path, dict]:
     total = tl["total_s"]
     narr, bed, pre, out = tmp / "narration.wav", tmp / "music.wav", tmp / "premix.wav", tmp / "mix.wav"
     av.narration_stem(tl, ctx.sb["narration"]["voices"], narr)
+    cues = {cue["id"]: cue for cue in ctx.sb["music_cues"]}
     parts, args = [], []
     after = ctx.sb.get("music_start_after_line")
     start0 = next((ln["end_s"] + 0.3 for s in tl["shots"] for ln in s["lines"]
@@ -236,7 +283,7 @@ def build_audio(ctx: c.Ctx, tl: dict, music: dict, tmp: Path) -> tuple[Path, dic
         length = sp["end_s"] - sp["start_s"]
         fade_in = ctx.sb.get("music_fade_in_s", MUSIC_FADE_IN_S) if i == 0 else MUSIC_FADE_IN_S
         if music.get(sp["cue"]):
-            fit_music(music[sp["cue"]], length, seg, fade_in)
+            fit_music(music[sp["cue"]], length, seg, fade_in, cues[sp["cue"]].get("clean_until_s"))
         else:
             av.placeholder_pad(length, seg)
         args += ["-i", seg]
@@ -245,16 +292,21 @@ def build_audio(ctx: c.Ctx, tl: dict, music: dict, tmp: Path) -> tuple[Path, dic
     av.ffmpeg(*args, "-filter_complex", ";".join(parts) + f";{mix}amix=inputs={len(parts)}:normalize=0,"
               f"apad=whole_dur={total},atrim=0:{total}[o]", "-map", "[o]", "-ar", 48000, "-ac", 2, bed)
     gn, gm = _gain(narr, NARR_LUFS), _gain(bed, MUSIC_LUFS)
-    av.ffmpeg("-i", narr, "-i", bed, "-filter_complex",
+    amb = tmp / "ambience.wav"
+    amb_gains = ambience_stem(ctx.sb, tl, tmp, amb)
+    bedmix = "[m0][2:a]amix=inputs=2:normalize=0:duration=first[m];" if amb_gains else "[m0]anull[m];"
+    av.ffmpeg("-i", narr, "-i", bed, *(("-i", amb) if amb_gains else ()), "-filter_complex",
               f"[0:a]volume={gn}dB,aformat=channel_layouts=stereo,asplit=2[sc][n];"
-              f"[1:a]volume={gm}dB{music_dips(ctx.sb, tl)},aformat=channel_layouts=stereo[m];[m][sc]{DUCK}[d];"
+              f"[1:a]volume={gm}dB{music_dips(ctx.sb, tl)},aformat=channel_layouts=stereo[m0];{bedmix}"
+              f"[m][sc]{DUCK}[d];"  # ambience sits in the bed, so it is ducked under the narration with the music
               f"[d][n]amix=inputs=2:normalize=0:duration=first[o]", "-map", "[o]", "-ar", 48000, pre)
     m = av.measure_loudness(pre, targets=FINAL)  # pass 1, same targets as pass 2
     av.ffmpeg("-i", pre, "-af", f"loudnorm={FINAL}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:"
               f"measured_LRA={m['input_lra']}:measured_thresh={m['input_thresh']}:offset={m['target_offset']}:"
               "linear=true,aresample=48000", "-ar", 48000, out)  # pass 2
     final = av.measure_loudness(out)
-    return out, {"narration_gain_db": gn, "music_gain_db": gm, "pass1_I": m["input_i"],
+    return out, {"narration_gain_db": gn, "music_gain_db": gm, **({"ambience_gain_db": amb_gains} if amb_gains else {}),
+                 "pass1_I": m["input_i"],
                  "final_I": final["input_i"], "final_TP": final["input_tp"], "final_LRA": final["input_lra"]}
 
 
@@ -343,13 +395,18 @@ def film_key(ctx: c.Ctx, tl_sha: str, srcs: dict, music: dict, aspect: str, mode
         upstream[f"clip:{sid}"] = c.sha256_file(s["clip"]) if s["clip"] else s["source"]
     for cid, p in music.items():
         upstream[f"music:{cid}"] = c.sha256_file(p) if p else "placeholder"
+    for a in ctx.sb.get("ambience", []):
+        upstream[f"ambience:{a['id']}"] = c.sha256_file(c.repo_path(a["file"]))
     params = {"aspect": aspect, "mode": mode, "end_card": ctx.sb["end_card"], "outputs": ctx.sb["outputs"],
               "voices": ctx.sb["narration"]["voices"], "preview": preview(),
               "music_start_after_line": ctx.sb.get("music_start_after_line"),
               "music_fade_in_s": ctx.sb.get("music_fade_in_s"),
               "vertical_shots": {s["id"]: [s.get("vertical_fill"), s.get("vertical_x")] for s in ctx.sb["shots"]
                                  if "vertical_fill" in s or "vertical_x" in s},
-              "music_gains": {s["id"]: s["music_gain_db"] for s in ctx.sb["shots"] if s.get("music_gain_db")}}
+              "music_gains": {s["id"]: s["music_gain_db"] for s in ctx.sb["shots"] if s.get("music_gain_db")},
+              "music_clean_until": {cue["id"]: cue["clean_until_s"] for cue in ctx.sb["music_cues"]
+                                    if cue.get("clean_until_s")},
+              "ambience": ctx.sb.get("ambience", [])}
     return c.Cache.key("assemble", "ffmpeg", params, None, None, upstream)
 
 

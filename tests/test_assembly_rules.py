@@ -54,3 +54,29 @@ def test_subtitles_two_lines_of_about_40_chars():
         rows = t.split("\n")
         assert len(rows) <= 2 and all(len(r) <= CHARS_PER_LINE for r in rows) and b > a
     assert srt(cues).startswith("1\n00:00:01,000 --> ")
+
+
+def test_ambience_plays_over_its_shots_and_fades_inside():
+    from pipeline.assemble import ambience_filter, ambience_windows
+    tl = {"shots": [{"id": "a", "start_s": 0.0, "duration_s": 5.0}, {"id": "b", "start_s": 5.0, "duration_s": 4.0},
+                    {"id": "c", "start_s": 9.0, "duration_s": 3.0}]}
+    bed = {"id": "murmur", "shots": ["b", "c"]}
+    assert ambience_windows({"ambience": [bed]}, tl) == [(bed, 5.0, 12.0)]
+    assert ambience_windows({}, tl) == []
+    f = ambience_filter(bed, 7.0)
+    assert f.startswith("atrim=0:7.000,") and "lowpass=f=2500" in f
+    assert "afade=t=in:d=1," in f and "afade=t=out:st=6.000:d=1" in f
+
+
+def test_music_generation_key_ignores_shot_durations_and_clean_until(env):
+    """Shortening a shot or cutting a damaged section end must not re-generate the score (only assembly changes)."""
+    import json
+    from pipeline.common import load_storyboard
+    from pipeline.music import cand_key
+    ctx = load_storyboard(env.sb_path)
+    before = cand_key(ctx, ctx.sb["music_cues"][0], 1)
+    sb = json.loads(env.sb_path.read_text())
+    sb["shots"][-1]["duration_s"] = 3.1
+    sb["music_cues"][0]["clean_until_s"] = 29.5
+    env.sb_path.write_text(json.dumps(sb))
+    assert cand_key(load_storyboard(env.sb_path), sb["music_cues"][0], 1) == before
