@@ -5,10 +5,12 @@
 #   VERTICAL=crop|blur|both   9:16 treatment of Wan clips (default both: film_9x16.mp4 + film_9x16_blur.mp4)
 #   PREVIEW=1         assemble before Kaggle ran (Ken Burns for missing clips, placeholder score)
 #   FFMPEG=/FFPROBE=  override the ffmpeg binaries (default: Homebrew ffmpeg-full if installed)
+#   VENV=path         Python virtualenv (default ~/.venvs/heritage-short, created by `make setup`)
 
 SHELL      := /bin/bash
 PYTHON     ?= python3
-VENV       := .venv
+# the venv lives outside the repo: synced folders (iCloud) evict its files, FAILURES.md #31
+VENV       ?= $(HOME)/.venvs/heritage-short
 PY         := $(if $(wildcard $(VENV)/bin/python),$(VENV)/bin/python,$(PYTHON))
 STORYBOARD ?= storyboard.json
 FORCE      ?= 0

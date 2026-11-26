@@ -14,6 +14,8 @@ from __future__ import annotations
 
 import argparse
 import os
+import shlex
+import sys
 from datetime import date
 
 from . import common as c
@@ -98,7 +100,7 @@ def run(ctx: c.Ctx) -> None:
     if waiting:
         listing = "\n  ".join(os.path.relpath(ctx.out / "music" / n, c.ROOT) for n in sorted(keep))
         raise c.AwaitingChoice(f"music candidates ready for {', '.join(waiting)}:\n  {listing}\n"
-                               f"Choose:  .venv/bin/python -m pipeline.music --select {waiting[0]}=<n> --reason \"...\"")
+                               f"Choose:  {shlex.quote(sys.executable)} -m pipeline.music --select {waiting[0]}=<n> --reason \"...\"")
     print(f"music: {len(ctx.sb['music_cues'])} cue(s) ready")
 
 

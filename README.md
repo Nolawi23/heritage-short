@@ -32,6 +32,8 @@ Keys go in `.env` (copy [`.env.example`](.env.example)): `GEMINI_API_KEY`, `CLOU
 ### Requirements
 
 - macOS or Linux, Python ≥ 3.10 (`make setup PYTHON=python3.11` to choose one), `git`, `make`.
+  `make setup` creates the virtualenv in `~/.venvs/heritage-short`, outside the repo (synced folders such as iCloud
+  evict its files, FAILURES.md #31); `make setup VENV=.venv` keeps it in the repo instead.
 - **ffmpeg with libass and freetype**, needed only to re-assemble. On macOS run `brew install ffmpeg-full`; the pipeline
   finds it automatically, or you can set `FFMPEG=` and `FFPROBE=`. `make setup` warns if the `subtitles` or `drawtext`
   filters are missing.

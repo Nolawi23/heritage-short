@@ -16,6 +16,8 @@ import base64
 import math
 import os
 import re
+import shlex
+import sys
 from pathlib import Path
 
 import requests
@@ -184,7 +186,7 @@ def run(ctx: c.Ctx) -> None:
     if waiting:
         listing = "\n  ".join(os.path.relpath(p, c.ROOT) for p in sorted((ctx.out / "reference").glob("*_c*")))
         raise c.AwaitingChoice(f"reference sheet needs approval for: {', '.join(waiting)}\n  {listing}\n"
-                               f"Pick one per character:  .venv/bin/python -m pipeline.keyframes "
+                               f"Pick one per character:  {shlex.quote(sys.executable)} -m pipeline.keyframes "
                                f"--approve {waiting[0]}=<n>  (then rerun)")
     keep = set()
     for shot in ctx.sb["shots"]:
