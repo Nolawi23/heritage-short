@@ -67,7 +67,7 @@ def ordered(shots: list[dict], order: str | None) -> list[dict]:
 
 
 def run(ctx: c.Ctx, test: bool = False, image: str | None = None, parallel: bool = False,
-        order: str | None = None) -> None:
+        order: str | None = None, collect_job: str | None = None) -> None:
     model = c.model_cfg(ctx, "wan")["id"]
     settings = wan_settings(ctx)
     pending, keep = [], set()
@@ -110,7 +110,10 @@ def run(ctx: c.Ctx, test: bool = False, image: str | None = None, parallel: bool
         notebook = NOTEBOOK_2GPU
         files["wan_worker.py"] = WORKER
         config |= {"worker_sha256": c.sha256_file(WORKER), "oom_frames": TEST_FRAMES}
-    res = kaggle_job.run("wan", notebook, jobs, config, ctx.models, files)
+    if collect_job:  # the session was pushed earlier (same storyboard, order and flags): wait, download, register
+        res = kaggle_job.collect("wan", collect_job, ctx.models)
+    else:
+        res = kaggle_job.run("wan", notebook, jobs, config, ctx.models, files)
     kaggle_job.log_session("shots", model, res)
     for ln in res["lines"]:  # every attempt the notebook made, with its GPU time
         if ln.get("id"):
@@ -154,8 +157,10 @@ def main() -> None:
     ap.add_argument("--image", help="with --test: use this still instead of a keyframe")
     ap.add_argument("--parallel", action="store_true", help="both GPUs of the Kaggle T4 x2 session, one pipeline each")
     ap.add_argument("--order", help="render priority, shot numbers or ids, e.g. 9,5,4,3")
+    ap.add_argument("--collect", metavar="JOB_ID", help="don't push: wait for that earlier session, download, register")
     a = ap.parse_args()
-    run(c.load_storyboard(a.storyboard), test=a.test, image=a.image, parallel=a.parallel, order=a.order)
+    run(c.load_storyboard(a.storyboard), test=a.test, image=a.image, parallel=a.parallel, order=a.order,
+        collect_job=a.collect)
 
 
 if __name__ == "__main__":

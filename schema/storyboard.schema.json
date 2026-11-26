@@ -118,6 +118,8 @@
                             "description": "9:16 only, Wan clips: always use the blurred fill for this shot, also in the crop film (content off-centre)."},
           "vertical_x": {"type": "number", "minimum": -1, "maximum": 1,
                          "description": "9:16 crop film only, Wan clips: horizontal position of the crop window (-1 left edge, 0 centre, 1 right edge)."},
+          "music_gain_db": {"type": "number", "minimum": -20, "maximum": 0,
+                            "description": "Lower the score under this shot (dB, after gain matching, before ducking); consecutive shots with the same value form one dip with 1 s ramps outside it."},
           "lines": {
             "type": "array",
             "items": {

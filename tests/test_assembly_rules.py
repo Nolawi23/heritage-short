@@ -9,6 +9,16 @@ def test_music_entrance_fades_in_and_out():
     assert f"afade=t=in:d={MUSIC_FADE_IN_S:g}," in music_tail(30.0)
 
 
+def test_music_dip_merges_consecutive_shots_and_ramps_outside():
+    from pipeline.assemble import music_dips
+    sb = {"shots": [{"id": "a"}, {"id": "b", "music_gain_db": -4}, {"id": "c", "music_gain_db": -4}, {"id": "d"}]}
+    tl = {"shots": [{"id": i, "start_s": 5.0 * n, "duration_s": 5.0} for n, i in enumerate("abcd")]}
+    f = music_dips(sb, tl)
+    assert f.count("clip(") == 2  # b + c form ONE window, 5-15 s
+    assert "(1+(0.6310-1)*clip((t-4.000)/1,0,1)*clip((16.000-t)/1,0,1))" in f
+    assert music_dips({"shots": [{"id": "a"}]}, {"shots": tl["shots"][:1]}) == ""
+
+
 def test_vertical_crop_window_can_move_off_centre():
     from pipeline.av import reframe_filter
     assert "crop=720:1280," in reframe_filter(720, 1280, "fill")

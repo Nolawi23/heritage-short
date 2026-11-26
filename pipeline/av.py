@@ -73,9 +73,9 @@ def frames(seconds: float, fps: int) -> int:
 
 
 # ------------------------------------------------------------- loudness -----
-def measure_loudness(path: Path, filt: str = "") -> dict:
-    """First loudnorm pass: integrated loudness, true peak, LRA, threshold."""
-    err = ffmpeg("-i", path, "-af", f"{filt + ',' if filt else ''}loudnorm=I=-14:TP=-1:LRA=11:print_format=json",
+def measure_loudness(path: Path, filt: str = "", targets: str = "I=-14:TP=-1:LRA=11") -> dict:
+    """First loudnorm pass: integrated loudness, true peak, LRA, threshold (and the offset for these targets)."""
+    err = ffmpeg("-i", path, "-af", f"{filt + ',' if filt else ''}loudnorm={targets}:print_format=json",
                  "-f", "null", "-")
     return json.loads(err[err.rindex("{"):err.rindex("}") + 1])
 

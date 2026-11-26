@@ -58,6 +58,11 @@ At the end they feel seen and grateful: this ordinary Sunday ritual is what keep
   shorter than its shot, it plays and then continues with a slow Ken Burns move on its last frame, never a freeze.
   With 81-frame clips (3.4 s) every Wan shot (5-6 s) ends with a 1.1-2.1 s Ken Burns tail; a shot retried at 49
   frames gets the same treatment with a longer tail.
+- **2026-11-26 - Mix (rough-cut check).** Mom's call plays over silence (the score enters 0.3 s after it with a
+  1.5 s fade-in). Most lines sat 9-15 dB above the ducked music, but lines 7-9 (abol, tona, bereka) only 2-5 dB: a
+  softer read over a louder passage of the score. Author's decisions: the score dips 4 dB under shots 7-9 only
+  (`shots[].music_gain_db: -4`, 1 s ramps outside the dip; elsewhere unchanged), and the final loudness pass targets
+  -1.5 dBTP (loudness stays -14 LUFS), because the rough cut measured -0.98 dBTP against a -1 dBTP ceiling.
 
 ## User tests
 

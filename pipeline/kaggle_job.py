@@ -102,7 +102,14 @@ def render_kernel(stage: str, notebook: str, jobs: dict, user: str, dataset: str
 def poll(k, kernel_ref: str, timeout_s: int, poll_s: int) -> tuple[str, str]:
     t0 = time.monotonic()
     while True:
-        st = k.kernels_status(kernel_ref)
+        try:
+            st = k.kernels_status(kernel_ref)
+        except Exception as e:  # noqa: BLE001 - a network drop must not abandon a session that keeps running on Kaggle
+            if time.monotonic() - t0 > timeout_s:
+                return "timeout", f"no status after {timeout_s} s ({type(e).__name__})"
+            print(f"  kaggle status check failed ({type(e).__name__}), retrying in {poll_s} s", flush=True)
+            time.sleep(poll_s)
+            continue
         status = str(getattr(st, "status", st)).split(".")[-1].lower()
         failure = getattr(st, "failure_message", "") or ""
         print(f"  kaggle {kernel_ref.split('/')[-1]}: {status} ({(time.monotonic() - t0) / 60:.0f} min)", flush=True)
@@ -142,11 +149,31 @@ def run(stage: str, notebook: str, jobs: list[dict], config: dict, models: dict,
             raise c.QuotaExhausted(f"Kaggle refused the push (GPU quota?): {err}")
         raise c.PipelineStop(f"kaggle kernels push failed: {err}")
     time.sleep(20)  # the new version takes a moment to appear
+    return collect(stage, job_id, models, k=k, t0=t0)
+
+
+def collect(stage: str, job_id: str, models: dict, k=None, t0: float | None = None) -> dict:
+    """Wait for the already-pushed kernel of `stage` to end, download /kaggle/working and parse timing.jsonl.
+    Never pushes: `python -m pipeline.shots --collect <job_id>` uses it to pick up a session whose poller died."""
+    kcfg = models["kaggle"]
+    k = k or api()
+    t0 = time.monotonic() if t0 is None else t0
+    kernel_ref = json.loads((KAGGLE_DIR / stage / "kernel-metadata.json").read_text())["id"].replace("USERNAME", username(k))
+    build = c.outputs_root() / ".kaggle" / stage / job_id
     status, failure = poll(k, kernel_ref, kcfg["timeout_s"], kcfg["poll_s"])
     out = build / "output"
     shutil.rmtree(out, ignore_errors=True)
     out.mkdir(parents=True)
-    k.kernels_output(kernel_ref, str(out), force=True, quiet=True)
+    for attempt in range(1, 6):  # the files stay on Kaggle, so a failed download can simply be repeated
+        try:
+            k.kernels_output(kernel_ref, str(out), force=True, quiet=True)
+            break
+        except Exception as e:  # noqa: BLE001
+            if attempt == 5:
+                raise c.PipelineStop(f"Kaggle output download failed 5 times ({type(e).__name__}); "
+                                     f"retry with --collect {job_id}") from None
+            print(f"  kaggle download failed ({type(e).__name__}), retrying in 30 s", flush=True)
+            time.sleep(30)
     timing = out / "timing.jsonl"
     lines = [json.loads(x) for x in timing.read_text().splitlines() if x.strip()] if timing.exists() else []
     stale = [ln for ln in lines if ln.get("job_id") != job_id]

@@ -64,7 +64,7 @@ within Workers AI's 10,000 free Neurons/day, and the Kaggle GPU work (6 h/week) 
 | `keyframes` | reference-sheet candidates per character (you approve one), then one keyframe per shot conditioned on the approved sheets | FLUX.2 klein 4B on Workers AI | ~208 Neurons per keyframe of 10,000/day |
 | `shots` | image-to-video for `"wan"` shots whose key changed, in one Kaggle T4 run (`make shots-test` measures one short clip first) | Wan 2.2 TI2V-5B | GPU minutes of a 6 h/week quota |
 | `music` | 3 instrumental candidates per cue (you choose one), ~35 s sections joined to the timeline | MusicGen-medium fp32 on a Kaggle T4 (ACE-Step 1.5 overflowed in fp16, FAILURES.md #19) | ~2.5 GPU min per candidate |
-| `assemble` | cut to the timeline, fit clips, Ken Burns stills, ducking, subtitles, end card, two-pass loudnorm to −14 LUFS / −1 dBTP, H.264/AAC at 24 fps, 16:9 + 9:16 | ffmpeg | none |
+| `assemble` | cut to the timeline, fit clips, Ken Burns stills, ducking, subtitles, end card, two-pass loudnorm to −14 LUFS (true peak under −1 dBTP), H.264/AAC at 24 fps, 16:9 + 9:16 | ffmpeg | none |
 | `costs` | per-stage calls, latency, GPU minutes and list-price equivalent → [`COSTS.md`](COSTS.md) | — | — |
 
 Human decisions are recorded in the storyboard so a fresh clone runs straight through:

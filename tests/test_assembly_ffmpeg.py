@@ -1,7 +1,7 @@
 """End-to-end ffmpeg assembly on synthetic media (tiny resolutions, ~10 s). Skipped without ffmpeg-full.
 
 Checks: both aspect ratios + blur variant render, constant 24 fps, exact timeline length, AAC audio,
--14 LUFS / -1 dBTP within tolerance, SRT written, radio cut renders, and a rerun is a cache hit.
+-14 LUFS and a true peak under -1 dBTP within tolerance, SRT written, radio cut renders, and a rerun is a cache hit.
 """
 import json
 import subprocess
@@ -70,11 +70,12 @@ def test_full_assembly_on_synthetic_media(media):
         assert any(s["codec_name"] == "aac" for s in info["streams"])
         assert abs(float(info["format"]["duration"]) - tl["total_s"]) < 0.1, name
     loud = av.measure_loudness(out / "film_16x9.mp4")
-    assert abs(float(loud["input_i"]) + 14) < 1.0 and float(loud["input_tp"]) <= -0.5
+    assert abs(float(loud["input_i"]) + 14) < 1.0
+    assert float(loud["input_tp"]) <= -1.0  # delivery ceiling (target -1.5 dBTP)
     assert (out / "subtitles.srt").read_text().startswith("1\n")
     assert (out / "radio_cut.mp4").exists()
     fits = [json.loads(x) for x in media.runs.read_text().splitlines() if '"fit"' in x]
-    assert fits and fits[0]["params"]["speed"] == 1.3 and fits[0]["params"]["kenburns_tail_s"] > 0
+    assert fits and fits[0]["params"]["speed"] == assemble.MAX_SLOW and fits[0]["params"]["kenburns_tail_s"] > 0
     n = len(media.runs.read_text().splitlines())
     assemble.run(load_storyboard(media.sb_path))  # rerun: all films are cache hits
     assert all(json.loads(x)["cache_hit"] for x in media.runs.read_text().splitlines()[n:])

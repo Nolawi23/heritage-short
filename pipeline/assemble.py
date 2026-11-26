@@ -7,7 +7,7 @@ Per shot (lengths from timeline.json, whole frames):
   kenburns shot / wan fallback  : pan-and-zoom of the ORIGINAL keyframe, cropped per aspect ratio, varied direction
 Audio: narration stem (per-speaker effect) and music bed brought to -20 LUFS, music ducked under the narration
   (sidechaincompress threshold 0.02, ratio 6, attack 300 ms, release 1500 ms), mixed, then two-pass loudnorm
-  to -14 LUFS / -1 dBTP. Subtitles: SRT from the line timings (<= 2 lines x ~40 chars), burned in from an ASS
+  to -14 LUFS with a -1.5 dBTP target (delivered peak under -1 dBTP). Subtitles: SRT from the line timings (<= 2 lines x ~40 chars), burned in from an ASS
   file styled per aspect (9:16 kept inside the safe area). End card ("Made with AI") drawn in code.
 9:16 Wan clips: centre crop (film_9x16.mp4) or sharp fit on a blurred fill (film_9x16_blur.mp4); Ken Burns shots
   are always cropped from the original keyframe. Export: H.264 + AAC, constant 24 fps. Each film is cached by
@@ -38,10 +38,11 @@ MAX_SLOW = 1.25  # author's rule (2026-11-26): no strong slow motion; the rest i
 INTERP_ABOVE = 1.05
 TAIL_ZOOM = 0.05
 NARR_LUFS, MUSIC_LUFS = -20.0, -20.0
-FINAL = "I=-14:TP=-1:LRA=11"
+FINAL = "I=-14:TP=-1.5:LRA=11"  # -1.5 dBTP target so the delivered peak stays under -1 dBTP (author, 2026-11-26)
 DUCK = "sidechaincompress=threshold=0.02:ratio=6:attack=300:release=1500"
 MUSIC_XFADE_S = 2.0
 MUSIC_FADE_IN_S = 0.5  # default fade-in of a music span; the first one can be longer (music_fade_in_s)
+MUSIC_DIP_RAMP_S = 1.0  # ramp into and out of a per-shot music dip (shots[].music_gain_db)
 CHARS_PER_LINE = 40
 SUB_STYLE = {"16:9": {"size": 34, "margin_v": 42, "margin_lr": 90},
              "9:16": {"size": 30, "margin_v": 330, "margin_lr": 50}}  # 9:16: clear of the bottom ~25% UI zone
@@ -200,6 +201,24 @@ def _gain(path: Path, target: float) -> float:
     return 0.0 if math.isinf(i) else round(target - i, 2)
 
 
+def music_dips(sb: dict, tl: dict) -> str:
+    """shots[].music_gain_db lowers the score under those shots (after gain matching, before ducking). Consecutive
+    shots with the same value form one window; the gain ramps over MUSIC_DIP_RAMP_S just outside it, so the window
+    itself is at the full dip. Returns an ffmpeg ',volume=...' filter, or '' when no shot sets one."""
+    gains = {s["id"]: s.get("music_gain_db", 0) for s in sb["shots"]}
+    windows: list[list[float]] = []
+    for s in tl["shots"]:
+        g, start, end = gains.get(s["id"], 0), s["start_s"], s["start_s"] + s["duration_s"]
+        if g and windows and windows[-1][2] == g and abs(windows[-1][1] - start) < 1e-3:
+            windows[-1][1] = end
+        elif g:
+            windows.append([start, end, g])
+    r = MUSIC_DIP_RAMP_S
+    terms = [f"(1+({10 ** (g / 20):.4f}-1)*clip((t-{a - r:.3f})/{r:g},0,1)*clip(({b + r:.3f}-t)/{r:g},0,1))"
+             for a, b, g in windows]
+    return f",volume='{'*'.join(terms)}':eval=frame" if terms else ""
+
+
 def build_audio(ctx: c.Ctx, tl: dict, music: dict, tmp: Path) -> tuple[Path, dict]:
     total = tl["total_s"]
     narr, bed, pre, out = tmp / "narration.wav", tmp / "music.wav", tmp / "premix.wav", tmp / "mix.wav"
@@ -228,9 +247,9 @@ def build_audio(ctx: c.Ctx, tl: dict, music: dict, tmp: Path) -> tuple[Path, dic
     gn, gm = _gain(narr, NARR_LUFS), _gain(bed, MUSIC_LUFS)
     av.ffmpeg("-i", narr, "-i", bed, "-filter_complex",
               f"[0:a]volume={gn}dB,aformat=channel_layouts=stereo,asplit=2[sc][n];"
-              f"[1:a]volume={gm}dB,aformat=channel_layouts=stereo[m];[m][sc]{DUCK}[d];"
+              f"[1:a]volume={gm}dB{music_dips(ctx.sb, tl)},aformat=channel_layouts=stereo[m];[m][sc]{DUCK}[d];"
               f"[d][n]amix=inputs=2:normalize=0:duration=first[o]", "-map", "[o]", "-ar", 48000, pre)
-    m = av.measure_loudness(pre)  # pass 1
+    m = av.measure_loudness(pre, targets=FINAL)  # pass 1, same targets as pass 2
     av.ffmpeg("-i", pre, "-af", f"loudnorm={FINAL}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:"
               f"measured_LRA={m['input_lra']}:measured_thresh={m['input_thresh']}:offset={m['target_offset']}:"
               "linear=true,aresample=48000", "-ar", 48000, out)  # pass 2
@@ -329,7 +348,8 @@ def film_key(ctx: c.Ctx, tl_sha: str, srcs: dict, music: dict, aspect: str, mode
               "music_start_after_line": ctx.sb.get("music_start_after_line"),
               "music_fade_in_s": ctx.sb.get("music_fade_in_s"),
               "vertical_shots": {s["id"]: [s.get("vertical_fill"), s.get("vertical_x")] for s in ctx.sb["shots"]
-                                 if "vertical_fill" in s or "vertical_x" in s}}
+                                 if "vertical_fill" in s or "vertical_x" in s},
+              "music_gains": {s["id"]: s["music_gain_db"] for s in ctx.sb["shots"] if s.get("music_gain_db")}}
     return c.Cache.key("assemble", "ffmpeg", params, None, None, upstream)
 
 

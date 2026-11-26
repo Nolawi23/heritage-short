@@ -184,7 +184,8 @@
         "DELINA",
         "BROTHER"
       ],
-      "keyframe_seed": 1107
+      "keyframe_seed": 1107,
+      "music_gain_db": -4
     },
     {
       "id": "shot-08-tona-discussion",
@@ -208,7 +209,8 @@
         "DELINA",
         "BROTHER"
       ],
-      "keyframe_seed": 2108
+      "keyframe_seed": 2108,
+      "music_gain_db": -4
     },
     {
       "id": "shot-09-baraka-pour",
@@ -231,7 +233,8 @@
       "characters": [
         "housekeeper"
       ],
-      "keyframe_seed": 1109
+      "keyframe_seed": 1109,
+      "music_gain_db": -4
     },
     {
       "id": "shot-10-empty-cups",
