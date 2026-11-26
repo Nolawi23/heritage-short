@@ -2,7 +2,7 @@
 
 Per shot (lengths from timeline.json, whole frames):
   wan clip longer than the shot : drop up to 0.5 s weak frames from each end, then trim the rest from the end
-  wan clip shorter              : trim 0.125 s from each end, slow down <= 1.3x (motion-interpolated above 1.05x),
+  wan clip shorter              : trim 0.125 s from each end, slow down <= 1.25x (motion-interpolated above 1.05x),
                                   cover any remaining gap with a slow Ken Burns push on the last frame (never a freeze)
   kenburns shot / wan fallback  : pan-and-zoom of the ORIGINAL keyframe, cropped per aspect ratio, varied direction
 Audio: narration stem (per-speaker effect) and music bed brought to -20 LUFS, music ducked under the narration
@@ -34,7 +34,7 @@ from .shots import clip_status
 
 SHORT_TRIM_S = 0.125
 LONG_TRIM_S = 0.5
-MAX_SLOW = 1.3
+MAX_SLOW = 1.25  # author's rule (2026-11-26): no strong slow motion; the rest is a Ken Burns move on the last frame
 INTERP_ABOVE = 1.05
 TAIL_ZOOM = 0.05
 NARR_LUFS, MUSIC_LUFS = -20.0, -20.0

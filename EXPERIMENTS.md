@@ -105,8 +105,21 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   long narrow neck and spout", "small handleless white porcelain coffee cups", "a low wooden coffee stand", "white
   frankincense smoke from a small clay incense burner", "roasted barley grains"); the Amharic words stay in the notes,
   reasons and narration. `tests/test_schema.py::test_visual_prompts_describe_objects_instead_of_naming_them` enforces it.
-- **Result:** _check after keyframes_ (are the coffee pot, cups, stand and incense burner recognisable?).
-- **run_id:** _keyframes run_
+- **Result:** over three keyframe rounds (evidence: the round-2 review notes and the author's picks), the visual
+  descriptions worked for the simple objects but not, at first, for the coffee pot:
+  - small handleless white cups: recognisable wherever they appear (shots 7-10), but the count is unreliable
+    (shot 10 shows 3 cups instead of 5; the author accepted it, DESIGN.md 2026-11-26);
+  - the low wooden tray: recognisable under the cups in shots 9 and 10;
+  - the clay incense burner with white smoke: recognisable in shot 5 in every round (in the approved keyframe it sits
+    right of centre, which is why shot 5 uses the blur fill in 9:16);
+  - the coffee pot: "a round-bodied black clay coffee pot with a long narrow neck" gave a kettle and a round teapot
+    in round 2; only a full shape description (a round gourd, a narrow vertical neck as tall as the body, a short spout
+    from the body, a handle from the neck to the body, a tuft of straw in the opening) gave a pot the author approved
+    (shot 5 c2, round 3). In shot 9, pouring, the shorter description was enough.
+  Conclusion: a visual description replaces an Amharic name for everyday objects; a culturally specific object needs
+  its exact shape spelled out. There was no control with the Amharic names (a test keeps them out of every prompt).
+- **run_id:** `20261125T214952Z-keyframes` (round 1), `20261125T224605Z-kf-candidates` (round 2),
+  `20261126T000420Z-6fb6` (round 3, shots 3 and 5)
 
 ### 2026-11-25 - Music caption: masenqo vs tizita-inspired
 - **Hypothesis:** naming the masenqo (one-string Ethiopian fiddle) may not work, because ACE-Step may not know how to

@@ -127,7 +127,7 @@ Only called when at least one key is missing. One batch, one kernel run:
 ## Assembly (`assemble.py`)
 
 - **Wan clip longer than its shot:** drop up to 0.5 s of weak frames from each end, then trim the rest from the end.
-- **Wan clip shorter:** trim 0.125 s from each end, slow down by at most 1.3× (motion-compensated interpolation above
+- **Wan clip shorter:** trim 0.125 s from each end, slow down by at most 1.25× (author's rule: no strong slow motion; motion-compensated interpolation above
   1.05×), then cover any remaining gap with a slow Ken Burns push on the last frame, never a freeze. The plan applied
   to each shot is logged (`provider: ffmpeg, model: fit`).
 - **Ken Burns shots and fallbacks:** each aspect ratio is cropped from the original keyframe, and the direction

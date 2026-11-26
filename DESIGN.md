@@ -52,6 +52,12 @@ At the end they feel seen and grateful: this ordinary Sunday ritual is what keep
     three-quarter view from the side, medium close-up, hands rinsing the beans in a metal bowl. Shot 5 describes the
     coffee pot's real shape (a round gourd, a narrow vertical neck as tall as the body, a short spout, a handle from the
     neck to the body, a tuft of straw in the opening); if neither candidate works, the author takes round-2 c2.
+  Round 3: shot 3 = c1, shot 5 = c2 (the gourd-shaped pot). Shot 5's incense burner and smoke sit right of centre,
+  so in 9:16 it uses the blur fill (EXPERIMENTS.md, crop vs blur).
+- **2026-11-26 - Wan clip fitting.** A clip is slowed down by at most 1.25x (no strong slow motion); if it is still
+  shorter than its shot, it plays and then continues with a slow Ken Burns move on its last frame, never a freeze.
+  With 81-frame clips (3.4 s) every Wan shot (5-6 s) ends with a 1.1-2.1 s Ken Burns tail; a shot retried at 49
+  frames gets the same treatment with a longer tail.
 
 ## User tests
 
