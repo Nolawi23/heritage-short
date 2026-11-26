@@ -71,7 +71,8 @@ Human decisions are recorded in the storyboard so a fresh clone runs straight th
 `python -m pipeline.keyframes --approve <character>=<n>` and
 `python -m pipeline.music --select <cue>=<n> --reason "..."` (the reason goes to [`EXPERIMENTS.md`](EXPERIMENTS.md)).
 
-Other targets: `make validate`, `make test` (no network), `make check-secrets` (also runs as the pre-commit hook),
+Other targets: `make last-run` (the latest run's calls from `runs.jsonl`: stage, shot, provider, cache hit /
+new call / local step, status; `RUN=<run_id>` for another run), `make validate`, `make test` (no network), `make check-secrets` (also runs as the pre-commit hook),
 `make smoke` (lists models, pins them in `config/models.json`, one call per provider), `make gc` (unreferenced cache objects).
 Options: `VERTICAL=crop|blur|both` (9:16 treatment of Wan clips: centre crop and/or blurred-background fill; default both), `PREVIEW=1` (assemble with Ken Burns
 and a placeholder score before Kaggle has run).

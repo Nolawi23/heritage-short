@@ -20,7 +20,7 @@ export STORYBOARD FORCE VERTICAL PREVIEW RUN_ID FFMPEG FFPROBE
 STAGE := $(PY) -m pipeline
 
 .PHONY: help setup smoke validate test check-secrets script narration radio keyframes shots shots-test music \
-        assemble budget costs film gc
+        assemble budget costs film gc last-run
 
 help:
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | sed -E 's/:.*## /\t/' | expand -t 16
@@ -72,6 +72,9 @@ assemble: ## ffmpeg: cut, subtitles, end card, ducking, loudnorm, 16:9 + 9:16
 
 budget: ## today's Gemini requests used / left per model (from runs.jsonl; resets midnight Pacific)
 	@$(STAGE).common budget
+
+last-run: ## the most recent run's lines from runs.jsonl as a table (RUN=<run_id> for another run)
+	@$(STAGE).common last-run $(if $(RUN),--run $(RUN))
 
 costs: ## per-stage calls / latency / GPU minutes / list price -> COSTS.md
 	$(STAGE).report_costs

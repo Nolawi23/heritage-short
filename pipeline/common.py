@@ -569,6 +569,37 @@ def gc(delete: bool) -> None:
           + ("" if delete else " (run `make gc CONFIRM=1` to delete)"))
 
 
+def last_run(run_id: str | None = None) -> None:
+    """Print one run's lines from runs.jsonl (default: the most recent run) as a short table."""
+    p = runs_path()
+    rows = [json.loads(x) for x in p.read_text().splitlines() if x.strip()] if p.exists() else []
+    if not rows:
+        print("runs.jsonl has no runs yet")
+        return
+    rid = run_id or rows[-1]["run_id"]
+    run = [r for r in rows if r.get("run_id") == rid]
+    if not run:
+        raise PipelineStop(f"no run '{rid}' in runs.jsonl")
+
+    def call(r: dict) -> str:
+        if r.get("cache_hit"):
+            return "cache hit"
+        return "local step" if r.get("provider") in ("ffmpeg", "local") else "new call"
+
+    table = [("stage", "shot", "provider", "call", "status")]
+    table += [(r.get("stage", ""), r.get("shot_id") or "-", r.get("provider", ""), call(r), r.get("status", "")) for r in run]
+    widths = [max(len(str(row[i])) for row in table) for i in range(len(table[0]))]
+    print(f"run {rid}: {len(run)} line(s), {run[0]['ts'][:19].replace('T', ' ')} - {run[-1]['ts'][11:19]} UTC")
+    for i, row in enumerate(table):
+        print("  ".join(str(v).ljust(w) for v, w in zip(row, widths)).rstrip())
+        if i == 0:
+            print("  ".join("-" * w for w in widths))
+    kinds = [call(r) for r in run]
+    not_ok = sum(r.get("status") not in ("ok", "cached") for r in run)
+    print(f"{kinds.count('new call')} new call(s), {kinds.count('cache hit')} cache hit(s), "
+          f"{kinds.count('local step')} local step(s); {not_ok} not ok")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="common utilities")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -577,8 +608,12 @@ def main() -> None:
     g = sub.add_parser("gc")
     g.add_argument("--delete", action="store_true")
     sub.add_parser("budget")
+    lr = sub.add_parser("last-run")
+    lr.add_argument("--run", help="run_id to show (default: the most recent run)")
     a = ap.parse_args()
-    if a.cmd == "budget":
+    if a.cmd == "last-run":
+        stage_main(lambda: last_run(a.run))
+    elif a.cmd == "budget":
         models = json.loads(models_path().read_text())
         for slot in ("gemini_tts", "gemini_text"):
             m = models.get(slot) or {}
