@@ -462,6 +462,28 @@
   "stage": "keyframes",
   "status": "ok"
  },
+ "5c444414aef32e755256538a2fbf2ed586bcff62b8b52cd7656252dc97f4520d": {
+  "bytes": 13588773,
+  "created": "2026-11-26T12:13:13.630+00:00",
+  "duration_s": 68.875,
+  "file": "5c444414aef32e755256538a2fbf2ed586bcff62b8b52cd7656252dc97f4520d.mp4",
+  "kept": true,
+  "loudness": {
+   "ambience_gain_db": {
+    "family-murmur": 12.09
+   },
+   "final_I": "-14.38",
+   "final_LRA": "4.50",
+   "final_TP": "-1.48",
+   "music_gain_db": 1.92,
+   "narration_gain_db": -0.25,
+   "pass1_I": "-20.65"
+  },
+  "run_id": "20261126T121023Z-make",
+  "sha256": "b3b7a60a2e4cf86a18f42d468d4a8a34c776c72f66ca1c0f30d31155646ce2ae",
+  "stage": "assemble",
+  "status": "ok"
+ },
  "5cca03e209389df3d069c0bb876c35958bf8729cb6d346dd965723f22658df1f": {
   "bytes": 309830,
   "created": "2026-11-25T20:31:41.659+00:00",
@@ -763,6 +785,28 @@
   "stage": "narration_join",
   "status": "ok"
  },
+ "9277ebd7701e1d22c97fd604cc79b99d9acf5b540024c87413616841559271fa": {
+  "bytes": 15181629,
+  "created": "2026-11-26T12:12:32.939+00:00",
+  "duration_s": 68.875,
+  "file": "9277ebd7701e1d22c97fd604cc79b99d9acf5b540024c87413616841559271fa.mp4",
+  "kept": true,
+  "loudness": {
+   "ambience_gain_db": {
+    "family-murmur": 12.09
+   },
+   "final_I": "-14.38",
+   "final_LRA": "4.50",
+   "final_TP": "-1.48",
+   "music_gain_db": 1.92,
+   "narration_gain_db": -0.25,
+   "pass1_I": "-20.65"
+  },
+  "run_id": "20261126T121023Z-make",
+  "sha256": "221904889253d489533e2155b27c09ddc5f77e1a9ff3229ab0d826268fa41df8",
+  "stage": "assemble",
+  "status": "ok"
+ },
  "9426b5499746cddf5296f532cd4539aea9c110d4375beba0cf4ba9026dbacba3": {
   "bytes": 836181,
   "created": "2026-11-25T21:50:50.215+00:00",
@@ -896,6 +940,28 @@
   "run_id": "20261125T224605Z-kf-candidates",
   "sha256": "f7c9c1c2f66f80ac69d46b69bc5bc5fe7187eb0c68e58e3ec4619c4a2b4a0ebb",
   "stage": "keyframes",
+  "status": "ok"
+ },
+ "b08ec80b55052a561414b62505808ec82a942eafcf4f4a876f21e8fde2b5ded1": {
+  "bytes": 19443202,
+  "created": "2026-11-26T12:11:49.448+00:00",
+  "duration_s": 68.875,
+  "file": "b08ec80b55052a561414b62505808ec82a942eafcf4f4a876f21e8fde2b5ded1.mp4",
+  "kept": true,
+  "loudness": {
+   "ambience_gain_db": {
+    "family-murmur": 12.09
+   },
+   "final_I": "-14.38",
+   "final_LRA": "4.50",
+   "final_TP": "-1.48",
+   "music_gain_db": 1.92,
+   "narration_gain_db": -0.25,
+   "pass1_I": "-20.65"
+  },
+  "run_id": "20261126T121023Z-make",
+  "sha256": "d23db6aaa83f0b52909ecd723cfa90fee0bb52809d8dc42f5635c0a3e6332f4d",
+  "stage": "assemble",
   "status": "ok"
  },
  "b2accacdebd4f4129fb423a11ffeb9b18615f39a8d92ba7d7301e35408539b9c": {

@@ -69,12 +69,20 @@ At the end they feel seen and grateful: this ordinary Sunday ritual is what keep
   4, at the cost of a softer image (1.33x upscale in 16:9). Rejected: 81 frames at 960x544 (94 % of the failing
   token count), 81 frames at 832x480 (softest), 33 frames at 1280x704 (only 1.4 s of motion).
 
+- **2026-11-26 - After user test 2 (the author on a phone).** Vertical = centre crop (shot 5 blur fill only, as the
+  crop would lose the incense smoke). The score's whistling end is cut (`music_cues[0].clean_until_s: 29.5`: the
+  same c2 track loops back with a 2 s crossfade, no regeneration). Shot 6 gets a background murmur: AudioGen was
+  rejected (audiocraft on Kaggle, estimated 25-40 min against the author's ~20 min limit), so a CC0 recording,
+  "Small Crowd Walla" (Freesound #653920, chosen by the author), plays under shot 6 only, 4 dB under the score,
+  low-passed at 2.5 kHz, 1 s fades, ducked under the narration. Shot 10: 6.0 -> 3.1 s (about 1 s before the next
+  line). The family kept the names in Mom's call (user test 1).
+
 ## User tests
 
 | # | Date | Who | What they saw | What they said | What changed |
 |---|---|---|---|---|---|
-| 1 | 2026-11-25 | the family (family chat) | two radio cuts: with names (`outputs/radio_cut.mp4`) vs "Come down here!" (`outputs/variants/storyboard_nonames/radio_cut.mp4`) | _pending_ | _pending: keep or drop the names in Mom's call_ |
-| 2 | | the family | the film (9:16 crop vs blur fill) | | |
+| 1 | 2026-11-25 (answer 2026-11-26) | the family (family chat) | two radio cuts: with names (`outputs/radio_cut.mp4`) vs "Come down here!" (`outputs/variants/storyboard_nonames/radio_cut.mp4`) | they prefer the version **with names** | nothing to change: Mom's call stays "Nolawi! Delina! Come down here!" in `storyboard.json`; `storyboard_nonames.json` is kept only as the record of this test |
+| 2 | 2026-11-26 | the author, watching the final films on a phone | `film_16x9.mp4`, `film_9x16.mp4` (crop), `film_9x16_blur.mp4` | (1) prefers the 9:16 **crop** (no blur); (2) a screech at about 0:35 and 1:06; (3) the "a lot of noise" line needs the noise: a low murmur of family chatter; (4) about 3 s of dead time at about 0:57 after "The coffee was never really the point." | (1) `film_9x16.mp4` is the vertical film; shot 5 keeps its blur fill because a crop cuts out the smoke (EXPERIMENTS.md); (2) the screech was the score's damaged end, cut with `clean_until_s` (FAILURES.md #33); (3) a CC0 recording of a small group's chatter under shot 6 (`ambience`, ETHICS.md); (4) shot 10 shortened from 6.0 to 3.1 s, so the gap before shot 11's line is about 1 s |
 
 ## A reason per shot
 

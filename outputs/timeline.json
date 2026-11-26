@@ -1,7 +1,7 @@
 {
   "storyboard": "storyboard.json",
   "fps": 24,
-  "total_s": 71.75,
+  "total_s": 68.875,
   "shots": [
     {
       "id": "shot-01-bedroom",
@@ -196,7 +196,7 @@
     {
       "id": "shot-10-empty-cups",
       "start_s": 54.708,
-      "duration_s": 6.0,
+      "duration_s": 3.125,
       "narration_s": 2.079,
       "motion": "kenburns",
       "music_cue": "ethiopian-acoustic",
@@ -215,7 +215,7 @@
     },
     {
       "id": "shot-11-house-exterior",
-      "start_s": 60.708,
+      "start_s": 57.833,
       "duration_s": 8.5417,
       "narration_s": 8.019,
       "motion": "kenburns",
@@ -228,21 +228,21 @@
           "subtitle": "It's the few hours every week we're all in the same room. Next Sunday, she'll call again, and we'll come down.",
           "wav": "narration/shot-11-house-exterior_1.wav",
           "sha256": "a61d3d1dcbaac70330e6a2d81b96c08a3fe09107e05d97c61d715d73d579c78d",
-          "start_s": 60.958,
-          "end_s": 68.977
+          "start_s": 58.083,
+          "end_s": 66.102
         }
       ]
     }
   ],
   "end_card": {
-    "start_s": 69.25,
+    "start_s": 66.375,
     "duration_s": 2.5
   },
   "music_spans": [
     {
       "cue": "ethiopian-acoustic",
       "start_s": 0.0,
-      "end_s": 71.75
+      "end_s": 68.875
     }
   ]
 }

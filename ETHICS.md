@@ -59,3 +59,12 @@ commercially without replacing the music. **The public post will not be monetise
 "Music generated with MusicGen (Meta), CC-BY-NC 4.0". (ACE-Step 1.5,
 MIT, was the first choice but cannot run on the free T4, see FAILURES.md #19.) Gemini API outputs are usable under
 Google's Gemini API terms. The FLUX.2 klein **9B** model is non-commercial and is deliberately not used.
+
+## Third-party recordings
+
+| Use | Recording | Author | Licence | Source | Added |
+|---|---|---|---|---|---|
+| background murmur under shot 6 ("a lot of noise"): `ambience[family-murmur]`, file `assets/ambience/small-crowd-walla_freesound-653920.mp3` | "Small Crowd Walla" (Freesound #653920): an indoor small mixed group chatting in Spanish; low-passed at 2.5 kHz, 4 dB under the score and ducked under the narration, so that no word should be intelligible (author to confirm on re-watch) | IENBA (Freesound) | **CC0 1.0** (public domain dedication, as stated on the sound page): no attribution required, commercial use allowed; credited here anyway | https://freesound.org/people/IENBA/sounds/653920/ (the public HQ preview MP3; the WAV original needs a Freesound login) | 2026-11-26, author's pick |
+
+It is the only recording in the film that was not generated: it is not AI-made and contains no family member. The
+people in it are strangers recorded by the uploader; the mix keeps their words from being made out.

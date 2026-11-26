@@ -165,7 +165,7 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   the session's ~29 GB of CPU RAM with model CPU offload.
 - **run_id:** `20261126T002226Z-wan-2gpu`
 
-### Planned - 9:16 treatment of the Wan shots: centre crop vs blurred fill
+### 2026-11-26 - 9:16 treatment of the Wan shots: centre crop vs blurred fill
 - **Hypothesis:** the 1280x704 Wan clips lose too much when centre-cropped to 9:16 (about 1.8x upscale of a
   396x704 slice); a sharp fit on a blurred fill keeps the whole frame but leaves the subject small.
 - **Change:** `make assemble` (VERTICAL=both) exports `film_9x16.mp4` (crop) and `film_9x16_blur.mp4` (blur fill),
@@ -174,8 +174,14 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   the 9:16 centre crop, so shot 5 uses the blur fill in both films (`shots[].vertical_fill: "blur"`); a per-shot crop
   offset (`shots[].vertical_x`, -1 left .. 1 right) is the alternative if the author prefers a full-bleed crop there.
   So the two films differ only in shots 3, 4 and 9.
-- **Result:** _pending (author compares the two on a phone)_.
-- **run_id:**
+- **Result (author, watching both on a phone, 2026-11-26):** the **crop** version is preferred (no blur).
+  `film_9x16.mp4` is the vertical film for the family chat; `film_9x16_blur.mp4` is still exported (VERTICAL=both)
+  but only as an alternative.
+- **Shot 5:** keeps the blur fill, by the author's rule "blur only if the crop would cut out the incense smoke": the
+  author's own note above says the burner and smoke fall outside the centre crop. A shifted crop (`vertical_x`)
+  remains the option if the author wants shot 5 full-bleed too.
+- **run_id:** compared on the films of `2eab5ba` (now `f5b453a`); re-exported in the run that applied user test 2
+  (DESIGN.md).
 
 ### 2026-11-26 - music cue `ethiopian-acoustic`: chose candidate 2
 - **Hypothesis:** one of 3 seeds (42..44) fits the narration best

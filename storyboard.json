@@ -253,7 +253,7 @@
     },
     {
       "id": "shot-10-empty-cups",
-      "duration_s": 6.0,
+      "duration_s": 3.1,
       "reason": "Signals that the real value of the ritual is togetherness rather than the drink itself.",
       "shot_size": "medium_close",
       "image_prompt": "Five small empty handleless white porcelain coffee cups on a low wooden tray on the living-room floor, wisps of white incense smoke fading in the warm air, indoors in the living room, fresh cut grass scattered on the wooden floor around the coffee area, in a family home in Addis Ababa, Ethiopia.",
@@ -319,7 +319,24 @@
       "instrumental": true,
       "seed": 42,
       "ab_caption": "Warm acoustic guitar paired with soft traditional masenqo and gentle percussive rhythm, warm, reflective, homely.",
-      "selected": 2
+      "selected": 2,
+      "clean_until_s": 29.5
+    }
+  ],
+  "ambience": [
+    {
+      "id": "family-murmur",
+      "file": "assets/ambience/small-crowd-walla_freesound-653920.mp3",
+      "shots": [
+        "shot-06-popcorn-table"
+      ],
+      "level_db": -4,
+      "lowpass_hz": 2500,
+      "fade_s": 1.0,
+      "licence": "CC0-1.0 (Creative Commons 0, public domain dedication)",
+      "source_url": "https://freesound.org/people/IENBA/sounds/653920/",
+      "author": "IENBA (Freesound)",
+      "note": "'Small Crowd Walla': indoor small mixed group, Spanish. HQ preview MP3 (the WAV original needs a login). Author's pick 2026-11-26 for 'a lot of noise'."
     }
   ]
 }
