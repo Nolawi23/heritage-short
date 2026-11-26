@@ -134,7 +134,8 @@ Only called when at least one key is missing. One batch, one kernel run:
   cycles (in, right, out, left, up, down).
 - **9:16:** Wan clips exist only in 16:9, so `film_9x16.mp4` centre-crops them and `film_9x16_blur.mp4` puts a sharp
   fit on a blurred fill (`VERTICAL=both`, the default; `crop` or `blur` render one). Ken Burns shots are always cropped
-  from the original keyframe at full quality.
+  from the original keyframe at full quality. Per shot, a Wan clip whose subject is off-centre can use the blurred fill
+  in both films (`shots[].vertical_fill: "blur"`, shot 5) or move the crop window (`shots[].vertical_x`, -1..1).
 - **Audio:** the narration stem (a per-speaker effect, e.g. MOM "downstairs" = band-pass + short echo) and the music
   bed are gain-matched to −20 LUFS. The music is ducked with `sidechaincompress=threshold=0.02:ratio=6:attack=300:release=1500`,
   the two are mixed, then two-pass `loudnorm` brings the mix to −14 LUFS / −1 dBTP (the measured result is logged).

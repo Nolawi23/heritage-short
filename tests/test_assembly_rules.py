@@ -9,6 +9,13 @@ def test_music_entrance_fades_in_and_out():
     assert f"afade=t=in:d={MUSIC_FADE_IN_S:g}," in music_tail(30.0)
 
 
+def test_vertical_crop_window_can_move_off_centre():
+    from pipeline.av import reframe_filter
+    assert "crop=720:1280," in reframe_filter(720, 1280, "fill")
+    assert "crop=720:1280:x='(iw-ow)*0.7500'" in reframe_filter(720, 1280, "fill", 0.5)
+    assert "gblur" in reframe_filter(720, 1280, "blur", 0.5)
+
+
 def test_long_clip_drops_weak_ends_first():
     p = fit_plan(5.0, 3.5)
     assert p["speed"] == 1.0 and p["kenburns_tail_s"] == 0

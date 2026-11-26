@@ -128,11 +128,31 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
 - **Result:** _pending (after keyframe approval and the Wan session)_.
 - **run_id:**
 
+### 2026-11-26 - Both T4s in parallel: one full Wan pipeline per GPU
+- **Hypothesis:** the Kaggle "T4 x2" session has two GPUs and its quota is charged per session hour, not per GPU
+  (measured: `quota_view` 3,538 s used vs about 1.07 h of logged GPU sessions, and the one session that used both GPUs,
+  the music split, was not counted double). Two independent pipelines, each rendering 2 of the 4 Wan shots, should
+  halve the session time at the same settings, as long as CPU RAM holds two 10 GB float16 transformers.
+- **Change:** `python -m pipeline.shots --parallel --order 9,5,4,3` (`kaggle/wan/wan_i2v_2gpu.ipynb` +
+  `wan_worker.py`): the prompts are encoded first in their own process (text encoder freed when it exits), then one
+  worker per GPU starts, the second only after the first has loaded; GPU 0 renders 9 then 4, GPU 1 renders 5 then 3.
+  81 frames, 20 steps, 1280x704, float16 + model CPU offload, float32 tiled VAE (the proven single-GPU settings and
+  cache keys). Safeguards: a crashed worker's shots run one at a time on one GPU in the same order; after a CUDA
+  out-of-memory error a worker retries that shot at the proven 49 frames (81 frames was never measured on the T4;
+  the 49-frame test peaked at 15.22 of about 15.6 GB). Plan B, if the parallel session fails in its first minutes:
+  the proven single-GPU notebook, `python -m pipeline.shots --order 9,5,4,3`.
+- **Result:** _running_ (kernel job `3be9dde3fc3e`).
+- **run_id:** `20261126T002226Z-wan-2gpu`
+
 ### Planned - 9:16 treatment of the Wan shots: centre crop vs blurred fill
 - **Hypothesis:** the 1280x704 Wan clips lose too much when centre-cropped to 9:16 (about 1.8x upscale of a
   396x704 slice); a sharp fit on a blurred fill keeps the whole frame but leaves the subject small.
 - **Change:** `make assemble` (VERTICAL=both) exports `film_9x16.mp4` (crop) and `film_9x16_blur.mp4` (blur fill),
   identical except for Wan shots 3, 4, 5 and 9; Ken Burns shots are cropped from the 1792x1008 keyframe in both.
+  **Exception, shot 5 (author's note, 2026-11-26):** its incense burner and smoke sit right of centre and fall outside
+  the 9:16 centre crop, so shot 5 uses the blur fill in both films (`shots[].vertical_fill: "blur"`); a per-shot crop
+  offset (`shots[].vertical_x`, -1 left .. 1 right) is the alternative if the author prefers a full-bleed crop there.
+  So the two films differ only in shots 3, 4 and 9.
 - **Result:** _pending (author compares the two on a phone)_.
 - **run_id:**
 

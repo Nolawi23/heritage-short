@@ -97,7 +97,8 @@
       "music_cue": "ethiopian-acoustic",
       "seed": 103,
       "motion": "wan",
-      "max_attempts": 2
+      "max_attempts": 2,
+      "keyframe_seed": 1103
     },
     {
       "id": "shot-04-roasting-beans",
@@ -137,7 +138,9 @@
       "music_cue": "ethiopian-acoustic",
       "seed": 105,
       "motion": "wan",
-      "max_attempts": 2
+      "max_attempts": 2,
+      "keyframe_seed": 2105,
+      "vertical_fill": "blur"
     },
     {
       "id": "shot-06-popcorn-table",

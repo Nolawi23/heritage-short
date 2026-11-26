@@ -112,13 +112,15 @@ def kenburns(still: Path, out: Path, seconds: float, w: int, h: int, fps: int, d
            "-frames:v", n, "-r", fps, *X264_INTERMEDIATE, "-an", out)
 
 
-def reframe_filter(w: int, h: int, mode: str) -> str:
-    """Fit a (16:9) source into w x h. fill = scale + centre crop; blur = sharp fit on a blurred fill."""
+def reframe_filter(w: int, h: int, mode: str, x: float = 0.0) -> str:
+    """Fit a (16:9) source into w x h. fill = scale + crop (x: -1 left edge, 0 centre, 1 right edge);
+    blur = sharp fit on a blurred fill."""
     if mode == "blur":
         return (f"split[a][b];[a]scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h},"
                 f"gblur=sigma=30,eq=brightness=-0.06[bg];[b]scale={w}:-2:flags=lanczos[fg];"
                 f"[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1,format=yuv420p")
-    return f"scale={w}:{h}:force_original_aspect_ratio=increase:flags=lanczos,crop={w}:{h},setsar=1,format=yuv420p"
+    crop = f"crop={w}:{h}" if not x else f"crop={w}:{h}:x='(iw-ow)*{(1 + max(-1.0, min(1.0, x))) / 2:.4f}':y='(ih-oh)/2'"
+    return f"scale={w}:{h}:force_original_aspect_ratio=increase:flags=lanczos,{crop},setsar=1,format=yuv420p"
 
 
 def placeholder_pad(seconds: float, out: Path) -> None:

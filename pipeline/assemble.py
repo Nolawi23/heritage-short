@@ -273,6 +273,15 @@ def music_sources(ctx: c.Ctx) -> dict:
     return out
 
 
+def vertical_override(ctx: c.Ctx, shot_id: str, aspect: str, mode: str) -> tuple[str, float]:
+    """Per-shot 9:16 treatment of a Wan clip: shots[].vertical_fill "blur" (even in the crop film) and
+    shots[].vertical_x (crop window, -1 left .. 0 centre .. 1 right). 16:9 is never changed."""
+    if aspect != "9:16":
+        return mode, 0.0
+    shot = next(s for s in ctx.sb["shots"] if s["id"] == shot_id)
+    return ("blur" if shot.get("vertical_fill") == "blur" else mode), float(shot.get("vertical_x", 0.0))
+
+
 def render(ctx: c.Ctx, tl: dict, srcs: dict, aspect: str, mode: str, audio: Path, cues, tmp: Path, plans: dict) -> Path:
     w, h = ctx.sb["outputs"]["resolutions"][aspect]
     fps = ctx.sb["outputs"]["fps"]
@@ -285,7 +294,8 @@ def render(ctx: c.Ctx, tl: dict, srcs: dict, aspect: str, mode: str, audio: Path
             if s["id"] not in plans:
                 plans[s["id"]] = fitted_clip(src["clip"], s["duration_s"], fps, tmp, s["id"])
             fitted = plans[s["id"]][0]
-            av.ffmpeg("-i", fitted, "-vf", av.reframe_filter(w, h, mode) + ",tpad=stop_mode=clone:stop_duration=0.2",
+            m, x = vertical_override(ctx, s["id"], aspect, mode)
+            av.ffmpeg("-i", fitted, "-vf", av.reframe_filter(w, h, m, x) + ",tpad=stop_mode=clone:stop_duration=0.2",
                       "-frames:v", n, "-r", fps, *av.X264_INTERMEDIATE, "-an", seg)
         else:
             direction = av.KB_DIRECTIONS[i % len(av.KB_DIRECTIONS)]
@@ -317,7 +327,9 @@ def film_key(ctx: c.Ctx, tl_sha: str, srcs: dict, music: dict, aspect: str, mode
     params = {"aspect": aspect, "mode": mode, "end_card": ctx.sb["end_card"], "outputs": ctx.sb["outputs"],
               "voices": ctx.sb["narration"]["voices"], "preview": preview(),
               "music_start_after_line": ctx.sb.get("music_start_after_line"),
-              "music_fade_in_s": ctx.sb.get("music_fade_in_s")}
+              "music_fade_in_s": ctx.sb.get("music_fade_in_s"),
+              "vertical_shots": {s["id"]: [s.get("vertical_fill"), s.get("vertical_x")] for s in ctx.sb["shots"]
+                                 if "vertical_fill" in s or "vertical_x" in s}}
     return c.Cache.key("assemble", "ffmpeg", params, None, None, upstream)
 
 

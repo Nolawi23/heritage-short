@@ -114,6 +114,10 @@
                                "description": "Extra conditioning images (repo-relative), e.g. an earlier keyframe whose composition should be kept."},
           "keyframe_seed": {"type": "integer", "minimum": 0,
                             "description": "Seed of the picked keyframe candidate (default: seed). Separate from seed, which narration and Wan keys use."},
+          "vertical_fill": {"enum": ["blur"],
+                            "description": "9:16 only, Wan clips: always use the blurred fill for this shot, also in the crop film (content off-centre)."},
+          "vertical_x": {"type": "number", "minimum": -1, "maximum": 1,
+                         "description": "9:16 crop film only, Wan clips: horizontal position of the crop window (-1 left edge, 0 centre, 1 right edge)."},
           "lines": {
             "type": "array",
             "items": {

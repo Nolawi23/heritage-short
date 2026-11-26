@@ -90,7 +90,7 @@ def render_kernel(stage: str, notebook: str, jobs: dict, user: str, dataset: str
     (dest / notebook).write_text(json.dumps(nb, indent=1))
     meta = json.loads((src / "kernel-metadata.json").read_text())
     kernel_ref = meta["id"].replace("USERNAME", user)
-    meta |= {"id": kernel_ref, "dataset_sources": [dataset] if dataset else [], "enable_gpu": gpu}
+    meta |= {"id": kernel_ref, "code_file": notebook, "dataset_sources": [dataset] if dataset else [], "enable_gpu": gpu}
     if gpu:
         meta["machine_shape"] = cfg["machine_shape"]
     else:
