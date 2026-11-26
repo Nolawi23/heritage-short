@@ -10,12 +10,15 @@ generated file is stored in a content-addressed cache keyed by what it was made 
 ## Quick start: the one command
 
 ```bash
+git clone https://github.com/Nolawi23/heritage-short.git
+cd heritage-short
 make setup      # venv + pinned dependencies, git pre-commit hook, ffmpeg check
 make film       # narration -> keyframes -> shots -> music -> assemble
 ```
 
 `make film` starts from `storyboard.json` and **skips every item whose inputs have not changed**.
-Results: `outputs/film_16x9.mp4`, `outputs/film_9x16.mp4`, `outputs/subtitles.srt`, `outputs/timeline.json`.
+Results: `outputs/film_16x9.mp4`, `outputs/film_9x16.mp4` (the vertical film: centre crop), `outputs/film_9x16_blur.mp4`
+(alternative), `outputs/subtitles.srt`, `outputs/timeline.json`. The committed film is 68.9 s (11 shots, 131 words).
 
 ### Reproduce vs regenerate
 
@@ -64,7 +67,7 @@ within Workers AI's 10,000 free Neurons/day, and the Kaggle GPU work (6 h/week) 
 | `narration` | all uncached lines in **one** multi-speaker request, split locally into lines by faster-whisper word timestamps and verified per line (cached per line), lines of a shot joined with 0.4 s of silence, `timeline.json` | Gemini 3.8 Flash TTS (+ faster-whisper `small.en` locally) | 1 of 10 requests/day (+1 per later edited line); stops cleanly on quota |
 | `radio` (not in `film`) | narration over a quiet drone on black, to test the story by ear | ffmpeg | none |
 | `keyframes` | reference-sheet candidates per character (you approve one), then one keyframe per shot conditioned on the approved sheets | FLUX.2 klein 4B on Workers AI | ~208 Neurons per keyframe of 10,000/day |
-| `shots` | image-to-video for `"wan"` shots whose key changed, in one Kaggle T4 run (`make shots-test` measures one short clip first) | Wan 2.2 TI2V-5B | GPU minutes of a 6 h/week quota |
+| `shots` | image-to-video for `"wan"` shots whose key changed, in one Kaggle T4 run (`make shots-test` measures one short clip first) | Wan 2.2 TI2V-5B; per-shot size in `shots[].wan` (final clips: 49 frames, shot 3 at 1280x704, shots 4, 5, 9 at 960x544) | GPU minutes of a 6 h/week quota |
 | `music` | 3 instrumental candidates per cue (you choose one), ~35 s sections joined to the timeline | MusicGen-medium fp32 on a Kaggle T4 (ACE-Step 1.5 overflowed in fp16, FAILURES.md #19) | ~2.5 GPU min per candidate |
 | `assemble` | cut to the timeline, fit clips, Ken Burns stills, score looped with crossfades (cut at `clean_until_s`), `ambience` beds (CC0 murmur under shot 6), ducking, subtitles, end card, two-pass loudnorm to −14 LUFS (true peak under −1 dBTP), H.264/AAC at 24 fps, 16:9 + 9:16 | ffmpeg | none |
 | `costs` | per-stage calls, latency, GPU minutes and list-price equivalent → [`COSTS.md`](COSTS.md) | — | — |

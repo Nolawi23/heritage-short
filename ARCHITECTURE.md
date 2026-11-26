@@ -20,7 +20,7 @@ cross-references (unique ids, known speakers, cues and characters, existing refe
 | `narration` | lines, `narration.voices` | `out/narration/<shot>_<n>.wav` (one per line), `out/narration/<shot>.wav` (joined, 0.4 s pauses), `out/timeline.json` (file) |
 | `radio_cut` | timeline, line WAVs | `out/radio_cut.mp4` |
 | `keyframes` | prompts, `style_block`, characters, approved reference images | `out/reference/<char>_c<n>.*` (candidates, not committed), `outputs/reference/<char>.*` (approved), `out/keyframes/<shot>.*` |
-| `shots` | keyframes, `motion_prompt`, seed, `config/models.json:wan` | `out/clips/<shot>.mp4` for `"wan"` shots, or a `fallback` mark in the manifest |
+| `shots` | keyframes, `motion_prompt`, seed, `config/models.json:wan` (defaults), overridden per shot by `shots[].wan` (frames, width, height) | `out/clips/<shot>.mp4` for `"wan"` shots, or a `fallback` mark in the manifest |
 | `music` | `music_cues` | `out/music/<cue>_c<n>.wav` (candidates), `out/music/<cue>.wav` (selected) |
 | `assemble` | everything above | `out/film_16x9.mp4`, `out/film_9x16.mp4` (`_blur` variant), `out/subtitles.srt` (file) |
 

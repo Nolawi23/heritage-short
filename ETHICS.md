@@ -45,7 +45,7 @@ Gemini 3.8 Flash TTS also offers voice design, replication and remixing, and the
 | Narration (TTS) | `gemini-3.8-flash-tts` | Proprietary API (Gemini API Additional Terms). Free tier: content may be used to improve Google products. | Free tier, per-model daily request limit (see https://aistudio.google.com/rate-limit); narration stops cleanly with status quota_exhausted and resumes from cache |
 | Keyframes | `@cf/black-forest-labs/flux-2-klein-4b` | Apache-2.0 (FLUX.2 [klein] 4B weights); served under Cloudflare Workers AI terms | 10,000 Neurons/day free on Workers AI (~26 Neurons per 512x512 output tile) |
 | Image-to-video | `Wan-AI/Wan2.2-TI2V-5B-Diffusers` | Apache-2.0 | Kaggle free GPU quota (weekly hours; this account: {"quotaRefreshTime": "2026-11-28T00:00:00.000Z", "gpuQuota": {"totalTimeAllowed": "21600s"} (6 GPU h/week)}) |
-| Score | `ACE-Step/acestep-v15-xl-turbo-diffusers` | MIT | Kaggle free GPU quota (shared with Wan) |
+| Score | `facebook/musicgen-medium` | CC-BY-NC-4.0 (MusicGen weights, non-commercial); MIT (audiocraft/transformers code) | Kaggle free GPU quota (shared with Wan) |
 
 Smoke test 2026-11-25 (run `20261125T190207Z-smoke`).
 FLUX reference images: **accepted, keyframes are conditioned on the approved sheet** (schema saved in `config/flux_schema.json`).
@@ -64,7 +64,7 @@ Google's Gemini API terms. The FLUX.2 klein **9B** model is non-commercial and i
 
 | Use | Recording | Author | Licence | Source | Added |
 |---|---|---|---|---|---|
-| background murmur under shot 6 ("a lot of noise"): `ambience[family-murmur]`, file `assets/ambience/small-crowd-walla_freesound-653920.mp3` | "Small Crowd Walla" (Freesound #653920): an indoor small mixed group chatting in Spanish; low-passed at 2.5 kHz, 4 dB under the score and ducked under the narration, so that no word should be intelligible (author to confirm on re-watch) | IENBA (Freesound) | **CC0 1.0** (public domain dedication, as stated on the sound page): no attribution required, commercial use allowed; credited here anyway | https://freesound.org/people/IENBA/sounds/653920/ (the public HQ preview MP3; the WAV original needs a Freesound login) | 2026-11-26, author's pick |
+| background murmur under shot 6 ("a lot of noise"): `ambience[family-murmur]`, file `assets/ambience/small-crowd-walla_freesound-653920.mp3` | "Small Crowd Walla" (Freesound #653920): an indoor small mixed group chatting in Spanish; low-passed at 2.5 kHz, 4 dB under the score and ducked under the narration, so that no word is intelligible (confirmed by the author on a phone, DESIGN.md user test 3) | IENBA (Freesound) | **CC0 1.0** (public domain dedication, as stated on the sound page): no attribution required, commercial use allowed; credited here anyway | https://freesound.org/people/IENBA/sounds/653920/ (the public HQ preview MP3; the WAV original needs a Freesound login) | 2026-11-26, author's pick |
 
 It is the only recording in the film that was not generated: it is not AI-made and contains no family member. The
-people in it are strangers recorded by the uploader; the mix keeps their words from being made out.
+people in it are strangers recorded by the uploader; on the author's re-watch no word could be made out.

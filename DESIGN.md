@@ -29,10 +29,13 @@ At the end they feel seen and grateful: this ordinary Sunday ritual is what keep
   own knowledge: it lasts two to three hours, not one. Shot 11 now says "It's the few hours every week we're all in
   the same room. ..." and the logline says "the few hours a week".
 - **2026-11-25 - Ending pacing.** Shots 10 and 11 were lengthened (6 s and 8 s) to give the ending room to breathe;
-  the end card reads "Come Down Here" / "for my family" (+ "Made with AI").
-- **2026-11-25 - Pronunciation.** All Amharic words were mispronounced from Latin spelling; the spoken text now uses
-  Ge'ez script inside the English sentence (`tts_text`), subtitles keep the Latin spelling, "baraka" became "bereka"
-  (EXPERIMENTS.md, Latin vs Ge'ez).
+  the end card reads "Come Down Here" / "for my family" (+ "Made with AI"). Later (user test 2, 2026-11-26) shot 10
+  went back down to 3.1 s: its line lasts 2.1 s and the rest played as dead time. Shot 11 keeps 8 s (8.5 s with its line).
+- **2026-11-25 - Pronunciation.** The Amharic words sounded wrong from Latin spelling, so Ge'ez script inside the
+  English sentence was tried (EXPERIMENTS.md: Latin vs Ge'ez, then a single Ge'ez word). Ge'ez changed the narrator's
+  voice, so it stayed an experiment (takes in `outputs/experiments/`): **the final narration is spoken from Latin
+  spelling everywhere**. The subtitles say "bereka" (corrected from "baraka"); shot 9's voice keeps its cached Latin
+  take of "baraka" (`tts_text`).
 - **2026-11-25 - Narrator voice.** Achird over Charon (EXPERIMENTS.md).
 - **2026-11-25 - Music: candidate 2.** "c2 is calmer; c1 might clash with the narration, c2 sits under the voice."
   Pinned as `music_cues[0].selected = 2` (MusicGen, tizita caption, seed 43), so assembly always uses it. Mix check:
@@ -56,8 +59,10 @@ At the end they feel seen and grateful: this ordinary Sunday ritual is what keep
   so in 9:16 it uses the blur fill (EXPERIMENTS.md, crop vs blur).
 - **2026-11-26 - Wan clip fitting.** A clip is slowed down by at most 1.25x (no strong slow motion); if it is still
   shorter than its shot, it plays and then continues with a slow Ken Burns move on its last frame, never a freeze.
-  With 81-frame clips (3.4 s) every Wan shot (5-6 s) ends with a 1.1-2.1 s Ken Burns tail; a shot retried at 49
-  frames gets the same treatment with a longer tail.
+  81-frame clips (3.4 s) were planned; they did not fit the T4 (FAILURES.md #32), so the final clips are all
+  49 frames (2.04 s): shot 3 at 1280x704, shots 4, 5 and 9 at 960x544 (`shots[].wan`). Slowed 1.25x they cover
+  about 2.55 s, and each Wan shot ends with a Ken Burns tail on its last frame: 2.8 s (shot 3), 3.3 s (shots 5 and 9),
+  3.8 s (shot 4).
 - **2026-11-26 - Mix (rough-cut check).** Mom's call plays over silence (the score enters 0.3 s after it with a
   1.5 s fade-in). Most lines sat 9-15 dB above the ducked music, but lines 7-9 (abol, tona, bereka) only 2-5 dB: a
   softer read over a louder passage of the score. Author's decisions: the score dips 4 dB under shots 7-9 only
@@ -83,6 +88,7 @@ At the end they feel seen and grateful: this ordinary Sunday ritual is what keep
 |---|---|---|---|---|---|
 | 1 | 2026-11-25 (answer 2026-11-26) | the family (family chat) | two radio cuts: with names (`outputs/radio_cut.mp4`) vs "Come down here!" (`outputs/variants/storyboard_nonames/radio_cut.mp4`) | they prefer the version **with names** | nothing to change: Mom's call stays "Nolawi! Delina! Come down here!" in `storyboard.json`; `storyboard_nonames.json` is kept only as the record of this test |
 | 2 | 2026-11-26 | the author, watching the final films on a phone | `film_16x9.mp4`, `film_9x16.mp4` (crop), `film_9x16_blur.mp4` | (1) prefers the 9:16 **crop** (no blur); (2) a screech at about 0:35 and 1:06; (3) the "a lot of noise" line needs the noise: a low murmur of family chatter; (4) about 3 s of dead time at about 0:57 after "The coffee was never really the point." | (1) `film_9x16.mp4` is the vertical film; shot 5 keeps its blur fill because a crop cuts out the smoke (EXPERIMENTS.md); (2) the screech was the score's damaged end, cut with `clean_until_s` (FAILURES.md #33); (3) a CC0 recording of a small group's chatter under shot 6 (`ambience`, ETHICS.md); (4) shot 10 shortened from 6.0 to 3.1 s, so the gap before shot 11's line is about 1 s |
+| 3 (final check) | 2026-11-26 | the author, re-watching the final films on a phone | the re-cut films of `de83110` (68.9 s, -14.38 LUFS, -1.38 dBTP) | everything is good: the Wan motion reads well in shots 3, 4, 5 and 9; the murmur has no words you can make out; the loop joins in the score are smooth; the screech is gone | nothing: these are the final films. ETHICS.md records the murmur as confirmed unintelligible |
 
 ## A reason per shot
 

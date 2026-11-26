@@ -47,7 +47,7 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   with faster-whisper word timestamps + cut at the nearest silence + per-piece re-transcription check (≥ 0.80).
 - **Result:** (a) and (b) were refused as ambiguous: line gaps 0.95–2.3 s overlapped sentence pauses of up to
   1.03 s. (c) passed all 12 lines from the already-paid recording (b) with scores 0.94–1.00 (lowest: "Etan" heard as
-  "It's on", 0.937; "Nolawi" as "Nolawe", 0.964), for 0 extra requests. The timeline is 71.2 s; the no-names variant
+  "It's on", 0.937; "Nolawi" as "Nolawe", 0.964), for 0 extra requests. The timeline was 71.2 s at the time (final film: 68.9 s); the no-names variant
   cost exactly 1 request (70.1 s).
 - **run_id:** (a) `20261125T200511Z-narration`, (b) `20261125T200634Z-narration`, (c) the last `-narration` run in `runs.jsonl`
 
@@ -72,7 +72,7 @@ One entry per experiment: **hypothesis → change → result → run_id** (the `
   `outputs/experiments/latin_vs_geez/latin/shot-05-jebena-etan_1.wav`.
 - **Result:** the single Ge'ez word plus the accent note was the closest yet, but the author **kept the Latin
   spelling** for "etan" too: shot 5 reverted to its original Latin take (a cache hit, 0 TTS requests; the timeline
-  went back to 71.8 s, and the subtitles were re-checked: 14 cues, all inside their line spans, none overlapping).
+  went back to 71.8 s (final film after user test 2: 68.9 s), and the subtitles were re-checked: 14 cues, all inside their line spans, none overlapping).
   Conclusion for this voice: Latin spelling everywhere; the Ge'ez takes stay in `outputs/experiments/` for reference.
 - **run_id:** `20261125T214913Z-etan-single`
 

@@ -54,12 +54,15 @@ From 344 lines of `runs.jsonl` across 43 run(s).
 | Narration (TTS) | `gemini-3.8-flash-tts` | Proprietary API (Gemini API Additional Terms). Free tier: content may be used to improve Google products. | Free tier, per-model daily request limit (see https://aistudio.google.com/rate-limit); narration stops cleanly with status quota_exhausted and resumes from cache |
 | Keyframes | `@cf/black-forest-labs/flux-2-klein-4b` | Apache-2.0 (FLUX.2 [klein] 4B weights); served under Cloudflare Workers AI terms | 10,000 Neurons/day free on Workers AI (~26 Neurons per 512x512 output tile) |
 | Image-to-video | `Wan-AI/Wan2.2-TI2V-5B-Diffusers` | Apache-2.0 | Kaggle free GPU quota (weekly hours; this account: {"quotaRefreshTime": "2026-11-28T00:00:00.000Z", "gpuQuota": {"totalTimeAllowed": "21600s"} (6 GPU h/week)}) |
-| Score | `ACE-Step/acestep-v15-xl-turbo-diffusers` | MIT | Kaggle free GPU quota (shared with Wan) |
+| Score | `facebook/musicgen-medium` | CC-BY-NC-4.0 (MusicGen weights, non-commercial); MIT (audiocraft/transformers code) | Kaggle free GPU quota (shared with Wan) |
 
 Smoke test 2026-11-25 (run `20261125T190207Z-smoke`).
 FLUX reference images: **accepted, keyframes are conditioned on the approved sheet** (schema saved in `config/flux_schema.json`).
 - note: gemini-3.8-flash (newest Flash) was overloaded (503) and then hit its 20/day free quota on 2026-11-25, gemini-3.7-flash likewise; gemini-3.6-flash pinned for the script stage. `python -m pipeline.smoke_test --repin` re-picks.
 <!-- models:end -->
+
+The score model is **MusicGen-medium** (`facebook/musicgen-medium`, weights CC-BY-NC 4.0, non-commercial). ACE-Step 1.5 XL turbo (MIT) was the first choice
+but cannot run on the free T4 (no bfloat16, and its transformer overflows in float16: FAILURES.md #19).
 
 ## What one film costs (expected)
 
@@ -68,8 +71,9 @@ FLUX reference images: **accepted, keyframes are conditioned on the approved she
 | narration | Gemini 3.8 Flash TTS | 1 batch request (+1 per later edited line) | 1 of 10 requests/day; stops cleanly on quota and resumes from cache | per 1M text-in / audio-out tokens |
 | keyframes | Workers AI FLUX.2 klein 4B | 4 reference candidates per character + 1 per shot | ~208 Neurons per 1792x1008 image (8 tiles x 26.05) of 10,000/day | $0.000287 per output tile, $0.000059 per input (reference) tile |
 | shots | Kaggle T4 (Wan 2.2 TI2V-5B) | one kernel run for all changed wan shots | weekly Kaggle GPU hours: measured by `make shots-test` before the batch | T4 GPU-hour equivalent ($0.35/h, Google Cloud list price) |
-| music | Kaggle T4 (ACE-Step 1.5 XL turbo) | one kernel run, 3 candidates per cue | a few GPU minutes | same as above |
+| music | Kaggle T4 (MusicGen-medium, float32) | one kernel run, 3 candidates per cue (~35 s sections) | about 2.5 GPU min per candidate | same as above |
 | assemble, radio | local ffmpeg | n/a | none | 0 |
+| ambience | CC0 recording from Freesound (committed in `assets/ambience/`, ETHICS.md) | one download, once | none | 0 |
 
 Reruns cost nothing: unchanged items are cache hits (`cache_hit: true` lines in `runs.jsonl`).
 Prices were checked on 2026-11-25 and are flagged `verified: false` in `config/prices.json` where the source was not
